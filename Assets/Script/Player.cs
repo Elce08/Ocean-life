@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
     {
         GroundedCheck();
         Move();
+        JumpAndGravity();
     }
 
     private void LateUpdate()
@@ -113,6 +114,32 @@ public class Player : MonoBehaviour
         }
 
         controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+    }
+
+    void JumpAndGravity()
+    {
+        if(!inWater)
+        {
+            if (grounded)
+            {
+                _fallTimeoutDelta = FallTimeout;
+
+                if (_verticalVelocity < 0.0f) _verticalVelocity = -2.0f;
+                if (jump && _jumpTimeoutDelta <= 0.0f) _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                if (_jumpTimeoutDelta >= 0.0f) _jumpTimeoutDelta -= Time.deltaTime;
+            }
+            else
+            {
+                _jumpTimeoutDelta = jumpTimeout;
+                if (FallTimeout >= 0.0f) _fallTimeoutDelta -= Time.deltaTime;
+                jump = false;
+            }
+            if (_verticalVelocity < _terminalVelocity) _verticalVelocity += gravity * Time.deltaTime;
+        }
+        else
+        {
+            _verticalVelocity = 0.0f;
+        }
     }
 
     private void GroundedCheck()
@@ -172,4 +199,20 @@ public class Player : MonoBehaviour
     {
         Cursor.lockState = newState ? CursorLockMode.Locked :CursorLockMode.None;
     }
+
+    /*private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Water"))
+        {
+            inWater = true;
+            gravity = 0.0f;
+            Debug.Log(inWater);
+        }
+        if (other.CompareTag("Ground"))
+        {
+            inWater = false;
+            gravity = -15.0f;
+            Debug.Log(inWater);
+        }
+    }*/
 }
