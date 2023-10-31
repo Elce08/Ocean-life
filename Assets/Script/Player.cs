@@ -12,9 +12,18 @@ public class Player : MonoBehaviour
     public bool sink;
     public bool inWater = false;
 
+    public enum Space
+    {
+        Ground,
+        Water,
+    }
+
+    public Space space = Space.Ground;
+
     CharacterController controller;
-    PlayerInput inputActions;
+    private PlayerInput inputActions;
     GameObject mainCamera;
+    GameObject body;
 
     [Header("Player")]
     public float moveSpeed = 4.0f;
@@ -45,7 +54,8 @@ public class Player : MonoBehaviour
     public bool cursorLocked = true;
     public bool cursorInputForLook = true;
 
-    float _cinemachineTargetPitch;
+    float _cinemachineTargetPitchX;
+    float _cinemachineTargetPitchY;
 
     float _speed;
     float _rotationVelocity;
@@ -63,11 +73,12 @@ public class Player : MonoBehaviour
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
+        body = transform.GetChild(0).gameObject;
     }
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>();
+        controller = GetComponentInChildren<CharacterController>();
         inputActions = GetComponent<PlayerInput>();
 
         _jumpTimeoutDelta = jumpTimeout;
@@ -93,7 +104,7 @@ public class Player : MonoBehaviour
         if (move == Vector2.zero) targetSpeed = 0.0f;
 
         float currentHorizontalSpeed;
-        if (!inWater) currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
+        if (space == Space.Ground) currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
         else currentHorizontalSpeed = new Vector3(controller.velocity.x, controller.velocity.y, controller.velocity.z).magnitude;
 
         float speedOffset = 0.1f;
@@ -105,12 +116,12 @@ public class Player : MonoBehaviour
         }
         else _speed = targetSpeed;
 
-        Vector3 inputDirection = new Vector3(move.x, 0.0f, move.y);
+        Vector3 inputDirection = new(move.x, 0.0f, move.y);
 
         if(move != Vector2.zero)
         {
-            if (!inWater) inputDirection = transform.right * move.x + transform.forward * move.y;
-            else inputDirection = transform.right * move.x + transform.forward * move.y;
+            if (space == Space.Ground) inputDirection = transform.right * move.x + transform.forward * move.y;
+            else inputDirection = CinemachineCameraTarget.transform.right * move.x + CinemachineCameraTarget.transform.forward * move.y;
         }
 
         controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
@@ -118,7 +129,7 @@ public class Player : MonoBehaviour
 
     void JumpAndGravity()
     {
-        if(!inWater)
+        if(space == Space.Ground)
         {
             if (grounded)
             {
@@ -138,7 +149,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _verticalVelocity = 0.0f;
+            if (jump) _verticalVelocity = moveSpeed;
+            else _verticalVelocity = 0.0f;
         }
     }
 
@@ -150,12 +162,21 @@ public class Player : MonoBehaviour
 
     void CameraRotation()
     {
-        _cinemachineTargetPitch += look.y * rotationSpeed;
+        _cinemachineTargetPitchX += look.y * rotationSpeed;
+        _cinemachineTargetPitchY += look.x * rotationSpeed;
         _rotationVelocity = look.x * rotationSpeed;
 
-        _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, bottomClamp, topClamp);
-        CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
-        transform.Rotate(Vector3.up * _rotationVelocity);
+
+        _cinemachineTargetPitchX = ClampAngle(_cinemachineTargetPitchX, bottomClamp, topClamp);
+        if (space != Space.Water)
+        {
+            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitchX, 0.0f, 0.0f);
+            transform.Rotate(Vector3.up * _rotationVelocity);
+        }
+        else
+        {
+            transform.localRotation = Quaternion.Euler(_cinemachineTargetPitchX, _cinemachineTargetPitchY, 0.0f);
+        }
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -200,19 +221,32 @@ public class Player : MonoBehaviour
         Cursor.lockState = newState ? CursorLockMode.Locked :CursorLockMode.None;
     }
 
-    /*private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Water"))
         {
-            inWater = true;
+            space = Space.Water;
             gravity = 0.0f;
-            Debug.Log(inWater);
+            transform.rotation = Quaternion.Euler(_cinemachineTargetPitchX, CinemachineCameraTarget.transform.forward.y,CinemachineCameraTarget.transform.forward.z + 90.0f);
+            body.transform.localRotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
+            body.transform.localPosition = Vector3.zero;
+            CinemachineCameraTarget.transform.localPosition = new(0.0f, 0.0f, 0.5f);
+            Debug.Log(space);
         }
-        if (other.CompareTag("Ground"))
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Water"))
         {
-            inWater = false;
+            space = Space.Ground;
             gravity = -15.0f;
-            Debug.Log(inWater);
+            transform.rotation = Quaternion.Euler(_rotationVelocity, _cinemachineTargetPitchY, 0.0f);
+            body.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+            body.transform.localPosition = new(0.0f,1.0f,0.0f);
+            CinemachineCameraTarget.transform.localPosition = new(0.0f, 1.5f, 0.5f);
+
+            Debug.Log(space);
         }
-    }*/
+    }
 }
