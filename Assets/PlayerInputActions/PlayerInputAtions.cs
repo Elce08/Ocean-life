@@ -65,9 +65,9 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Sink"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""d76f34e4-d27a-4582-97a6-45c5145d7ff4"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false

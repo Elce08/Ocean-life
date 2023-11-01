@@ -95,17 +95,22 @@ public class Player : MonoBehaviour
     private void LateUpdate()
     {
         CameraRotation();
-    }
+    }   
+
 
     void Move()
     {
         float targetSpeed = sprint ? sprintSpeed : moveSpeed;
 
         if (move == Vector2.zero) targetSpeed = 0.0f;
-
         float currentHorizontalSpeed;
         if (space == Space.Ground) currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
-        else currentHorizontalSpeed = new Vector3(controller.velocity.x, controller.velocity.y, controller.velocity.z).magnitude;
+        else 
+        {
+            if(sink || jump)currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
+            else currentHorizontalSpeed = new Vector3(controller.velocity.x, controller.velocity.y, controller.velocity.z).magnitude;
+        }
+
 
         float speedOffset = 0.1f;
         float inputMagnitude = move.magnitude;
@@ -121,7 +126,7 @@ public class Player : MonoBehaviour
         if(move != Vector2.zero)
         {
             if (space == Space.Ground) inputDirection = transform.right * move.x + transform.forward * move.y;
-            else inputDirection = CinemachineCameraTarget.transform.right * move.x + CinemachineCameraTarget.transform.forward * move.y;
+            else inputDirection = transform.right * move.x + transform.forward * move.y;
         }
 
         controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
@@ -144,13 +149,15 @@ public class Player : MonoBehaviour
                 _jumpTimeoutDelta = jumpTimeout;
                 if (FallTimeout >= 0.0f) _fallTimeoutDelta -= Time.deltaTime;
                 jump = false;
+                sink = false;
             }
             if (_verticalVelocity < _terminalVelocity) _verticalVelocity += gravity * Time.deltaTime;
         }
-        else
+        if(space == Space.Water)
         {
             if (jump) _verticalVelocity = moveSpeed;
-            else _verticalVelocity = 0.0f;
+            else if (sink) _verticalVelocity = -moveSpeed;
+            else _verticalVelocity = 0.0f; 
         }
     }
 
@@ -171,11 +178,12 @@ public class Player : MonoBehaviour
         if (space != Space.Water)
         {
             CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitchX, 0.0f, 0.0f);
-            transform.Rotate(Vector3.up * _rotationVelocity);
+            transform.Rotate(Vector3.up * _rotationVelocity, UnityEngine.Space.World);
         }
         else
         {
-            transform.localRotation = Quaternion.Euler(_cinemachineTargetPitchX, _cinemachineTargetPitchY, 0.0f);
+            transform.rotation = Quaternion.Euler(_cinemachineTargetPitchX, _cinemachineTargetPitchY, 0.0f);
+            transform.Rotate(Vector3.up * _rotationVelocity, UnityEngine.Space.World);
         }
     }
 
@@ -227,10 +235,8 @@ public class Player : MonoBehaviour
         {
             space = Space.Water;
             gravity = 0.0f;
-            transform.rotation = Quaternion.Euler(_cinemachineTargetPitchX, CinemachineCameraTarget.transform.forward.y,CinemachineCameraTarget.transform.forward.z + 90.0f);
-            body.transform.localRotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
-            body.transform.localPosition = Vector3.zero;
-            CinemachineCameraTarget.transform.localPosition = new(0.0f, 0.0f, 0.5f);
+            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(CinemachineCameraTarget.transform.localRotation.x - transform.rotation.x,0.0f,0.0f);
+
             Debug.Log(space);
         }
     }
@@ -241,10 +247,7 @@ public class Player : MonoBehaviour
         {
             space = Space.Ground;
             gravity = -15.0f;
-            transform.rotation = Quaternion.Euler(_rotationVelocity, _cinemachineTargetPitchY, 0.0f);
-            body.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
-            body.transform.localPosition = new(0.0f,1.0f,0.0f);
-            CinemachineCameraTarget.transform.localPosition = new(0.0f, 1.5f, 0.5f);
+            transform.rotation = Quaternion.Euler(0.0f, _cinemachineTargetPitchY, 0.0f);
 
             Debug.Log(space);
         }
