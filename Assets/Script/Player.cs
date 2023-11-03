@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     Vector2 move;
     Vector2 look;
+
     public bool jump;
     public bool sprint;
     public bool sink;
@@ -166,7 +167,6 @@ public class Player : MonoBehaviour
         {
             _jumpTimeoutDelta = jumpTimeout;
             if (FallTimeout >= 0.0f) _fallTimeoutDelta -= Time.deltaTime;
-            jump = false;
         }
         if (_verticalVelocity < _terminalVelocity) _verticalVelocity += gravity * Time.deltaTime;
     }
@@ -200,7 +200,6 @@ public class Player : MonoBehaviour
         if (sink || jump) currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
 
         float speedOffset = 0.1f;
-        float inputMagnitude = move.magnitude;
 
         if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
         {
@@ -241,7 +240,7 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Water"))
         {
             Floor = Space.Water;
-            // 
+            // Slowly Change
             CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         }
     }
@@ -251,6 +250,7 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Water"))
         {
             Floor = Space.Ground;
+            // Slowly recover
             transform.rotation = Quaternion.Euler(0.0f, _cinemachineTargetPitchY, 0.0f);
         }
     }
@@ -269,7 +269,9 @@ public class Player : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        jump = context.performed;
+        if(context.performed) jump = true;
+        else if(context.canceled) jump = false;
+        else jump = false;
     }
 
     public void OnSink(InputAction.CallbackContext context)
