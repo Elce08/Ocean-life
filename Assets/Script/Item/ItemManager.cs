@@ -6,7 +6,8 @@ using UnityEngine;
 public enum Item
 {
     None= 0,
-    head = 1,
+    seaglider,
+    head,
     body,
     airtank,
     titanium = 101,
@@ -15,6 +16,7 @@ public enum Item
     quartz,
     plastic = 201,
     glass,
+    coppercable,
     water = 401,
     fish1,
     fish2,
@@ -38,13 +40,17 @@ public class ItemManager : MonoBehaviour
         Vector2Int result = new();
         switch ((int)item)
         {
-            case 1:
+            case 3:
             case 2:
                 result.x = 2;
                 result.y = 2;
                 break;
-            case 3:
+            case 4:
                 result.x = 2;
+                result.y = 3;
+                break;
+            case 1:
+                result.x = 3;
                 result.y = 3;
                 break;
             default:
@@ -94,23 +100,31 @@ public class ItemManager : MonoBehaviour
             List<Slots> Slots = new();
             foreach(Slots startSlot in slots)
             {
-                if (!startSlot.Engaged)
-                {
-                    break;
+                if (start % width + x > width) start++;
+                else 
+                { 
+                    if (!startSlot.Engaged)
+                    {
+                        break;
+                    }
+                    else start++;
                 }
-                else start++;
             }
+            if((start + x + y * width) > ((width+1) * (height+1)))
+            {
+                Debug.Log("Fail to add");
+                items.Remove(item);
+                break;
+            }
+
             for(int i = 0; i < x; i++)
             {
                 for(int j = 0; j < y; j++)
                 {
                     Slots.Add(slots[(start + i + (j * width))]);
+                    slots[(start + i + (j * width))].item = item;
                     slots[(start + i + (j * width))].Engaged = true;
                 }
-            }
-            foreach(Slots slot in Slots)
-            {
-                Debug.Log(slot);
             }
             itemsSlots.Add(new(item, Slots));
         }
