@@ -7,8 +7,8 @@ public enum Item
 {
     None= 0,
     seaglider,
-    airtank,
-    head,
+    airtank = 10,
+    head = 20,
     body,
     titanium = 101,
     copper,
