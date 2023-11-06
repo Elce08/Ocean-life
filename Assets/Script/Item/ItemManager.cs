@@ -7,9 +7,9 @@ public enum Item
 {
     None= 0,
     seaglider,
+    airtank,
     head,
     body,
-    airtank,
     titanium = 101,
     copper,
     coal,
@@ -38,20 +38,20 @@ public class ItemManager : MonoBehaviour
     public static Vector2Int ItemData(Item item)
     {
         Vector2Int result = new();
-        switch ((int)item)
+        switch (item)
         {
-            case 3:
-            case 2:
-                result.x = 2;
-                result.y = 2;
-                break;
-            case 4:
-                result.x = 2;
-                result.y = 3;
-                break;
-            case 1:
+            case Item.seaglider:
                 result.x = 3;
                 result.y = 3;
+                break;
+            case Item.airtank:
+                result.x = 2;
+                result.y = 3;
+                break;
+            case Item.head:
+            case Item.body:
+                result.x = 2;
+                result.y = 2;
                 break;
             default:
                 result.x = 1;
@@ -109,14 +109,14 @@ public class ItemManager : MonoBehaviour
                 { 
                     if (!startSlot.Engaged)
                     {
-                        Debug.Log(start);
                         break;
                     }
                     else start++;
                 }
             }
-            if(start == (width * height))
+            if(start >= (width * height))
             {
+                items.Remove(lastItem);
                 Debug.Log("Fail");
                 break;
             }
