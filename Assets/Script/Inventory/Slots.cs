@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class Slots : MonoBehaviour
 {
+    public Item item;
+
+    public int itemIndex = 0;
+
     public bool engaged = false;
 
-    public Item item;
     public bool Engaged
     {
         get => engaged;

@@ -58,7 +58,6 @@ public class ItemManager : MonoBehaviour
                 result.y = 1;
                 break;
         }
-        Debug.Log($"{result.x},{result.y}");
         return result;
     }
 
@@ -72,15 +71,19 @@ public class ItemManager : MonoBehaviour
         slots = GetComponentsInChildren<Slots>();
     }
 
+    static Item lastItem;
+
     public static void Add(Item item)
     {
         items.Add(item);
+        lastItem = item;
+        Debug.Log(lastItem);
         RefreshSlots();
     }
 
-    public static void Remove(Item item)
+    public static void Remove(int index)
     {
-        items.Remove(item);
+        items.Remove(items[index]);
         RefreshSlots();
     }
 
@@ -101,19 +104,27 @@ public class ItemManager : MonoBehaviour
             foreach(Slots startSlot in slots)
             {
                 if (start % width + x > width) start++;
+                else if (slots[start+x-1].Engaged) start++;
                 else 
                 { 
                     if (!startSlot.Engaged)
                     {
+                        Debug.Log(start);
                         break;
                     }
                     else start++;
                 }
             }
-            if((start + x + y * width) > ((width+1) * (height+1)))
+            if(start == (width * height))
             {
-                Debug.Log("Fail to add");
-                items.Remove(item);
+                Debug.Log("Fail");
+                break;
+            }
+            if((start + (x-1) + (y-1) * width) > (width * height))
+            {
+                items.Remove(lastItem);
+                Debug.Log("Fail");
+                RefreshSlots();
                 break;
             }
 
