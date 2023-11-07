@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Item
 {
@@ -30,12 +31,15 @@ public enum Item
 
 public class ItemManager : MonoBehaviour
 {
-    public static int width = 10;
-    public static int height = 12;
+    GridLayoutGroup group;
+    RectTransform rectTransform;
+
+    public int width;
+    public int height;
 
     public Sprite[] itemSprites;
 
-    public static Vector2Int ItemData(Item item)
+    public Vector2Int ItemData(Item item)
     {
         Vector2Int result = new();
         switch (item)
@@ -61,19 +65,23 @@ public class ItemManager : MonoBehaviour
         return result;
     }
 
-    static Slots[] slots;
+    private Slots[] slots;
 
-    public static List<(Item,List<Slots>)> itemsSlots = new();
-    public static List<Item> items = new();
+    public List<(Item,List<Slots>)> itemsSlots = new();
+    public List<Item> items = new();
 
     private void Awake()
     {
+        group = GetComponent<GridLayoutGroup>();
         slots = GetComponentsInChildren<Slots>();
+        rectTransform = GetComponent<RectTransform>();
+        width = (int)(rectTransform.sizeDelta.x / group.cellSize.x);
+        height = (int)(rectTransform.sizeDelta.y / group.cellSize.y);
     }
 
     static Item lastItem;
 
-    public static void Add(Item item)
+    public void Add(Item item)
     {
         items.Add(item);
         lastItem = item;
@@ -81,13 +89,13 @@ public class ItemManager : MonoBehaviour
         RefreshSlots();
     }
 
-    public static void Remove(int index)
+    public void Remove(int index)
     {
         items.Remove(items[index]);
         RefreshSlots();
     }
 
-    public static void RefreshSlots()
+    public void RefreshSlots()
     {
         // 칸 넘치면 아랫줄로 넘어가게 수정하기
         items.Sort();
