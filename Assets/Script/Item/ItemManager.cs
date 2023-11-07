@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public enum Item
@@ -85,7 +86,6 @@ public class ItemManager : MonoBehaviour
     {
         items.Add(item);
         lastItem = item;
-        Debug.Log(lastItem);
         RefreshSlots();
     }
 
@@ -97,12 +97,12 @@ public class ItemManager : MonoBehaviour
 
     public void RefreshSlots()
     {
-        // 칸 넘치면 아랫줄로 넘어가게 수정하기
         items.Sort();
         foreach(Slots slot in slots)
         {
             slot.Engaged = false;
         }
+        int index = 0;
         foreach(Item item in items)
         {
             int x = ItemData(item).x;
@@ -142,10 +142,12 @@ public class ItemManager : MonoBehaviour
                 {
                     Slots.Add(slots[(start + i + (j * width))]);
                     slots[(start + i + (j * width))].item = item;
+                    slots[(start + i + (j * width))].itemIndex = index;
                     slots[(start + i + (j * width))].Engaged = true;
                 }
             }
             itemsSlots.Add(new(item, Slots));
+            index++;
         }
     }
 }

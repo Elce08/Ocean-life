@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slots : MonoBehaviour
+public class Slots : MonoBehaviour, IPointerClickHandler
 {
     public Item item;
 
-    public int itemIndex = 0;
+    public int itemIndex = -1;
 
     public bool engaged = false;
+
+    ItemManager inven;
 
     public bool Engaged
     {
@@ -26,6 +29,7 @@ public class Slots : MonoBehaviour
                         break;
                     case false:
                         image.color = Color.clear;
+                        itemIndex = -1;
                         break;
                 }
             }
@@ -61,5 +65,17 @@ public class Slots : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
+        inven = GetComponentInParent<ItemManager>();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (itemIndex > -1)
+            {
+                inven.Remove(itemIndex);
+            }
+        }
     }
 }
