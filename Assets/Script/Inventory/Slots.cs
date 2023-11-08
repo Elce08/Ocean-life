@@ -74,7 +74,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler
         {
             if (itemIndex > -1)
             {
-                inven.Remove(itemIndex);
+                
             }
         }
     }
