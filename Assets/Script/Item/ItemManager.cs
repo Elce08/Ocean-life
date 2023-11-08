@@ -32,6 +32,8 @@ public enum Item
 
 public class ItemManager : MonoBehaviour
 {
+    public ItemManager another = null;
+
     GridLayoutGroup group;
     RectTransform rectTransform;
 
@@ -40,6 +42,16 @@ public class ItemManager : MonoBehaviour
 
     public Sprite[] itemSprites;
 
+    /// <summary>
+    /// Change Inven by ItemIndex
+    /// </summary>
+    public System.Action<int> changeInven;
+
+    /// <summary>
+    /// Set item's width and height
+    /// </summary>
+    /// <param name="item">Check Data target Item</param>
+    /// <returns>x : width, y : height</returns>
     public Vector2Int ItemData(Item item)
     {
         Vector2Int result = new();
@@ -82,21 +94,58 @@ public class ItemManager : MonoBehaviour
 
     static Item lastItem;
 
-    public void Add(Item item)
+    /// <summary>
+    /// Add Item
+    /// </summary>
+    /// <param name="item">Add target item</param>
+    /// <returns>if add success or not</returns>
+    public bool Add(Item item)
     {
         items.Add(item);
         lastItem = item;
-        RefreshSlots();
+        if(RefreshSlots()) return true;
+        else return false;
     }
 
+    /// <summary>
+    /// Remove Item
+    /// </summary>
+    /// <param name="index">Remove target item's index</param>
     public void Remove(int index)
     {
         items.Remove(items[index]);
         RefreshSlots();
     }
 
-    public void RefreshSlots()
+    /// <summary>
+    /// Give Item to another Inven
+    /// </summary>
+    /// <param name="index">Give target item's index</param>
+    public void ChangeInven(int index)
     {
+        if (another != null)
+        {
+            if (another.Add(items[index])) Remove(index);
+        }
+    }
+
+    /// <summary>
+    /// Drop Item
+    /// </summary>
+    /// <param name="index">Drop target item's index</param>
+    public void DropItem(int index)
+    {
+        // add drop code
+        Remove(index);
+    }
+
+    /// <summary>
+    /// Refresh inventory and sort items
+    /// </summary>
+    /// <returns>If success or not</returns>
+    public bool RefreshSlots()
+    {
+        bool result = true;
         items.Sort();
         foreach(Slots slot in slots)
         {
@@ -125,13 +174,13 @@ public class ItemManager : MonoBehaviour
             if(start >= (width * height))
             {
                 items.Remove(lastItem);
-                Debug.Log("Fail");
+                result = false;
                 break;
             }
             if((start + (x-1) + (y-1) * width) > (width * height))
             {
                 items.Remove(lastItem);
-                Debug.Log("Fail");
+                result= false;
                 RefreshSlots();
                 break;
             }
@@ -149,5 +198,6 @@ public class ItemManager : MonoBehaviour
             itemsSlots.Add(new(item, Slots));
             index++;
         }
+        return result;
     }
 }

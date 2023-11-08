@@ -322,6 +322,54 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Inventory"",
+            ""id"": ""00c38574-1d32-43fb-a646-4abfc806b93b"",
+            ""actions"": [
+                {
+                    ""name"": ""Tab"",
+                    ""type"": ""Button"",
+                    ""id"": ""7bdcc3bd-f2df-41a7-8f90-523bbd684312"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""43d7d772-66b5-403a-bee9-f2d4552ec8dc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3049557b-857a-4db5-8ba2-7f54573aecdf"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6ee3dfd2-7bf2-483f-b1e2-845f3ee2a8a3"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -359,6 +407,10 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
         m_Test_Test5 = m_Test.FindAction("Test5", throwIfNotFound: true);
         m_Test_TestLClick = m_Test.FindAction("TestLClick", throwIfNotFound: true);
         m_Test_TestRClick = m_Test.FindAction("TestRClick", throwIfNotFound: true);
+        // Inventory
+        m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
+        m_Inventory_Tab = m_Inventory.FindAction("Tab", throwIfNotFound: true);
+        m_Inventory_Escape = m_Inventory.FindAction("Escape", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -588,6 +640,60 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
         }
     }
     public TestActions @Test => new TestActions(this);
+
+    // Inventory
+    private readonly InputActionMap m_Inventory;
+    private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
+    private readonly InputAction m_Inventory_Tab;
+    private readonly InputAction m_Inventory_Escape;
+    public struct InventoryActions
+    {
+        private @PlayerInputAtions m_Wrapper;
+        public InventoryActions(@PlayerInputAtions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Tab => m_Wrapper.m_Inventory_Tab;
+        public InputAction @Escape => m_Wrapper.m_Inventory_Escape;
+        public InputActionMap Get() { return m_Wrapper.m_Inventory; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InventoryActions set) { return set.Get(); }
+        public void AddCallbacks(IInventoryActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InventoryActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InventoryActionsCallbackInterfaces.Add(instance);
+            @Tab.started += instance.OnTab;
+            @Tab.performed += instance.OnTab;
+            @Tab.canceled += instance.OnTab;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
+        }
+
+        private void UnregisterCallbacks(IInventoryActions instance)
+        {
+            @Tab.started -= instance.OnTab;
+            @Tab.performed -= instance.OnTab;
+            @Tab.canceled -= instance.OnTab;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
+        }
+
+        public void RemoveCallbacks(IInventoryActions instance)
+        {
+            if (m_Wrapper.m_InventoryActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInventoryActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InventoryActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InventoryActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InventoryActions @Inventory => new InventoryActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -614,5 +720,10 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
         void OnTest5(InputAction.CallbackContext context);
         void OnTestLClick(InputAction.CallbackContext context);
         void OnTestRClick(InputAction.CallbackContext context);
+    }
+    public interface IInventoryActions
+    {
+        void OnTab(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
     }
 }
