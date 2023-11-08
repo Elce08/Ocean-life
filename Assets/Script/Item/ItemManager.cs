@@ -92,7 +92,7 @@ public class ItemManager : MonoBehaviour
         height = (int)(rectTransform.sizeDelta.y / group.cellSize.y);
     }
 
-    static Item lastItem;
+    Item lastItem;
 
     /// <summary>
     /// Add Item
@@ -111,7 +111,7 @@ public class ItemManager : MonoBehaviour
     /// Remove Item
     /// </summary>
     /// <param name="index">Remove target item's index</param>
-    public void Remove(int index)
+    private void Remove(int index)
     {
         items.Remove(items[index]);
         RefreshSlots();
@@ -143,7 +143,7 @@ public class ItemManager : MonoBehaviour
     /// Refresh inventory and sort items
     /// </summary>
     /// <returns>If success or not</returns>
-    public bool RefreshSlots()
+    private bool RefreshSlots()
     {
         bool result = true;
         items.Sort();
