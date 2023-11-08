@@ -71,6 +71,15 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interaction"",
+                    ""type"": ""Button"",
+                    ""id"": ""26e1f55c-1d4d-4cdb-a102-d7e8481b14fb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -170,6 +179,17 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""Sink"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""958f80b2-5296-461b-8457-0294e23fe2c4"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Interaction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -398,6 +418,7 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Sink = m_Player.FindAction("Sink", throwIfNotFound: true);
+        m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
         // Test
         m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
         m_Test_Test1 = m_Test.FindAction("Test1", throwIfNotFound: true);
@@ -477,6 +498,7 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Sink;
+    private readonly InputAction m_Player_Interaction;
     public struct PlayerActions
     {
         private @PlayerInputAtions m_Wrapper;
@@ -486,6 +508,7 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Sink => m_Wrapper.m_Player_Sink;
+        public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -510,6 +533,9 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
             @Sink.started += instance.OnSink;
             @Sink.performed += instance.OnSink;
             @Sink.canceled += instance.OnSink;
+            @Interaction.started += instance.OnInteraction;
+            @Interaction.performed += instance.OnInteraction;
+            @Interaction.canceled += instance.OnInteraction;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -529,6 +555,9 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
             @Sink.started -= instance.OnSink;
             @Sink.performed -= instance.OnSink;
             @Sink.canceled -= instance.OnSink;
+            @Interaction.started -= instance.OnInteraction;
+            @Interaction.performed -= instance.OnInteraction;
+            @Interaction.canceled -= instance.OnInteraction;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -710,6 +739,7 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnSink(InputAction.CallbackContext context);
+        void OnInteraction(InputAction.CallbackContext context);
     }
     public interface ITestActions
     {

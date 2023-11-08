@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class Player : MonoBehaviour
     public bool jump;
     public bool sprint;
     public bool sink;
+
+    
 
     public enum Space
     {
@@ -282,6 +285,11 @@ public class Player : MonoBehaviour
     public void OnSprint(InputAction.CallbackContext context)
     {
         sprint = (context.ReadValue<float>() > 0.1f);
+    }
+
+    public void Interaction(InputAction.CallbackContext context)
+    {
+
     }
 
     // MouseLock==========

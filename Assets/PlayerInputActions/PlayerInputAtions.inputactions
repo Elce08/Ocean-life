@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Interaction",
+                    "type": "Button",
+                    "id": "26e1f55c-1d4d-4cdb-a102-d7e8481b14fb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -148,6 +157,17 @@
                     "processors": "",
                     "groups": "Keyboard & Mouse",
                     "action": "Sink",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "958f80b2-5296-461b-8457-0294e23fe2c4",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
