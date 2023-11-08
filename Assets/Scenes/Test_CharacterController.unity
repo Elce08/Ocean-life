@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -301,6 +301,26 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: d76f34e4-d27a-4582-97a6-45c5145d7ff4
     m_ActionName: Player/Sink[/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e17e8a9d-f7e1-4f31-a499-916a16426637
+    m_ActionName: Test/Test1[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e16f2cc1-2523-40b9-a7b0-a6fdc1d1441b
+    m_ActionName: Test/Test2[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 996e01a3-6ba9-46e4-9ba8-824fe274e47e
+    m_ActionName: Test/Test3[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6a418f67-24da-48da-a7df-6347dd81f57e
+    m_ActionName: Test/Test4[/Keyboard/4]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3d95f094-9a98-4881-9dde-c8dfb9bbeea0
+    m_ActionName: Test/Test5[/Keyboard/5]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -745,6 +765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1291293569}
   - component: {fileID: 1291293570}
+  - component: {fileID: 1291293571}
   m_Layer: 4
   m_Name: Water
   m_TagString: Water
@@ -780,6 +801,14 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 100, y: 100, z: 100}
   m_Center: {x: 0, y: -50, z: 0}
+--- !u!33 &1291293571
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291293565}
+  m_Mesh: {fileID: 0}
 --- !u!1 &1713812499
 GameObject:
   m_ObjectHideFlags: 3
