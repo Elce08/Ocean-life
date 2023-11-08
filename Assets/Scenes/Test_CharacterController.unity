@@ -321,6 +321,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 3d95f094-9a98-4881-9dde-c8dfb9bbeea0
     m_ActionName: Test/Test5[/Keyboard/5]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1c4342a0-281e-4877-8dee-80268ee558ff
+    m_ActionName: Test/TestLClick[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d2b4e717-5986-4d4f-85f0-53c06dc50960
+    m_ActionName: Test/TestRClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7bdcc3bd-f2df-41a7-8f90-523bbd684312
+    m_ActionName: Inventory/Tab[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 43d7d772-66b5-403a-bee9-f2d4552ec8dc
+    m_ActionName: Inventory/Escape[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -435,7 +451,7 @@ Transform:
   m_GameObject: {fileID: 343183910}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_LocalScale: {x: 20, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

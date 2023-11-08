@@ -9,7 +9,7 @@ public class Boid : MonoBehaviour
     private Vector3 velocity;
     private Vector3 location;
 
-    [Header("Flock Settings")]
+    [Header("군체")]
     [Range(1, 150)] public int flockNum = 2;
     [Range(0, 5000)] public int fragmentedFlock = 30;
     [Range(0, 1)] public float fragmentedFlockYLimit = 0.5f;
@@ -18,7 +18,7 @@ public class Boid : MonoBehaviour
     [Range(0, 100)] public float smoothChFrequency = 0.5f;
 
 
-    [Header("Fish Settings")]
+    [Header("물고기")]
     public GameObject fishPref;
     [Range(1, 9999)] public int fishNum = 100;
     [Range(0, 150)] public float fishSpeed = 1.0f;
