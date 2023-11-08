@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class TestInventory : TestBase
 {
     public ItemManager inven;
-
-    public int removeIndex;
 
     protected override void Test1(InputAction.CallbackContext _)
     {
@@ -31,6 +30,10 @@ public class TestInventory : TestBase
 
     protected override void Test5(InputAction.CallbackContext _)
     {
-        inven.Remove(removeIndex);
     }
+
+    protected override void TestRClick(InputAction.CallbackContext _)
+    {
+    }
+
 }

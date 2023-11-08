@@ -20,6 +20,8 @@ public class TestBase : MonoBehaviour
         inputActions.Test.Test3.performed += Test3;
         inputActions.Test.Test4.performed += Test4;
         inputActions.Test.Test5.performed += Test5;
+        inputActions.Test.TestLClick.performed += TestLClick;
+        inputActions.Test.TestRClick.performed += TestRClick;
     }
 
     protected virtual void OnDisable()
@@ -29,6 +31,8 @@ public class TestBase : MonoBehaviour
         inputActions.Test.Test3.performed -= Test3;
         inputActions.Test.Test4.performed -= Test4;
         inputActions.Test.Test5.performed -= Test5;
+        inputActions.Test.TestLClick.performed -= TestLClick;
+        inputActions.Test.TestRClick.performed -= TestRClick;
         inputActions.Test.Disable();
     }
 
@@ -49,6 +53,14 @@ public class TestBase : MonoBehaviour
     }
 
     protected virtual void Test5(UnityEngine.InputSystem.InputAction.CallbackContext _)
+    {
+    }
+
+    protected virtual void TestLClick(UnityEngine.InputSystem.InputAction.CallbackContext _)
+    {
+    }
+
+    protected virtual void TestRClick(UnityEngine.InputSystem.InputAction.CallbackContext _)
     {
     }
 }
