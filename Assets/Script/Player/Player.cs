@@ -58,7 +58,6 @@ public class Player : MonoBehaviour
     System.Action spaceCheck;
 
     CharacterController controller;
-    private PlayerInput inputActions;
     GameObject mainCamera;
 
     [Header("Player")]
@@ -96,7 +95,7 @@ public class Player : MonoBehaviour
     float _speed;
     float _rotationVelocity;
     float _verticalVelocity;
-    float _terminalVelocity = 53.0f;
+    readonly float _terminalVelocity = 53.0f;
 
     float _jumpTimeoutDelta;
     float _fallTimeoutDelta;
@@ -124,7 +123,6 @@ public class Player : MonoBehaviour
         work.SetActive(false);
 
         controller = GetComponentInChildren<CharacterController>();
-        inputActions = GetComponent<PlayerInput>();
 
         _jumpTimeoutDelta = jumpTimeout;
         _fallTimeoutDelta = FallTimeout;
@@ -276,6 +274,24 @@ public class Player : MonoBehaviour
         }
     }
 
+    // inven ==========
+
+    private bool inventory = false;
+
+    private void Inventory()
+    {
+        if (!inventory)
+        {
+            inven.SetActive(false);
+            work.SetActive(false);
+            storage.SetActive(false);
+        }
+        else
+        {
+            inven.SetActive(true);
+        }
+    }
+
     // input==========
 
     public void OnMove(InputAction.CallbackContext context)
@@ -313,35 +329,33 @@ public class Player : MonoBehaviour
             if (handle.rayHit != null)
             {
                 handleing = handle.rayHit;
-                if(handleing.tag == "ObjectWork")
+                if(handleing.CompareTag("ObjectWork"))
                 {
+                    inven.SetActive(true);
                     work.SetActive(true);
                     Time.timeScale = 0;
                 }
-                else if(handleing.tag == "ObjectStorage")
+                else if(handleing.CompareTag("ObjectStorage"))
                 {
+                    inven.SetActive(true);
                     storage.SetActive(true);
                     Time.timeScale = 0;
                 }
             }
         }
-        if(context.canceled) interaction = false;
     }
 
-    public void Tab(InputAction.CallbackContext context)
+    public void Tab(InputAction.CallbackContext _)
     {
-        Debug.Log("ÅÇ´©¸§");
-        inven.SetActive(true);
-        Time.timeScale = 0;
+        if (!inventory) inventory = true;
+        else inventory = false;
+        Inventory();
     }
 
-    public void Escape(InputAction.CallbackContext context)
+    public void Escape(InputAction.CallbackContext _)
     {
-        Debug.Log("ESC´©¸§");
-        inven.SetActive(false);
-        work.SetActive(false);
-        storage.SetActive(false);
-        Time.timeScale = 1;
+        inventory = false;
+        Inventory();
     }
 
     // MouseLock==========

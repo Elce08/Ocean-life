@@ -351,7 +351,7 @@
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard & Mouse",
                     "action": "Tab",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -362,7 +362,7 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard & Mouse",
                     "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false

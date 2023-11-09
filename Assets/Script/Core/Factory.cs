@@ -5,16 +5,17 @@ using UnityEngine;
 
 public class Factory
 {
-    ItemManager itemManager;
+    private readonly ItemManager itemManager;
 
     /// <summary>
     /// 오브젝트를 풀에서 하나 가져오는 함수
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public GameObject GetObject(Item type, Transform spawn = null)
+    public GameObject GetObject(Item type)
     {
         GameObject result = null;
+        // 변경 예정
         switch (type)
         {
             case Item.seaglider:

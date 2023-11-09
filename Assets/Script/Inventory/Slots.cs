@@ -25,7 +25,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler
                 switch(value)
                 {
                     case true:
-                        image.color = SetColor(); 
+                        image.color = SetColor();
                         break;
                     case false:
                         image.color = Color.clear;
@@ -53,6 +53,9 @@ public class Slots : MonoBehaviour, IPointerClickHandler
                 break;
             case Item.head:
                 color = Color.green;
+                break;
+            case Item.body:
+                color = Color.yellow;
                 break;
             case Item.water:
                 color = Color.white; 
