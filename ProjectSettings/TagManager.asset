@@ -7,6 +7,12 @@ TagManager:
   - Ground
   - Water
   - Slot
+  - Inven
+  - WorkStation
+  - Storage
+  - ObjectWork
+  - ObjectStorage
+  - ObjectFish
   layers:
   - Default
   - TransparentFX
@@ -15,7 +21,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Raycast
   - 
   - 
   - 

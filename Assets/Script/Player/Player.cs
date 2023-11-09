@@ -1,17 +1,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     Vector2 move;
     Vector2 look;
 
+    GameObject handleing;
+    Handling handle;
+    GameObject inven;
+    GameObject storage;
+    GameObject work;
+
     public bool jump;
     public bool sprint;
     public bool sink;
+    public bool interaction;
 
     
 
@@ -96,6 +105,11 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        Transform child = transform.GetChild(0);
+        handle = child.transform.GetComponent<Handling>();
+        inven = GameObject.FindGameObjectWithTag("Inven");
+        storage = GameObject.FindGameObjectWithTag("Storage");
+        work = GameObject.FindGameObjectWithTag("WorkStation");
         if(mainCamera == null)
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -105,6 +119,10 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        inven.SetActive(false);
+        storage.SetActive(false);
+        work.SetActive(false);
+
         controller = GetComponentInChildren<CharacterController>();
         inputActions = GetComponent<PlayerInput>();
 
@@ -289,7 +307,41 @@ public class Player : MonoBehaviour
 
     public void Interaction(InputAction.CallbackContext context)
     {
+        interaction = context.performed;
+        if(interaction)
+        {
+            if (handle.rayHit != null)
+            {
+                handleing = handle.rayHit;
+                if(handleing.tag == "ObjectWork")
+                {
+                    work.SetActive(true);
+                    Time.timeScale = 0;
+                }
+                else if(handleing.tag == "ObjectStorage")
+                {
+                    storage.SetActive(true);
+                    Time.timeScale = 0;
+                }
+            }
+        }
+        if(context.canceled) interaction = false;
+    }
 
+    public void Tab(InputAction.CallbackContext context)
+    {
+        Debug.Log("ÅÇ´©¸§");
+        inven.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void Escape(InputAction.CallbackContext context)
+    {
+        Debug.Log("ESC´©¸§");
+        inven.SetActive(false);
+        work.SetActive(false);
+        storage.SetActive(false);
+        Time.timeScale = 1;
     }
 
     // MouseLock==========
