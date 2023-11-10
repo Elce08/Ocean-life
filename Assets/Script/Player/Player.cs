@@ -333,13 +333,11 @@ public class Player : MonoBehaviour
                 {
                     inven.SetActive(true);
                     work.SetActive(true);
-                    Time.timeScale = 0;
                 }
                 else if(handleing.CompareTag("ObjectStorage"))
                 {
                     inven.SetActive(true);
                     storage.SetActive(true);
-                    Time.timeScale = 0;
                 }
             }
         }
