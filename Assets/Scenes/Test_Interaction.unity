@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -171,6 +171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b2ef3db485db64a8a3fa77521a0f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handleing: {fileID: 0}
+  inven: {fileID: 0}
+  storage: {fileID: 0}
+  work: {fileID: 0}
   jump: 0
   sprint: 0
   sink: 0
@@ -196,6 +200,8 @@ MonoBehaviour:
   cursorLocked: 1
   cursorInputForLook: 1
   threshold: 0.01
+  storageWindow: 0
+  workWindow: 0
 --- !u!114 &221527707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,7 +635,8 @@ GameObject:
   m_Component:
   - component: {fileID: 904565388}
   - component: {fileID: 904565390}
-  m_Layer: 0
+  - component: {fileID: 904565391}
+  m_Layer: 3
   m_Name: PlayerFollowRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -665,6 +672,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rayDistance: 2.5
   rayHit: {fileID: 0}
+--- !u!135 &904565391
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904565387}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &938851926
 GameObject:
   m_ObjectHideFlags: 0

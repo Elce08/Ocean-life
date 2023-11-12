@@ -11,11 +11,11 @@ public class Player : MonoBehaviour
     Vector2 move;
     Vector2 look;
 
-    GameObject handleing;
+    public GameObject handleing;
+    public GameObject inven;
+    public GameObject storage;
+    public GameObject work;
     Handling handle;
-    GameObject inven;
-    GameObject storage;
-    GameObject work;
 
     public bool jump;
     public bool sprint;
@@ -277,6 +277,8 @@ public class Player : MonoBehaviour
     // inven ==========
 
     private bool inventory = false;
+    public bool storageWindow = false;
+    public bool workWindow = false;
 
     private void Inventory()
     {
@@ -333,11 +335,13 @@ public class Player : MonoBehaviour
                 {
                     inven.SetActive(true);
                     work.SetActive(true);
+                    workWindow = true;
                 }
                 else if(handleing.CompareTag("ObjectStorage"))
                 {
                     inven.SetActive(true);
                     storage.SetActive(true);
+                    storageWindow = true;
                 }
             }
         }
@@ -354,6 +358,8 @@ public class Player : MonoBehaviour
     {
         inventory = false;
         Inventory();
+        storageWindow = false;
+        workWindow = false;
     }
 
     // MouseLock==========
