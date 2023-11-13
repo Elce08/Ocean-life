@@ -125,14 +125,11 @@ public class Fish2 : MonoBehaviour
     IEnumerator SetDir()
     {
         Vector3 targetRotation = Dir();
-        while(FishState == State.Move)
+        Debug.Log(transform.rotation * Quaternion.Euler(targetRotation));
+        while(FishState != State.Move)
         {
-            if (transform.rotation == Quaternion.Euler(targetRotation))
-            {
-                yield return new WaitForSeconds(Random.Range(0, 3));
-                targetRotation = Dir();
-            }
-            else transform.Rotate(0f,Mathf.Lerp(transform.rotation.y,targetRotation.y,rotationSpeed * Time.deltaTime), Mathf.Lerp(transform.rotation.z, targetRotation.z, rotationSpeed * Time.deltaTime),Space.Self);
+            transform.rotation = Quaternion.Slerp(transform.rotation,transform.rotation * Quaternion.Euler(targetRotation), rotationSpeed  * Time.deltaTime);
+            yield return new WaitForSeconds(rotationSpeed + Random.Range(0, 3));
         }
     }
 }

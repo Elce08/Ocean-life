@@ -107,8 +107,6 @@ public class Player : MonoBehaviour
         Transform child = transform.GetChild(0);
         handle = child.transform.GetComponent<Handling>();
         inven = GameObject.FindGameObjectWithTag("Inven");
-        storage = GameObject.FindGameObjectWithTag("Storage");
-        work = GameObject.FindGameObjectWithTag("WorkStation");
         if(mainCamera == null)
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -119,8 +117,8 @@ public class Player : MonoBehaviour
     private void Start()
     {
         inven.SetActive(false);
-        storage.SetActive(false);
-        work.SetActive(false);
+        if(storage != null)storage.SetActive(false);
+        if (work != null) work.SetActive(false);
 
         controller = GetComponentInChildren<CharacterController>();
 
@@ -260,7 +258,7 @@ public class Player : MonoBehaviour
         {
             Floor = Space.Water;
             // Slowly Change
-            CinemachineCameraTarget.transform.localRotation = Quaternion.Slerp(transform.rotation,Quaternion.Euler(0.0f, 0.0f, 0.0f),Time.deltaTime);
+            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         }
     }
 
@@ -270,7 +268,7 @@ public class Player : MonoBehaviour
         {
             Floor = Space.Ground;
             // Slowly recover
-            transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.Euler(0.0f, _cinemachineTargetPitchY, 0.0f),Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0.0f, _cinemachineTargetPitchY, 0.0f);
         }
     }
 
@@ -325,6 +323,8 @@ public class Player : MonoBehaviour
 
     public void Interaction(InputAction.CallbackContext context)
     {
+        storage = GameObject.FindGameObjectWithTag("Storage");
+        work = GameObject.FindGameObjectWithTag("WorkStation");
         interaction = context.performed;
         if(interaction)
         {
