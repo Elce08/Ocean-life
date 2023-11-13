@@ -73,10 +73,13 @@ public class Slots : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log("a");
         if(eventData.button == PointerEventData.InputButton.Right)
         {
+            Debug.Log("b");
             if (itemIndex > -1)
             {
+                Debug.Log("c");
                 if (inven.another != null) inven.ChangeInven(itemIndex);
                 else inven.DropItem(itemIndex);
             }

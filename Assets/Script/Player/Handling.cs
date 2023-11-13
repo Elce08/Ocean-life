@@ -50,6 +50,7 @@ public class Handling : MonoBehaviour
             }
             if(!findTag)
             {
+                Cursor.lockState = CursorLockMode.Locked;
                 player.storage.gameObject.SetActive(false);
                 player.storage.gameObject.SetActive(false);
                 player.inventorys.SetActive(false);

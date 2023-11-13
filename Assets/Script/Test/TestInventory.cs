@@ -11,7 +11,7 @@ public class TestInventory : TestBase
 
     protected override void Test1(InputAction.CallbackContext _)
     {
-        // inven.Add(Item.seaglider);
+        inven.Add(Item.seaglider);
     }
 
     protected override void Test2(InputAction.CallbackContext _)

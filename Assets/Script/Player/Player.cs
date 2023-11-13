@@ -286,7 +286,8 @@ public class Player : MonoBehaviour
     {
         if (!inventory)
         {
-            if(work != null)work.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            if (work != null)work.SetActive(false);
             if(storage != null)storage.gameObject.SetActive(false);
             equip.SetActive(false);
             inven.another = null;
@@ -295,6 +296,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            Cursor.lockState = CursorLockMode.None;
             inventorys.SetActive(true);
             inven.gameObject.SetActive(true);
             equip.SetActive(true) ;
@@ -340,6 +342,7 @@ public class Player : MonoBehaviour
                 handleing = handle.rayHit;
                 if(handleing.CompareTag("ObjectWork"))
                 {
+                    Cursor.lockState = CursorLockMode.None;
                     work = handle.rayHit;
                     inventorys.SetActive(true);
                     inven.gameObject.SetActive(true);
@@ -349,6 +352,7 @@ public class Player : MonoBehaviour
                 }
                 else if(handleing.CompareTag("ObjectStorage"))
                 {
+                    Cursor.lockState = CursorLockMode.None;
                     storage = handle.rayHit.GetComponent<UIManager>().targetInven;
                     inventorys.SetActive(true);
                     inven.gameObject.SetActive(true);

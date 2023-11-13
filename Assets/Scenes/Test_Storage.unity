@@ -123,6 +123,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &88087232 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4348531342444239815, guid: ace488bc73392384581aed11938741d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4348531341847287855}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &88087237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88087232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b013e321cbae0348bfb51543af6f8b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &221527703
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,6 +190,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handleing: {fileID: 0}
+  inventorys: {fileID: 0}
+  inven: {fileID: 0}
   storage: {fileID: 0}
   work: {fileID: 0}
   jump: 0
@@ -577,6 +597,18 @@ MonoBehaviour:
     type: 3}
   canvas: {fileID: 1457395792}
   storages: []
+--- !u!114 &646849358 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4348531342066450994, guid: ace488bc73392384581aed11938741d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4348531341847287855}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dec6747fa280e940b1ef1748afe7587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &876078757
 GameObject:
   m_ObjectHideFlags: 0
@@ -1495,7 +1527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0.7383387, b: 1, a: 0.6745098}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1769,7 +1801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b7c90f67377864ea0be703e5d9693d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inven: {fileID: 0}
+  inven: {fileID: 646849358}
   objManager: {fileID: 456498881}
 --- !u!4 &1945597524
 Transform:
