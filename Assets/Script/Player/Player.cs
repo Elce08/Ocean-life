@@ -283,8 +283,8 @@ public class Player : MonoBehaviour
         if (!inventory)
         {
             inven.SetActive(false);
-            work.SetActive(false);
-            storage.SetActive(false);
+            if(work != null)work.SetActive(false);
+            if(storage != null)storage.SetActive(false);
         }
         else
         {
@@ -323,8 +323,6 @@ public class Player : MonoBehaviour
 
     public void Interaction(InputAction.CallbackContext context)
     {
-        storage = GameObject.FindGameObjectWithTag("Storage");
-        work = GameObject.FindGameObjectWithTag("WorkStation");
         interaction = context.performed;
         if(interaction)
         {
@@ -333,11 +331,13 @@ public class Player : MonoBehaviour
                 handleing = handle.rayHit;
                 if(handleing.CompareTag("ObjectWork"))
                 {
+                    work = handle.rayHit;
                     work.SetActive(true);
                     workWindow = true;
                 }
                 else if(handleing.CompareTag("ObjectStorage"))
                 {
+                    storage = handle.rayHit;
                     storage.SetActive(true);
                     storageWindow = true;
                 }

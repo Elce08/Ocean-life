@@ -18,12 +18,13 @@ public class ObjectManager : MonoBehaviour
 
         // UI 생성 및 연결
         GameObject newUI = Instantiate(uiPrefab, canvas.transform);
-        UIManager uiManager = newUI.GetComponent<UIManager>();
+        UIManager uiManager = newGameObject.AddComponent<UIManager>();
 
         if (uiManager != null)
         {
             // UI에 정보 전달
             uiManager.SetTargetObject(newGameObject);
         }
+        newUI.SetActive(false);
     }
 }
