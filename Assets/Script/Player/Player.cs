@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
         {
             Floor = Space.Water;
             // Slowly Change
-            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+            CinemachineCameraTarget.transform.localRotation = Quaternion.Slerp(transform.rotation,Quaternion.Euler(0.0f, 0.0f, 0.0f),Time.deltaTime);
         }
     }
 
@@ -270,7 +270,7 @@ public class Player : MonoBehaviour
         {
             Floor = Space.Ground;
             // Slowly recover
-            transform.rotation = Quaternion.Euler(0.0f, _cinemachineTargetPitchY, 0.0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.Euler(0.0f, _cinemachineTargetPitchY, 0.0f),Time.deltaTime);
         }
     }
 

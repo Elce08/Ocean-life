@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,7 @@ public class Fish2 : MonoBehaviour
                         break;
                     case State.Move:
                         fishUpdate = Update_Move;
+                        StartCoroutine(SetDir());
                         break;
                     case State.Void:
                         fishUpdate = Update_Void;
@@ -45,12 +47,21 @@ public class Fish2 : MonoBehaviour
     public float speed = 3.0f;
     public float sprintSpeed = 5.0f;
 
-    List<Vector3> dirs;
+    public float rotationSpeed = 1.0f;
 
     private void Awake()
     {
-        AddDirs();
-        fishUpdate = Update_Rest;
+        fishUpdate = Update_Move;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(SetDir());
+    }
+
+    private void Update()
+    {
+        fishUpdate();
     }
 
     private void Update_Rest()
@@ -60,7 +71,7 @@ public class Fish2 : MonoBehaviour
 
     private void Update_Move()
     {
-
+        transform.position += speed * Time.deltaTime * transform.right;
     }
 
     private void Update_Void()
@@ -73,36 +84,55 @@ public class Fish2 : MonoBehaviour
 
     }
 
-    void AddDirs()
+    private Vector3 Dir()
     {
-        dirs = new()
+        Vector3 result = Vector3.zero;
+
+        float RandomRotate = Random.Range(20f, 110f);
+
+        switch ((int)Random.Range(0, 8))
         {
-            new(0f, 0f, 0f),
-            new(1f, 0f, 0f),
-            new(-1f, 0f, 0f),
-            new(0f, 1f, 0f),
-            new(0f, -1f, 0f),
-            new(0f, 0f, 1f),
-            new(0f, 0f, -1f),
-            new(1f, 1f, 0f),
-            new(-1f, 1f, 0f),
-            new(1f, -1f, 0f),
-            new(-1f, -1f, 0f),
-            new(-1f, 0f, 1f),
-            new(1f, 0f, -1f),
-            new(-1f, 0f, -1f),
-            new(0f, 1f, 1f),
-            new(0f, -1f, 1f),
-            new(0f, 1f, -1f),
-            new(0f, -1f, -1f),
-            new(1f, 1f, 1f),
-            new(-1f, 1f, 1f),
-            new(1f, -1f, 1f),
-            new(1f, 1f, -1f),
-            new(-1f, -1f, 1f),
-            new(-1f, 1f, -1f),
-            new(1f, -1f, -1f),
-            new(-1f, -1f, -1f)
-        };
+            case 0:
+                result = new(0,RandomRotate,0);
+                break;
+            case 1:
+                result = new(0, -RandomRotate, 0);
+                break;
+            case 2:
+                result = new(0, 0, RandomRotate);
+                break;
+            case 3:
+                result = new(0, 0, -RandomRotate);
+                break;
+            case 4:
+                result = new(0, RandomRotate, RandomRotate);
+                break;
+            case 5:
+                result = new(0, -RandomRotate, RandomRotate);
+                break;
+            case 6:
+                result = new(0, RandomRotate, -RandomRotate);
+                break;
+            case 7:
+                result = new(0, -RandomRotate, -RandomRotate);
+                break;
+        }
+        Debug.Log(result);
+
+        return result;
+    }
+
+    IEnumerator SetDir()
+    {
+        Vector3 targetRotation = Dir();
+        while(FishState == State.Move)
+        {
+            if (transform.rotation == Quaternion.Euler(targetRotation))
+            {
+                yield return new WaitForSeconds(Random.Range(0, 3));
+                targetRotation = Dir();
+            }
+            else transform.Rotate(0f,Mathf.Lerp(transform.rotation.y,targetRotation.y,rotationSpeed * Time.deltaTime), Mathf.Lerp(transform.rotation.z, targetRotation.z, rotationSpeed * Time.deltaTime),Space.Self);
+        }
     }
 }
