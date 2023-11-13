@@ -333,13 +333,11 @@ public class Player : MonoBehaviour
                 handleing = handle.rayHit;
                 if(handleing.CompareTag("ObjectWork"))
                 {
-                    inven.SetActive(true);
                     work.SetActive(true);
                     workWindow = true;
                 }
                 else if(handleing.CompareTag("ObjectStorage"))
                 {
-                    inven.SetActive(true);
                     storage.SetActive(true);
                     storageWindow = true;
                 }

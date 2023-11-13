@@ -19,7 +19,7 @@ public class Factory
         switch (type)
         {
             case Item.seaglider:
-                //result = slimePool?.GetObject(spawn)?.gameObject;
+                //result = objectPool?.GetObject()?.gameObject;
                 itemManager.Add(Item.seaglider);
                 break;
 
