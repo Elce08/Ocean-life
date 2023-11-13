@@ -10,12 +10,11 @@ public class Handling : MonoBehaviour
     public GameObject rayHit;
     Vector3 rayTransform;
     Player player;
-    SphereCollider distance;
     Collider[] colls;
+    bool findTag = false;
 
     private void Awake()
     {
-        distance = GetComponent<SphereCollider>();
         player = FindObjectOfType<Player>();
     }
 
@@ -23,7 +22,7 @@ public class Handling : MonoBehaviour
     {
         rayTransform = new Vector3(transform.position.x, transform.position.y + 0.35f, transform.position.z);
         ray = new Ray(rayTransform, transform.forward * rayDistance);
-        //      colls = Physics.OverlapSphere(transform.position, rayDistance);
+        colls = Physics.OverlapSphere(transform.position, rayDistance + 0.5f);
         if (Physics.Raycast(ray, out hit, rayDistance))
         {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Raycast"))
@@ -35,44 +34,21 @@ public class Handling : MonoBehaviour
         {
             rayHit = null;
         }
-        //      if(player.storageWindow)
-        //      {
-        //          for (int i = 0; i < colls.Length; i++)
-        //          {
-        //              if(colls[i].gameObject.tag == "ObjectStorage")
-        //              {
-        //      
-        //              }
-        //              else
-        //              {
-        //                  player.storage.SetActive(false);
-        //                  player.storageWindow = false;
-        //              }
-        //          }
-        //      }
-        //      else if(player.workWindow)
-        //      {
-        //          for (int i = 0; i < colls.Length; i++)
-        //          {
-        //              if (colls[i].gameObject.tag == "ObjectWork")
-        //              {
-        //      
-        //              }
-        //              else
-        //              {
-        //                  player.work.SetActive(false);
-        //                  player.workWindow = false;
-        //              }
-        //          }
-        //      }
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
         if(player.storageWindow)
         {
-            if (other.tag == "ObjectStorage")
+            foreach (Collider col in colls)
+            {
+                if(col.CompareTag("ObjectStorage"))
+                {
+                    findTag = true;
+                    break;
+                }
+                else
+                {
+                    findTag = false;
+                }
+            }
+            if(!findTag)
             {
                 player.storage.SetActive(false);
                 player.storageWindow = false;
@@ -80,7 +56,39 @@ public class Handling : MonoBehaviour
         }
         else if(player.workWindow)
         {
-            if(other.tag == "ObjectWork")
+            foreach (Collider col in colls)
+            {
+                if (col.CompareTag("ObjectWork"))
+                {
+                    findTag = true;
+                    break;
+                }
+                else
+                {
+                    findTag = false;
+                }
+            }
+            if (!findTag)
+            {
+                player.work.SetActive(false);
+                player.workWindow = false;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (player.storageWindow)
+        {
+            if (other.CompareTag("ObjectStorage"))
+            {
+                player.storage.SetActive(false);
+                player.storageWindow = false;
+            }
+        }
+        else if (player.workWindow)
+        {
+            if (other.CompareTag("ObjectWork"))
             {
                 player.work.SetActive(false);
                 player.workWindow = false;
