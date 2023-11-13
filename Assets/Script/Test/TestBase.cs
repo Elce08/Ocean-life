@@ -9,7 +9,6 @@ public class TestBase : MonoBehaviour
     protected virtual void Awake()
     {
         inputActions = new PlayerInputAtions();
-        if (inputActions != null) Debug.Log("Have Inputs");
     }
 
     protected virtual void OnEnable()

@@ -77,7 +77,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler
         {
             if (itemIndex > -1)
             {
-                
+                if (inven.another != null) inven.ChangeInven(itemIndex);
+                else inven.DropItem(itemIndex);
             }
         }
     }

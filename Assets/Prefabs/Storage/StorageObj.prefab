@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8497041852013143696}
   - component: {fileID: 8497041852013143711}
   m_Layer: 7
-  m_Name: Storage
+  m_Name: StorageObj
   m_TagString: ObjectStorage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

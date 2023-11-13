@@ -35,7 +35,7 @@ public class ItemManager : MonoBehaviour
     public ItemManager another = null;
 
     GridLayoutGroup group;
-    RectTransform rectTransform;
+    public RectTransform rectTransform;
 
     public int width;
     public int height;

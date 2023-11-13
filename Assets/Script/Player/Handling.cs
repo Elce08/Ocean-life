@@ -50,7 +50,9 @@ public class Handling : MonoBehaviour
             }
             if(!findTag)
             {
-                player.storage.SetActive(false);
+                player.storage.gameObject.SetActive(false);
+                player.storage.gameObject.SetActive(false);
+                player.inventorys.SetActive(false);
                 player.storageWindow = false;
             }
         }
@@ -82,7 +84,7 @@ public class Handling : MonoBehaviour
         {
             if (other.CompareTag("ObjectStorage"))
             {
-                player.storage.SetActive(false);
+                player.inven.gameObject.SetActive(false) ;
                 player.storageWindow = false;
             }
         }
@@ -100,15 +102,15 @@ public class Handling : MonoBehaviour
     {
         if (player.storageWindow)
         {
-            if (collision.gameObject.tag == "ObjectStorage")
+            if (collision.gameObject.CompareTag("ObjectStorage"))
             {
-                player.storage.SetActive(false);
+                player.storage.gameObject.SetActive(false);
                 player.storageWindow = false;
             }
         }
         else if (player.workWindow)
         {
-            if (collision.gameObject.tag == "ObjectWork")
+            if (collision.gameObject.CompareTag("ObjectWork"))
             {
                 player.work.SetActive(false);
                 player.workWindow = false;

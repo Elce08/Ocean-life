@@ -5,16 +5,10 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    private GameObject targetObject; // UI가 연결된 게임 오브젝트
+    public ItemManager targetInven; // UI가 연결된 게임 오브젝트
 
-    public void SetTargetObject(GameObject obj)
+    public void SetTargetSlot(ItemManager inven)
     {
-        targetObject = obj;
-    }
-
-  
-    public void UpdateUI()
-    {
-        // UI 업데이트  
+        targetInven = inven;
     }
 }

@@ -12,9 +12,11 @@ public class Player : MonoBehaviour
     Vector2 look;
 
     public GameObject handleing;
-    public GameObject inven;
-    public GameObject storage;
+    public GameObject inventorys;
+    public ItemManager inven;
+    public ItemManager storage;
     public GameObject work;
+    GameObject equip;
     Handling handle;
 
     public bool jump;
@@ -106,7 +108,9 @@ public class Player : MonoBehaviour
     {
         Transform child = transform.GetChild(0);
         handle = child.transform.GetComponent<Handling>();
-        inven = GameObject.FindGameObjectWithTag("Inven");
+        inventorys = GameObject.FindGameObjectWithTag("Inven");
+        inven = inventorys.GetComponentInChildren<ItemManager>();
+        equip = inventorys.transform.GetChild(1).gameObject;
         if(mainCamera == null)
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -116,9 +120,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        inven.SetActive(false);
-        if(storage != null)storage.SetActive(false);
-        if (work != null) work.SetActive(false);
+        equip.SetActive(false);
+        inven.gameObject.SetActive(false);
+        inventorys.SetActive(false);
 
         controller = GetComponentInChildren<CharacterController>();
 
@@ -282,13 +286,18 @@ public class Player : MonoBehaviour
     {
         if (!inventory)
         {
-            inven.SetActive(false);
             if(work != null)work.SetActive(false);
-            if(storage != null)storage.SetActive(false);
+            if(storage != null)storage.gameObject.SetActive(false);
+            equip.SetActive(false);
+            inven.another = null;
+            inven.gameObject.SetActive(false);
+            inventorys.SetActive(false);
         }
         else
         {
-            inven.SetActive(true);
+            inventorys.SetActive(true);
+            inven.gameObject.SetActive(true);
+            equip.SetActive(true) ;
         }
     }
 
@@ -332,32 +341,46 @@ public class Player : MonoBehaviour
                 if(handleing.CompareTag("ObjectWork"))
                 {
                     work = handle.rayHit;
+                    inventorys.SetActive(true);
+                    inven.gameObject.SetActive(true);
                     work.SetActive(true);
                     workWindow = true;
+                    inventory = true;
                 }
                 else if(handleing.CompareTag("ObjectStorage"))
                 {
-                    storage = handle.rayHit;
-                    storage.SetActive(true);
+                    storage = handle.rayHit.GetComponent<UIManager>().targetInven;
+                    inventorys.SetActive(true);
+                    inven.gameObject.SetActive(true);
+                    storage.gameObject.SetActive(true);
+                    inven.another = storage;
+                    storage.another = inven;
                     storageWindow = true;
+                    inventory = true;
                 }
             }
         }
     }
 
-    public void Tab(InputAction.CallbackContext _)
+    public void Tab(InputAction.CallbackContext context)
     {
-        if (!inventory) inventory = true;
-        else inventory = false;
-        Inventory();
+        if (context.performed)
+        {
+            if (!inventory) inventory = true;
+            else inventory = false;
+            Inventory();
+        }
     }
 
-    public void Escape(InputAction.CallbackContext _)
+    public void Escape(InputAction.CallbackContext context)
     {
-        inventory = false;
-        Inventory();
-        storageWindow = false;
-        workWindow = false;
+        if (context.performed)
+        {
+            inventory = false;
+            Inventory();
+            storageWindow = false;
+            workWindow = false;
+        }
     }
 
     // MouseLock==========
