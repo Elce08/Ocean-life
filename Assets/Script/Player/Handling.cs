@@ -79,46 +79,6 @@ public class Handling : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (player.storageWindow)
-        {
-            if (other.CompareTag("ObjectStorage"))
-            {
-                player.inven.gameObject.SetActive(false) ;
-                player.storageWindow = false;
-            }
-        }
-        else if (player.workWindow)
-        {
-            if (other.CompareTag("ObjectWork"))
-            {
-                player.work.SetActive(false);
-                player.workWindow = false;
-            }
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (player.storageWindow)
-        {
-            if (collision.gameObject.CompareTag("ObjectStorage"))
-            {
-                player.storage.gameObject.SetActive(false);
-                player.storageWindow = false;
-            }
-        }
-        else if (player.workWindow)
-        {
-            if (collision.gameObject.CompareTag("ObjectWork"))
-            {
-                player.work.SetActive(false);
-                player.workWindow = false;
-            }
-        }
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

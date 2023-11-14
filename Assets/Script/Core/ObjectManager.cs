@@ -11,9 +11,9 @@ public class ObjectManager : MonoBehaviour
     public List<ItemManager> storages;
 
     // 새로운 게임 오브젝트가 추가될 때 호출되는 함수
-    public void AddGameObject()
+    public void AddGameObject(Vector3 trans)
     {
-        GameObject newGameObject = Instantiate(gameObjPrefab, transform);
+        GameObject newGameObject = Instantiate(gameObjPrefab, trans, Quaternion.identity);
 
         // 게임 오브젝트에 대한 추가적인 설정 작업 수행
 

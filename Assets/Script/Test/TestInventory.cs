@@ -8,6 +8,15 @@ public class TestInventory : TestBase
 {
     public ItemManager inven;
     public ObjectManager objManager;
+    Player player;
+    Handling handle;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        player = FindObjectOfType<Player>();
+        handle = FindObjectOfType<Handling>();
+    }
 
     protected override void Test1(InputAction.CallbackContext _)
     {
@@ -31,8 +40,9 @@ public class TestInventory : TestBase
 
     protected override void Test5(InputAction.CallbackContext _)
     {
-        objManager.AddGameObject();
-    }
+        Vector3 spawnPosition = player.transform.position + player.transform.forward * 3.0f;
+        objManager.AddGameObject(spawnPosition);
+    } 
 
     protected override void TestRClick(InputAction.CallbackContext _)
     {
