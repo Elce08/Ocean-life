@@ -202,14 +202,17 @@ public class Player : MonoBehaviour
 
     private void GroundCameraRotation()
     {
-        _cinemachineTargetPitchX += look.y * rotationSpeed;
-        _cinemachineTargetPitchY += look.x * rotationSpeed;
-        _rotationVelocity = look.x * rotationSpeed;
+        if (!inventory)
+        {
+            _cinemachineTargetPitchX += look.y * rotationSpeed;
+            _cinemachineTargetPitchY += look.x * rotationSpeed;
+            _rotationVelocity = look.x * rotationSpeed;
 
 
-        _cinemachineTargetPitchX = ClampAngle(_cinemachineTargetPitchX, bottomClamp, topClamp);
-        CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitchX, 0.0f, 0.0f);
-        transform.Rotate(Vector3.up * _rotationVelocity, UnityEngine.Space.World);
+            _cinemachineTargetPitchX = ClampAngle(_cinemachineTargetPitchX, bottomClamp, topClamp);
+            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitchX, 0.0f, 0.0f);
+            transform.Rotate(Vector3.up * _rotationVelocity, UnityEngine.Space.World);
+        }
     }
 
     private void WaterMove()
