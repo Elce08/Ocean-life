@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public bool sprint;
     public bool sink;
     public bool interaction;
-
+    public bool setStorage;
     
 
     public enum Space
@@ -387,6 +387,7 @@ public class Player : MonoBehaviour
             Inventory();
             storageWindow = false;
             workWindow = false;
+            setStorage = false;
         }
     }
 

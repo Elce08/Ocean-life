@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Handling : MonoBehaviour
 {
-    Ray ray;
+    public Ray ray;
     RaycastHit hit;
     public float rayDistance = 2.5f;
     public GameObject rayHit;

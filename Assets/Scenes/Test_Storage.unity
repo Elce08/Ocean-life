@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 221527703}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 7.21, y: 0, z: -4.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -180,6 +180,7 @@ MonoBehaviour:
   sprint: 0
   sink: 0
   interaction: 0
+  setStorage: 0
   floor: 0
   moveSpeed: 4
   sprintSpeed: 6
@@ -420,6 +421,7 @@ GameObject:
   - component: {fileID: 343183913}
   - component: {fileID: 343183912}
   - component: {fileID: 343183911}
+  - component: {fileID: 343183915}
   m_Layer: 6
   m_Name: Cube
   m_TagString: GameController
@@ -505,6 +507,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!156049354 &343183915
+Grid:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343183910}
+  m_Enabled: 1
+  m_CellSize: {x: 50, y: 50, z: 50}
+  m_CellGap: {x: 0, y: 0, z: 0}
+  m_CellLayout: 0
+  m_CellSwizzle: 0
 --- !u!224 &401857052 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4348531342066450995, guid: ace488bc73392384581aed11938741d6,
@@ -573,12 +587,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e31f04ff9127f8b45990d3690745c241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ableGameObjPrefab: {fileID: 8497041852013143710, guid: 143bde408ac36a34ab3d58cc317fe5a9,
+    type: 3}
+  disableGameObjPrefab: {fileID: 8497041852013143710, guid: 2fbaefbf96e82214ba47fb9506b43b49,
+    type: 3}
   gameObjPrefab: {fileID: 8497041852013143710, guid: 6637412a4a33bd945801a3bb00c03350,
     type: 3}
   uiPrefab: {fileID: 4348531342066450996, guid: 638028f6617ce5c4782910bb8519c166,
     type: 3}
   canvas: {fileID: 1457395792}
   storages: []
+  handle: {fileID: 904565390}
+  player: {fileID: 221527706}
 --- !u!114 &646849358 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4348531342066450994, guid: ace488bc73392384581aed11938741d6,
@@ -926,7 +946,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 997572599}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.9, z: 0}
+  m_LocalPosition: {x: 7.21, y: 1.9, z: -4.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1694,7 +1714,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1931174104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.9, z: 0}
+  m_LocalPosition: {x: 7.21, y: 1.9, z: -4.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

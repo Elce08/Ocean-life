@@ -40,8 +40,7 @@ public class TestInventory : TestBase
 
     protected override void Test5(InputAction.CallbackContext _)
     {
-        Vector3 spawnPosition = player.transform.position + player.transform.forward * 3.0f;
-        objManager.AddGameObject(spawnPosition);
+        player.setStorage = true;
     } 
 
     protected override void TestRClick(InputAction.CallbackContext _)
