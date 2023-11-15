@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Fish2 : MonoBehaviour
 {
+    CharacterController controller;
+
     enum State
     {
         Rest,
@@ -29,7 +31,6 @@ public class Fish2 : MonoBehaviour
                         break;
                     case State.Move:
                         fishUpdate = Update_Move;
-                        StartCoroutine(SetDir());
                         break;
                     case State.Void:
                         fishUpdate = Update_Void;
@@ -51,12 +52,14 @@ public class Fish2 : MonoBehaviour
 
     private void Awake()
     {
+        controller = GetComponent<CharacterController>();
         fishUpdate = Update_Move;
+        StartCoroutine(SetHorizontal());
+        StartCoroutine(SetVertical());
     }
 
     private void Start()
     {
-        StartCoroutine(SetDir());
     }
 
     private void Update()
@@ -72,6 +75,8 @@ public class Fish2 : MonoBehaviour
     private void Update_Move()
     {
         transform.position += speed * Time.deltaTime * transform.right;
+        targetDir = Vector3.RotateTowards(transform.forward, new(0.0f, leftright, updown), rotationSpeed, 0.0f);
+        controller.transform.Rotate(targetDir);
     }
 
     private void Update_Void()
@@ -84,52 +89,34 @@ public class Fish2 : MonoBehaviour
 
     }
 
-    private Vector3 Dir()
+    float leftright;
+    float updown;
+    Vector3 targetDir;
+
+    IEnumerator SetHorizontal()
     {
-        Vector3 result = Vector3.zero;
-
-        float RandomRotate = Random.Range(20f, 110f);
-
-        switch ((int)Random.Range(0, 8))
+        while (true)
         {
-            case 0:
-                result = new(0,RandomRotate,0);
-                break;
-            case 1:
-                result = new(0, -RandomRotate, 0);
-                break;
-            case 2:
-                result = new(0, 0, RandomRotate);
-                break;
-            case 3:
-                result = new(0, 0, -RandomRotate);
-                break;
-            case 4:
-                result = new(0, RandomRotate, RandomRotate);
-                break;
-            case 5:
-                result = new(0, -RandomRotate, RandomRotate);
-                break;
-            case 6:
-                result = new(0, RandomRotate, -RandomRotate);
-                break;
-            case 7:
-                result = new(0, -RandomRotate, -RandomRotate);
-                break;
+            leftright = Random.Range(0, 20) switch
+            {
+                0 or 1 or 2 or 3 or 4 or 5 or 6 or 7 => Random.Range(-1.5f,1.5f),
+                _ => transform.forward.y,
+            };
+            yield return new WaitForSeconds(Random.Range(3f, 5f));
         }
-        Debug.Log(result);
-
-        return result;
     }
 
-    IEnumerator SetDir()
+    IEnumerator SetVertical()
     {
-        Vector3 targetRotation = Dir();
-        Debug.Log(transform.rotation * Quaternion.Euler(targetRotation));
-        while(FishState != State.Move)
+        while (true)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation,transform.rotation * Quaternion.Euler(targetRotation), rotationSpeed  * Time.deltaTime);
-            yield return new WaitForSeconds(rotationSpeed + Random.Range(0, 3));
+            updown = Random.Range(0, 20) switch
+            {
+                0 => Random.Range(2f, 4f),
+                1 => Random.Range(-2f, -4f),
+                _ => -transform.rotation.eulerAngles.z,
+            };
+            yield return new WaitForSeconds(Random.Range(1f, 3f));
         }
     }
 }
