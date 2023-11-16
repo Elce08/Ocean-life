@@ -20,6 +20,17 @@ public class Handling : MonoBehaviour
 
     private void Update()
     {
+        raycast();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(rayTransform, transform.forward * rayDistance);
+    }
+
+    private void raycast()
+    {
         rayTransform = new Vector3(transform.position.x, transform.position.y + 0.35f, transform.position.z);
         ray = new Ray(rayTransform, transform.forward * rayDistance);
         colls = Physics.OverlapSphere(transform.position, rayDistance + 0.5f);
@@ -34,11 +45,11 @@ public class Handling : MonoBehaviour
         {
             rayHit = null;
         }
-        if(player.storageWindow)
+        if (player.storageWindow)
         {
             foreach (Collider col in colls)
             {
-                if(col.CompareTag("ObjectStorage"))
+                if (col.CompareTag("ObjectStorage"))
                 {
                     findTag = true;
                     break;
@@ -48,7 +59,7 @@ public class Handling : MonoBehaviour
                     findTag = false;
                 }
             }
-            if(!findTag)
+            if (!findTag)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 player.storage.gameObject.SetActive(false);
@@ -57,7 +68,7 @@ public class Handling : MonoBehaviour
                 player.storageWindow = false;
             }
         }
-        else if(player.workWindow)
+        else if (player.workWindow)
         {
             foreach (Collider col in colls)
             {
@@ -78,11 +89,4 @@ public class Handling : MonoBehaviour
             }
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(rayTransform, transform.forward * rayDistance);
-    }
-
 }
