@@ -48,23 +48,22 @@ public class Fish2 : MonoBehaviour
     public float speed = 3.0f;
     public float sprintSpeed = 5.0f;
 
-    public float rotationSpeed = 1.0f;
+    public float rotationSpeed = 10.0f;
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         fishUpdate = Update_Move;
-        StartCoroutine(SetHorizontal());
-        StartCoroutine(SetVertical());
     }
 
     private void Start()
     {
+        StartCoroutine(SetMoveDir());
     }
 
     private void Update()
     {
-        fishUpdate();
+        Update_Move();
     }
 
     private void Update_Rest()
@@ -75,8 +74,7 @@ public class Fish2 : MonoBehaviour
     private void Update_Move()
     {
         transform.position += speed * Time.deltaTime * transform.right;
-        targetDir = Vector3.RotateTowards(transform.forward, new(0.0f, leftright, updown), rotationSpeed, 0.0f);
-        controller.transform.Rotate(targetDir);
+        move();
     }
 
     private void Update_Void()
@@ -89,34 +87,93 @@ public class Fish2 : MonoBehaviour
 
     }
 
-    float leftright;
-    float updown;
-    Vector3 targetDir;
+    // Random Move----------
 
-    IEnumerator SetHorizontal()
+    enum Ylook
     {
+        Up,
+        Down,
+        Straight,
+    }
+
+    private Ylook Look()
+    {
+        if (transform.rotation.eulerAngles.z > 0.01f && transform.rotation.eulerAngles.z < 90.0f) return Ylook.Up;
+        if (transform.rotation.eulerAngles.z > 90.0f && transform.rotation.eulerAngles.z < 180.0f) return Ylook.Up;
+        else if (transform.rotation.eulerAngles.z > 180.0f && transform.rotation.eulerAngles.z <270.0f) return Ylook.Down;
+        else if (transform.rotation.eulerAngles.z > 270.0f && transform.rotation.eulerAngles.z <359.99f) return Ylook.Down;
+        else return Ylook.Straight;
+    }
+
+    System.Action move;
+
+    IEnumerator SetMoveDir()
+    {
+        float stateTime;
         while (true)
         {
-            leftright = Random.Range(0, 20) switch
+            switch (UnityEngine.Random.Range(0, 8))
             {
-                0 or 1 or 2 or 3 or 4 or 5 or 6 or 7 => Random.Range(-1.5f,1.5f),
-                _ => transform.forward.y,
-            };
-            yield return new WaitForSeconds(Random.Range(3f, 5f));
+                case 0:
+                    move = Move_Up;
+                    stateTime = UnityEngine.Random.Range(1.5f, 2.0f);
+                    break;
+                case 1:
+                    move = Move_Down;
+                    stateTime = UnityEngine.Random.Range(1.5f, 2.0f);
+                    break;
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    move = Move_Left;
+                    stateTime = UnityEngine.Random.Range(2.0f, 4.0f);
+                    break;
+                default:
+                    move = Move_Right;
+                    stateTime = UnityEngine.Random.Range(2.0f, 4.0f);
+                    break;
+            }
+            yield return new WaitForSeconds(stateTime);
         }
     }
 
-    IEnumerator SetVertical()
+    private void StraightLook()
     {
-        while (true)
+        if (Look() == Ylook.Up) controller.transform.Rotate(-transform.forward * Random.Range(0.8f, 1.5f), UnityEngine.Space.World);
+        else if(Look() == Ylook.Down) controller.transform.Rotate(transform.forward * Random.Range(0.8f, 1.5f), UnityEngine.Space.World);
+        else
         {
-            updown = Random.Range(0, 20) switch
+            move = Random.Range(0, 2) switch
             {
-                0 => Random.Range(2f, 4f),
-                1 => Random.Range(-2f, -4f),
-                _ => -transform.rotation.eulerAngles.z,
+                0 => Move_Right,
+                _ => Move_Left,
             };
-            yield return new WaitForSeconds(Random.Range(1f, 3f));
         }
+    }
+
+    private void Move_Up()
+    {
+        if (transform.rotation.eulerAngles.z < 90) controller.transform.Rotate(transform.forward * Random.Range(0.8f, 1.5f), UnityEngine.Space.World);
+        else move = StraightLook;
+    }
+
+    private void Move_Down()
+    {
+
+        if (transform.rotation.eulerAngles.z > 270 || transform.rotation.eulerAngles.z <0.01) controller.transform.Rotate(-transform.forward * Random.Range(0.8f, 1.5f), UnityEngine.Space.World);
+        else move = StraightLook;
+    }
+
+    private void Move_Left()
+    {
+        if (transform.rotation.eulerAngles.z > 359.5f || transform.rotation.eulerAngles.z < 0.05f) controller.transform.Rotate(transform.up * Random.Range(1.5f, 3.5f), UnityEngine.Space.World);
+        else move = StraightLook;
+    }
+
+    private void Move_Right()
+    {
+        if (transform.rotation.eulerAngles.z > 359.5f || transform.rotation.eulerAngles.z < 0.05f) controller.transform.Rotate(-transform.up * Random.Range(1.5f, 3.5f), UnityEngine.Space.World);
+        else move = StraightLook;
     }
 }
