@@ -63,18 +63,7 @@ public class Fish2 : MonoBehaviour
 
     private void Update()
     {
-        Update_Move();
-    }
-
-    private void Update_Rest()
-    {
-
-    }
-
-    private void Update_Move()
-    {
-        transform.position += speed * Time.deltaTime * transform.right;
-        move();
+        Update_Rest();
     }
 
     private void Update_Void()
@@ -82,27 +71,12 @@ public class Fish2 : MonoBehaviour
 
     }
 
-    private void Update_Escape()
-    {
-
-    }
-
     // Random Move----------
 
-    enum Ylook
+    private void Update_Move()
     {
-        Up,
-        Down,
-        Straight,
-    }
-
-    private Ylook Look()
-    {
-        if (transform.rotation.eulerAngles.z > 0.01f && transform.rotation.eulerAngles.z < 90.0f) return Ylook.Up;
-        if (transform.rotation.eulerAngles.z > 90.0f && transform.rotation.eulerAngles.z < 180.0f) return Ylook.Up;
-        else if (transform.rotation.eulerAngles.z > 180.0f && transform.rotation.eulerAngles.z <270.0f) return Ylook.Down;
-        else if (transform.rotation.eulerAngles.z > 270.0f && transform.rotation.eulerAngles.z <359.99f) return Ylook.Down;
-        else return Ylook.Straight;
+        transform.position += speed * Time.deltaTime * transform.right;
+        move();
     }
 
     System.Action move;
@@ -140,15 +114,21 @@ public class Fish2 : MonoBehaviour
 
     private void StraightLook()
     {
-        if (Look() == Ylook.Up) controller.transform.Rotate(-transform.forward * Random.Range(0.8f, 1.5f), UnityEngine.Space.World);
-        else if(Look() == Ylook.Down) controller.transform.Rotate(transform.forward * Random.Range(0.8f, 1.5f), UnityEngine.Space.World);
+        if (transform.rotation.eulerAngles.z > 0.5f && transform.rotation.eulerAngles.z < 180.0f) controller.transform.Rotate(-transform.forward * Random.Range(0.8f, 1.5f), UnityEngine.Space.World);
+        else if(transform.rotation.eulerAngles.z > 180.0f && transform.rotation.eulerAngles.z < 359.5f) controller.transform.Rotate(transform.forward * Random.Range(0.8f, 1.5f), UnityEngine.Space.World);
         else
         {
-            move = Random.Range(0, 2) switch
+            switch (Random.Range(0, 3))
             {
-                0 => Move_Right,
-                _ => Move_Left,
-            };
+                case 0:
+                    move = Move_Left;
+                    break;
+                case 1:
+                    move = Move_Right;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -175,5 +155,77 @@ public class Fish2 : MonoBehaviour
     {
         if (transform.rotation.eulerAngles.z > 359.5f || transform.rotation.eulerAngles.z < 0.05f) controller.transform.Rotate(-transform.up * Random.Range(1.5f, 3.5f), UnityEngine.Space.World);
         else move = StraightLook;
+    }
+
+    // Rest----------
+
+    public float restMaxTime;
+
+    int nextRestMove;
+
+    float restTime;
+
+    private void Update_Rest()
+    {
+        if(restTime < restMaxTime - 0.1f)
+        {
+            restTime += Time.deltaTime;
+        }
+        else if(restTime < restMaxTime)
+        {
+            switch (nextRestMove)
+            {
+                case 0:
+                    controller.transform.LookAt(transform.up);
+                    break;
+                case 1:
+                    controller.transform.LookAt(-transform.up);
+                    break;
+                default:
+                    transform.position += Time.deltaTime * 20.0f * transform.right;
+                    break;
+            }
+            restTime += Time.deltaTime;
+        }
+        else
+        {
+            restMaxTime = Random.Range(3.0f, 4.0f);
+            nextRestMove = (int)Random.Range(0, 4);
+            restTime = 0.0f;
+        }
+    }
+
+    // escape----------
+
+    Transform target;
+
+    public float Hp;
+    float hp;
+
+    Vector3 dir = Vector3.zero;
+
+    bool isSprint = false;
+
+    private void Update_Escape()
+    {
+        if(target!= null)
+        {
+            dir = transform.position - target.position;
+            if (hp < 0 || (!isSprint && (hp < Hp * 0.5f)))
+            {
+                transform.position += Time.deltaTime * speed * dir.normalized;
+                isSprint = false;
+            }
+            else
+            {
+                transform.position += Time.deltaTime * sprintSpeed * dir.normalized;
+                isSprint = true;
+            }
+        }
+        else
+        {
+            fishUpdate = Update_Move;
+            isSprint= false;
+        }
     }
 }
