@@ -40,6 +40,7 @@ public class TestInventory : TestBase
 
     protected override void Test5(InputAction.CallbackContext _)
     {
+        objManager.able = false;
         player.setStorage = true;
     } 
 

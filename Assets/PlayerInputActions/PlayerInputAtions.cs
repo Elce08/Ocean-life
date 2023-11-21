@@ -390,6 +390,34 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Storage"",
+            ""id"": ""42b07fb3-d7eb-41a5-85df-7acd6f3ed4f1"",
+            ""actions"": [
+                {
+                    ""name"": ""Set"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad108c84-a6cd-49b2-89a4-7d9ce9cd3549"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""47ca83b1-d2e8-4d36-959e-be2469661107"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Set"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -432,6 +460,9 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Tab = m_Inventory.FindAction("Tab", throwIfNotFound: true);
         m_Inventory_Escape = m_Inventory.FindAction("Escape", throwIfNotFound: true);
+        // Storage
+        m_Storage = asset.FindActionMap("Storage", throwIfNotFound: true);
+        m_Storage_Set = m_Storage.FindAction("Set", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -723,6 +754,52 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
         }
     }
     public InventoryActions @Inventory => new InventoryActions(this);
+
+    // Storage
+    private readonly InputActionMap m_Storage;
+    private List<IStorageActions> m_StorageActionsCallbackInterfaces = new List<IStorageActions>();
+    private readonly InputAction m_Storage_Set;
+    public struct StorageActions
+    {
+        private @PlayerInputAtions m_Wrapper;
+        public StorageActions(@PlayerInputAtions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Set => m_Wrapper.m_Storage_Set;
+        public InputActionMap Get() { return m_Wrapper.m_Storage; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(StorageActions set) { return set.Get(); }
+        public void AddCallbacks(IStorageActions instance)
+        {
+            if (instance == null || m_Wrapper.m_StorageActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_StorageActionsCallbackInterfaces.Add(instance);
+            @Set.started += instance.OnSet;
+            @Set.performed += instance.OnSet;
+            @Set.canceled += instance.OnSet;
+        }
+
+        private void UnregisterCallbacks(IStorageActions instance)
+        {
+            @Set.started -= instance.OnSet;
+            @Set.performed -= instance.OnSet;
+            @Set.canceled -= instance.OnSet;
+        }
+
+        public void RemoveCallbacks(IStorageActions instance)
+        {
+            if (m_Wrapper.m_StorageActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IStorageActions instance)
+        {
+            foreach (var item in m_Wrapper.m_StorageActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_StorageActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public StorageActions @Storage => new StorageActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -755,5 +832,9 @@ public partial class @PlayerInputAtions: IInputActionCollection2, IDisposable
     {
         void OnTab(InputAction.CallbackContext context);
         void OnEscape(InputAction.CallbackContext context);
+    }
+    public interface IStorageActions
+    {
+        void OnSet(InputAction.CallbackContext context);
     }
 }

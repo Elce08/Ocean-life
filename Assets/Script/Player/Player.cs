@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     public ItemManager inven;
     public ItemManager storage;
     public GameObject work;
+    ObjectManager objManager;
+
     GameObject equip;
     Handling handle;
 
@@ -111,6 +113,7 @@ public class Player : MonoBehaviour
         inventorys = GameObject.FindGameObjectWithTag("Inven");
         inven = inventorys.GetComponentInChildren<ItemManager>();
         equip = inventorys.transform.GetChild(1).gameObject;
+        objManager = FindObjectOfType<ObjectManager>();
         if(mainCamera == null)
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -388,6 +391,7 @@ public class Player : MonoBehaviour
             storageWindow = false;
             workWindow = false;
             setStorage = false;
+            Destroy(objManager.currentIndicator);
         }
     }
 

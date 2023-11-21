@@ -368,6 +368,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Storage",
+            "id": "42b07fb3-d7eb-41a5-85df-7acd6f3ed4f1",
+            "actions": [
+                {
+                    "name": "Set",
+                    "type": "Button",
+                    "id": "ad108c84-a6cd-49b2-89a4-7d9ce9cd3549",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "47ca83b1-d2e8-4d36-959e-be2469661107",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Set",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
