@@ -9,33 +9,48 @@ public class Cluster : MonoBehaviour
     public int gen = 10;
 
     public float clusterMoveSpeed;
-    public static int m_Boundary = 7;
-    public static GameObject[] m_Fishes;
-    public static Vector3 m_TargetPosition = Vector3.zero;
+    public int boundary = 7;
+    public GameObject[] fishes;
+    public Vector3 targetPosition = Vector3.zero;
 
     private void Start()
-    {
+    {   
         Generator();
+    }
+
+    private void Update()
+    {
+        ClusterMove();
     }
 
     void ClusterMove()
     {
         if (Random.Range(1, 10000) < 50)
         {
-            m_TargetPosition = new Vector3(
-                Random.Range(-m_Boundary, m_Boundary),
-                Random.Range(-m_Boundary, m_Boundary),
-                Random.Range(-m_Boundary, m_Boundary)
+            targetPosition = new Vector3(
+                Random.Range(-boundary, boundary),
+                Random.Range(-boundary, boundary),
+                Random.Range(-boundary, boundary)
             );
         }
     }
 
     void Generator()
     {
-        for(int i = 0; i < gen; i++)
+        fishes = new GameObject[gen];
+
+        for (int i = 0; i < gen; i++)
         {
-            GameObject newObject = Instantiate(prefab, transform.position, Quaternion.identity);
-            newObject.transform.parent = transform;
+            Vector3 position = new Vector3(
+                Random.Range(-boundary, boundary),
+                Random.Range(-boundary, boundary),
+                Random.Range(-boundary, boundary)
+            );
+
+            GameObject fish = (GameObject)Instantiate(prefab, position, Quaternion.identity);
+
+            fish.transform.parent = this.transform;
+            fishes[i] = fish;
         }
     }
 }
