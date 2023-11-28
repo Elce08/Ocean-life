@@ -2,6 +2,7 @@ using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Fish2 : MonoBehaviour
 {
@@ -16,7 +17,8 @@ public class Fish2 : MonoBehaviour
     }
 
     State fishState = State.Rest;
-    State FishState
+
+    private State FishState
     {
         get => fishState;
         set
@@ -45,8 +47,8 @@ public class Fish2 : MonoBehaviour
 
     System.Action fishUpdate;
 
-    public float speed = 3.0f;
-    public float sprintSpeed = 5.0f;
+    public float speed = 10.0f;
+    public float sprintSpeed = 15.0f;
 
     public float rotationSpeed = 10.0f;
 
@@ -55,21 +57,27 @@ public class Fish2 : MonoBehaviour
         enemys = new();
         controller = GetComponent<CharacterController>();
         fishUpdate = Update_Move;
+        hp = Hp;
     }
 
     private void Start()
     {
         StartCoroutine(SetMoveDir());
+        EnemyCheck();
+        FishCheck();
     }
 
     private void Update()
     {
-        Update_Rest();
-    }
-
-    private void Update_Void()
-    {
-
+        // fishUpdate();
+        FishCheck();
+        Update_Void();
+        // if (IsSprint) hp -= Time.deltaTime;
+        // else
+        // {
+        //     if (hp > 100) hp = 100;
+        //     else hp += Time.deltaTime;
+        // }
     }
 
     // Random Move----------
@@ -130,18 +138,12 @@ public class Fish2 : MonoBehaviour
         else if (transform.rotation.eulerAngles.x > 180.0f && transform.rotation.eulerAngles.x < 359.95f) controller.transform.Rotate(transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
         else
         {
-            switch (currentDir)
+            move = currentDir switch
             {
-                case CurrentDir.Left:
-                    move = Move_Left;
-                    break;
-                case CurrentDir.Right:
-                    move = Move_Right;
-                    break;
-                default:
-                    move = Move_Front;
-                    break;
-            }
+                CurrentDir.Left => Move_Left,
+                CurrentDir.Right => Move_Right,
+                _ => Move_Front,
+            };
         }
     }
 
@@ -220,11 +222,11 @@ public class Fish2 : MonoBehaviour
     public float sightRange = 10.0f;
 
     public float Hp = 100.0f;
-    float hp = 100.0f;
+    float hp;
 
     Vector3 dir = Vector3.zero;
 
-    bool isSprint = false;
+    bool IsSprint;
 
     private void Update_Escape()
     {
@@ -232,37 +234,38 @@ public class Fish2 : MonoBehaviour
         {
             dir = transform.position - target.position;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * rotationSpeed);
-            if (hp < 0 || (!isSprint && (hp < Hp * 0.5f)))
+            if (hp < 0 || (!IsSprint && (hp < Hp * 0.5f)))
             {
                 transform.position += Time.deltaTime * speed * dir.normalized;
-                isSprint = false;
+                IsSprint = false;
             }
             else
             {
                 transform.position += Time.deltaTime * sprintSpeed * dir.normalized;
-                isSprint = true;
+                IsSprint = true;
             }
         }
         else
         {
             fishUpdate = Update_Move;
-            isSprint= false;
+            IsSprint= false;
         }
     }
 
-    Collider[] targets;
+    Collider[] enemyTargets;
     List<Collider> enemys;
 
     private void EnemyCheck()
     {
-        targets = Physics.OverlapSphere(transform.position, sightRange,LayerMask.GetMask("Enemy"));
+        enemyTargets = null;
+        enemyTargets = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Enemy"));
         enemys.Clear();
-        if(targets != null)
+        if(enemyTargets != null)
         {
-            foreach (Collider target in targets)
+            foreach (Collider target in enemyTargets)
             {
                 float fromtoRotation;
-                if (fishState != State.Escape)
+                if (FishState != State.Escape)
                 {
                     fromtoRotation = Quaternion.FromToRotation(transform.right, target.transform.position - transform.position).eulerAngles.z;
                     if (fromtoRotation < 120.0f || fromtoRotation > 240.0f) enemys.Add(target);
@@ -283,14 +286,63 @@ public class Fish2 : MonoBehaviour
                     if (Vector3.Distance(transform.position, target.position) > Vector3.Distance(transform.position, enemy.transform.position)) target = enemy.transform;
                 }
             }
-            fishState= State.Escape;
+            FishState = State.Escape;
             Update_Escape();
         }
         else
         {
-            if(fishState == State.Escape)
+            if(FishState == State.Escape)
             {
-                fishState = State.Move;
+                FishState = State.Move;
+            }
+            FishCheck();
+        }
+    }
+
+    // void -----------
+
+    private void Update_Void()
+    {
+        if(aligns != Vector3.zero)transform.SetPositionAndRotation(Time.deltaTime * speed * transform.forward, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(aligns), Time.deltaTime * rotationSpeed));
+    }
+
+    Collider[] voidTarget;
+    int alignNum;
+    Vector3 aligns;
+
+    private void FishCheck()
+    {
+        alignNum = 0;
+        voidTarget = null;
+        dir = Vector3.zero;
+        aligns = Vector3.zero;
+        voidTarget = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Void"));
+        if(voidTarget != null)
+        {
+;            Debug.Log(voidTarget.Length);
+            if(FishState != State.Escape && CompareTag("ObjectFish"))
+            {
+                tag = "Void";
+                FishState = State.Void;
+            }
+            foreach(Collider align in voidTarget)
+            {
+                float fromtoRotation = Quaternion.FromToRotation(transform.right, align.transform.position - transform.position).eulerAngles.z;
+                if (fromtoRotation > 120.0f)
+                {
+                    aligns += align.transform.position;
+                    alignNum++;
+                }
+            }
+            aligns /= alignNum;
+            dir = aligns - transform.position;
+
+        }
+        else
+        {
+            if(FishState == State.Void)
+            {
+                FishState = State.Move;
             }
         }
     }

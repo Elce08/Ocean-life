@@ -13,6 +13,7 @@ TagManager:
   - ObjectWork
   - ObjectStorage
   - ObjectFish
+  - Void
   layers:
   - Default
   - TransparentFX
@@ -38,8 +39,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Void
+  - Fish
   - Enemy
   - 
   - 
