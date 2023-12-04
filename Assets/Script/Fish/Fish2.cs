@@ -12,11 +12,10 @@ public class Fish2 : MonoBehaviour
     {
         Rest,
         Move,
-        Void,
         Escape,
     }
 
-    State fishState = State.Rest;
+    State fishState = State.Move;
 
     private State FishState
     {
@@ -33,9 +32,6 @@ public class Fish2 : MonoBehaviour
                         break;
                     case State.Move:
                         fishUpdate = Update_Move;
-                        break;
-                    case State.Void:
-                        fishUpdate = Update_Void;
                         break;
                     case State.Escape: 
                         fishUpdate = Update_Escape;
@@ -68,14 +64,7 @@ public class Fish2 : MonoBehaviour
 
     private void Update()
     {
-        // fishUpdate();
-        Update_Move();
-        // if (IsSprint) hp -= Time.deltaTime;
-        // else
-        // {
-        //     if (hp > 100) hp = 100;
-        //     else hp += Time.deltaTime;
-        // }
+        fishUpdate();
     }
 
     // Random Move----------
@@ -84,6 +73,8 @@ public class Fish2 : MonoBehaviour
     {
         transform.position += speed * Time.deltaTime * transform.forward;
         move();
+        if(hp > 0.0f)hp -= UnityEngine.Random.Range(0.45f,0.55f) * Time.deltaTime;
+        else FishState = State.Rest;
     } 
 
     enum CurrentDir
@@ -184,32 +175,37 @@ public class Fish2 : MonoBehaviour
 
     private void Update_Rest()
     {
-        if(restTime < restMaxTime - 0.1f)
+        if (hp < 30.0f)
         {
-            restTime += Time.deltaTime;
-        }
-        else if(restTime < restMaxTime)
-        {
-            switch (nextRestMove)
+            if (restTime < restMaxTime - 0.1f)
             {
-                case 0:
-                    controller.transform.Rotate(transform.up,Space.World);
-                    break;
-                case 1:
-                    controller.transform.Rotate(-transform.up, Space.World);
-                    break;
-                default:
-                    transform.position += Time.deltaTime * 20.0f * transform.forward;
-                    break;
+                restTime += Time.deltaTime;
             }
-            restTime += Time.deltaTime;
+            else if (restTime < restMaxTime)
+            {
+                switch (nextRestMove)
+                {
+                    case 0:
+                        controller.transform.Rotate(transform.up, Space.World);
+                        break;
+                    case 1:
+                        controller.transform.Rotate(-transform.up, Space.World);
+                        break;
+                    default:
+                        transform.position += Time.deltaTime * 20.0f * transform.forward;
+                        break;
+                }
+                restTime += Time.deltaTime;
+            }
+            else
+            {
+                restMaxTime = Random.Range(3.0f, 4.0f);
+                nextRestMove = (int)Random.Range(0, 4);
+                restTime = 0.0f;
+            }
+            hp += Time.deltaTime;
         }
-        else
-        {
-            restMaxTime = Random.Range(3.0f, 4.0f);
-            nextRestMove = (int)Random.Range(0, 4);
-            restTime = 0.0f;
-        }
+        else fishState = State.Move;
     }
 
     // escape----------
@@ -238,6 +234,7 @@ public class Fish2 : MonoBehaviour
             }
             else
             {
+                hp -= 1.5f * Time.deltaTime;
                 transform.position += Time.deltaTime * sprintSpeed * dir.normalized;
                 IsSprint = true;
             }
@@ -289,56 +286,6 @@ public class Fish2 : MonoBehaviour
         else
         {
             if(FishState == State.Escape)
-            {
-                FishState = State.Move;
-            }
-            FishCheck();
-        }
-    }
-
-    // void -----------
-
-    private void Update_Void()
-    {
-        transform.position += speed * Time.deltaTime * transform.forward;
-        if(dir != Vector3.zero) transform.SetPositionAndRotation(Time.deltaTime * speed * transform.forward, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * rotationSpeed));
-    }
-
-    Collider[] voidTarget;
-    int alignNum;
-    Vector3 aligns;
-
-    private void FishCheck()
-    {
-        alignNum = 0;
-        voidTarget = null;
-        dir = Vector3.zero;
-        aligns = Vector3.zero;
-        voidTarget = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Void"));
-        if(voidTarget != null)
-        {
-;            Debug.Log(voidTarget.Length);
-            if(FishState != State.Escape && CompareTag("ObjectFish"))
-            {
-                tag = "Void";
-                FishState = State.Void;
-            }
-            foreach(Collider align in voidTarget)
-            {
-                float fromtoRotation = Quaternion.FromToRotation(transform.right, align.transform.position - transform.position).eulerAngles.z;
-                if (fromtoRotation > 120.0f)
-                {
-                    aligns += align.transform.position;
-                    alignNum++;
-                }
-            }
-            aligns /= alignNum;
-            dir = aligns - transform.position;
-
-        }
-        else
-        {
-            if(FishState == State.Void)
             {
                 FishState = State.Move;
             }
