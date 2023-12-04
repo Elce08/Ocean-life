@@ -26,8 +26,8 @@ public class Fish : MonoBehaviour
     /// </summary>
     private bool isTurning = false;
 
-    public float maxUpDownDistance = 0.5f; // 위아래 움직일 최대 거리
-    public float upDownSpeed = 1.0f; // 위아래 움직일 속도
+    public float maxUpDownDistance = 0.01f; // 위아래 움직일 최대 거리
+    public float upDownSpeed = 0.01f; // 위아래 움직일 속도
 
     Cluster cluster;
     Transform clusterTransfrom;
@@ -78,7 +78,7 @@ public class Fish : MonoBehaviour
         Vector3 avoid = Vector3.zero;
         float speed = 0.1f;
 
-        Vector3 targetPosition = cluster.targetPosition;
+        Vector3 targetPosition = cluster.moveDir;
 
         float distance;
         int groupSize = 0;
@@ -146,16 +146,14 @@ public class Fish : MonoBehaviour
 
     private void FishMove()
     {
-        transform.Translate(Vector3.left * Time.deltaTime * speed);
+        transform.Translate(Vector3.forward * Time.deltaTime * speed);
         transform.LookAt(transform.position + transform.forward);
 
         float leftRightMovement = Time.deltaTime * speed; // 좌우로 이동하는 양
         float upDownMovement = Mathf.PingPong(Time.time * upDownSpeed, maxUpDownDistance) - (maxUpDownDistance * 0.5f); // 위아래로 이동하는 양
 
         // 좌우로 이동
-        transform.Translate(Vector3.left * leftRightMovement);
-
-        // 현재 위치에 위아래로 이동하는 양을 더합니다.
+        transform.Translate(Vector3.forward * leftRightMovement);
         transform.Translate(Vector3.up * upDownMovement);
     }
 

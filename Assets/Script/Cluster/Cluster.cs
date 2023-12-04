@@ -8,10 +8,11 @@ public class Cluster : MonoBehaviour
     [Header("물고기 수")]
     public int gen = 10;
 
-    public float clusterMoveSpeed;
+    public float clusterMoveSpeed = 3.0f;
+    public float clusterRoateSpeed = 0.1f;
     public int boundary = 7;
     public GameObject[] fishes;
-    public Vector3 targetPosition = Vector3.zero;
+    public Vector3 moveDir = Vector3.zero;
 
     private void Start()
     {   
@@ -25,14 +26,9 @@ public class Cluster : MonoBehaviour
 
     void ClusterMove()
     {
-        if (Random.Range(1, 10000) < 50)
-        {
-            targetPosition = new Vector3(
-                Random.Range(-boundary, boundary),
-                Random.Range(-boundary, boundary),
-                Random.Range(-boundary, boundary)
-            );
-        }
+        float roty = Random.value;
+        transform.Translate(Vector3.forward * Time.deltaTime);
+        transform.Rotate(Vector3.up * Time.deltaTime * clusterRoateSpeed * roty);
     }
 
     void Generator()
