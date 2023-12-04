@@ -64,14 +64,12 @@ public class Fish2 : MonoBehaviour
     {
         StartCoroutine(SetMoveDir());
         EnemyCheck();
-        FishCheck();
     }
 
     private void Update()
     {
         // fishUpdate();
-        FishCheck();
-        Update_Void();
+        Update_Move();
         // if (IsSprint) hp -= Time.deltaTime;
         // else
         // {
@@ -149,7 +147,6 @@ public class Fish2 : MonoBehaviour
 
     private void Move_Up()
     {
-        Debug.Log(transform.rotation.eulerAngles.x);
         if (transform.rotation.eulerAngles.x < 270.5f && transform.rotation.eulerAngles.x >0.1f) move = StraightLook;
         else controller.transform.Rotate(-transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
     }
@@ -303,7 +300,8 @@ public class Fish2 : MonoBehaviour
 
     private void Update_Void()
     {
-        if(aligns != Vector3.zero)transform.SetPositionAndRotation(Time.deltaTime * speed * transform.forward, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(aligns), Time.deltaTime * rotationSpeed));
+        transform.position += speed * Time.deltaTime * transform.forward;
+        if(dir != Vector3.zero) transform.SetPositionAndRotation(Time.deltaTime * speed * transform.forward, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * rotationSpeed));
     }
 
     Collider[] voidTarget;
