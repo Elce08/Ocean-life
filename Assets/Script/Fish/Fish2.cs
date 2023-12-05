@@ -43,8 +43,8 @@ public class Fish2 : MonoBehaviour
 
     System.Action fishUpdate;
 
-    public float speed = 10.0f;
-    public float sprintSpeed = 15.0f;
+    public float speed = 4.0f;
+    public float sprintSpeed = 6.0f;
 
     public float rotationSpeed = 10.0f;
 
