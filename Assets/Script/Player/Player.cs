@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     public GameObject inventorys;
     public ItemManager inven;
     public ItemManager storage;
-    public GameObject work;
+    public Crafting Craft;
     ObjectManager objManager;
 
     GameObject equip;
@@ -116,6 +116,7 @@ public class Player : MonoBehaviour
         inven = inventorys.GetComponentInChildren<ItemManager>();
         equip = inventorys.transform.GetChild(1).gameObject;
         objManager = FindObjectOfType<ObjectManager>();
+        Craft = FindObjectOfType<Crafting>();
         if(mainCamera == null)
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -128,6 +129,7 @@ public class Player : MonoBehaviour
         equip.SetActive(false);
         inven.gameObject.SetActive(false);
         inventorys.SetActive(false);
+        Craft.gameObject.SetActive(false) ;
 
         controller = GetComponentInChildren<CharacterController>();
 
@@ -296,7 +298,11 @@ public class Player : MonoBehaviour
         {
             dot.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
-            if (work != null)work.SetActive(false);
+            if (Craft != null) 
+            {
+                Craft.lastCheck.gameObject.SetActive(false);
+                Craft.gameObject.SetActive(false);
+            }
             if(storage != null)storage.gameObject.SetActive(false);
             equip.SetActive(false);
             inven.another = null;
@@ -354,11 +360,11 @@ public class Player : MonoBehaviour
                 {
                     dot.SetActive(false);
                     Cursor.lockState = CursorLockMode.None;
-                    work = handle.rayHit;
                     inventorys.SetActive(true);
                     inven.gameObject.SetActive(true);
-                    work.SetActive(true);
+                    Craft.gameObject.SetActive(true);
                     workWindow = true;
+                    storageWindow = true;
                     inventory = true;
                 }
                 else if(handleing.CompareTag("ObjectStorage"))

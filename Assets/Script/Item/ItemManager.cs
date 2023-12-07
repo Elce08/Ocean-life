@@ -107,11 +107,20 @@ public class ItemManager : MonoBehaviour
         else return false;
     }
 
+    public void Remove(Item item)
+    {
+        if (items.Contains(item))
+        {
+            items.Remove(item);
+            RefreshSlots();
+        }
+    }
+
     /// <summary>
     /// Remove Item
     /// </summary>
     /// <param name="index">Remove target item's index</param>
-    private void Remove(int index)
+    public void Remove(int index)
     {
         items.Remove(items[index]);
         RefreshSlots();
