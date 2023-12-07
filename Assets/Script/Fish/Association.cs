@@ -8,6 +8,9 @@ public class Association : MonoBehaviour
 {
     public GameObject fish;
 
+    private SphereCollider associationCollider;
+
+    private float speed;
     public float moveSpeed = 5.0f;
     public float sphereRadius = 5.0f;
     GameObject[] fishs;
@@ -21,13 +24,13 @@ public class Association : MonoBehaviour
 
     public float sightRange = 10.0f;
 
-    private enum State
+    public enum State
     {
         Basic,
         Escape,
     }
 
-    private State associationState = State.Basic;
+    public State associationState = State.Basic;
 
     private State AssociationState
     {
@@ -51,6 +54,8 @@ public class Association : MonoBehaviour
 
     private void Awake()
     {
+        associationCollider = GetComponent<SphereCollider>();
+        speed = moveSpeed;
         enemys = new();
         act = Update_Associate;
         move = Move_Front;
@@ -58,6 +63,7 @@ public class Association : MonoBehaviour
 
     private void Start()
     {
+        associationCollider.radius = sphereRadius;
         fishs = new GameObject[headNum];
         StartCoroutine(SetMoveDir());
         Spawn();
@@ -98,7 +104,7 @@ public class Association : MonoBehaviour
 
     private void Update_Associate()
     {
-        transform.position += moveSpeed * Time.deltaTime * transform.forward;
+        transform.position += speed * Time.deltaTime * transform.forward;
         move();
     }
 
@@ -151,7 +157,7 @@ public class Association : MonoBehaviour
             foreach (Collider target in enemyTargets)
             {
                 float fromtoRotation;
-                if (associationState != State.Escape)
+                if (AssociationState != State.Escape)
                 {
                     fromtoRotation = Quaternion.FromToRotation(transform.right, target.transform.position - transform.position).eulerAngles.z;
                     if (fromtoRotation < 120.0f || fromtoRotation > 240.0f) enemys.Add(target);
@@ -172,14 +178,14 @@ public class Association : MonoBehaviour
                     if (Vector3.Distance(transform.position, target.position) > Vector3.Distance(transform.position, enemy.transform.position)) target = enemy.transform;
                 }
             }
-            associationState = State.Escape;
+            AssociationState = State.Escape;
             Update_Escape();
         }
         else
         {
-            if (associationState == State.Escape)
+            if (AssociationState == State.Escape)
             {
-                associationState = State.Basic;
+                AssociationState = State.Basic;
             }
         }
     }
@@ -190,13 +196,13 @@ public class Association : MonoBehaviour
     {
         if (target != null)
         {
-            dir = (transform.position - target.position);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(new Vector3(dir.x,dir.y,0.0f)), Time.deltaTime * 0.2f);
-            transform.position += Time.deltaTime * (moveSpeed + 2.0f) * dir.normalized;
+            speed = moveSpeed + 2.0f;
+            Update_Associate();
         }
         else
         {
-            associationState = State.Basic;
+            speed = moveSpeed;
+            AssociationState = State.Basic;
         }
     }
 }
