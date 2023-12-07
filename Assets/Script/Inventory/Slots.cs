@@ -69,6 +69,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler
     {
         image = GetComponent<Image>();
         inven = GetComponentInParent<ItemManager>();
+        itemIndex = -1;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -77,7 +78,10 @@ public class Slots : MonoBehaviour, IPointerClickHandler
         {
             if (itemIndex > -1)
             {
-                if (inven.another != null) inven.ChangeInven(itemIndex);
+                if (inven.another != null)
+                {
+                    inven.ChangeInven(itemIndex);
+                }
                 else inven.DropItem(itemIndex);
             }
         }

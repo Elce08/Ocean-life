@@ -11,12 +11,12 @@ public class Association : MonoBehaviour
     private SphereCollider associationCollider;
 
     private float speed;
-    public float moveSpeed = 5.0f;
+    public float moveSpeed = 3.0f;
     public float sphereRadius = 5.0f;
     GameObject[] fishs;
     public int headNum = 3000;
 
-    public float noise = 0.1f;
+    public float noise = 0.5f;
 
     public float xMultiple = 1.0f;
     public float yMultiple = 1.0f;
@@ -24,13 +24,15 @@ public class Association : MonoBehaviour
 
     public float sightRange = 10.0f;
 
-    public enum State
+    public float fishSprintSpeed = 3.0f;
+
+    private enum State
     {
         Basic,
         Escape,
     }
 
-    public State associationState = State.Basic;
+    private State associationState = State.Basic;
 
     private State AssociationState
     {
@@ -41,9 +43,11 @@ public class Association : MonoBehaviour
             switch (associationState)
             {
                 case State.Basic:
+                    if (fishs != null) foreach (var fish in SpawnFish) fish.warning = false;
                     act = Update_Associate;
                     break;
                 case State.Escape:
+                    if(fishs != null) foreach (var fish in SpawnFish) fish.warning = true;
                     act = Update_Escape;
                     break;
             }
@@ -65,6 +69,7 @@ public class Association : MonoBehaviour
     {
         associationCollider.radius = sphereRadius;
         fishs = new GameObject[headNum];
+        SpawnFish = new AssociationFish[headNum];
         StartCoroutine(SetMoveDir());
         Spawn();
     }
@@ -83,6 +88,8 @@ public class Association : MonoBehaviour
         SetSphere((int)(headNum * 0.9),(headNum),0.25f, noise);
     }
 
+    AssociationFish[] SpawnFish;
+
     private void SetSphere(int from, int to, float radiusMultiple, float noise)
     {
         for (int i = from; i < to; i++)
@@ -97,6 +104,8 @@ public class Association : MonoBehaviour
             Vector3 spawnPosition = new(x, y, z);
             fishs[i] = Instantiate(fish, spawnPosition, Quaternion.identity, transform);
             fishs[i].transform.parent = transform;
+            SpawnFish[i] = fishs[i].GetComponent<AssociationFish>();
+            SpawnFish[i].fishSprintSpeed = fishSprintSpeed;
         }
     }
 
@@ -189,8 +198,6 @@ public class Association : MonoBehaviour
             }
         }
     }
-
-    Vector3 dir = Vector3.zero;
 
     private void Update_Escape()
     {

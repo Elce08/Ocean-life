@@ -90,5 +90,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: 0
-  itemIndex: 0
+  itemIndex: -1
   engaged: 0

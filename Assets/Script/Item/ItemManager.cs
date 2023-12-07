@@ -125,7 +125,8 @@ public class ItemManager : MonoBehaviour
     {
         if (another != null)
         {
-            if (another.Add(items[index])) Remove(index);
+            another.Add(items[index]);
+            Remove(index);
         }
     }
 
