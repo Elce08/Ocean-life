@@ -31,6 +31,7 @@ public class Fish : MonoBehaviour
 
     Cluster cluster;
     Transform clusterTransfrom;
+    Vector3 localOffset;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class Fish : MonoBehaviour
     void Start()
     {
         speed = Random.Range(0.5f, maxSpeed);
+        localOffset = transform.localPosition;
     }
 
     void Update()
@@ -88,6 +90,7 @@ public class Fish : MonoBehaviour
         {
             if (fishes[i] != gameObject)
             {
+                distance = Vector3.Distance(fishes[i].transform.position, transform.position);
                 distance = Vector3.Distance(fishes[i].transform.position, transform.position);
 
                 if (distance <= neighborDistance)
@@ -146,15 +149,21 @@ public class Fish : MonoBehaviour
 
     private void FishMove()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * speed);
-        transform.LookAt(transform.position + transform.forward);
+        transform.localPosition = localOffset;
+        // 부모 오브젝트의 움직임을 따라가되, 부모의 변환을 반영하지 않는 위치 계산
+        //  Vector3 targetPosition = clusterTransfrom.position + localOffset;
+        //  transform.position = targetPosition;
 
-        float leftRightMovement = Time.deltaTime * speed; // 좌우로 이동하는 양
-        float upDownMovement = Mathf.PingPong(Time.time * upDownSpeed, maxUpDownDistance) - (maxUpDownDistance * 0.5f); // 위아래로 이동하는 양
-
-        // 좌우로 이동
-        transform.Translate(Vector3.forward * leftRightMovement);
-        transform.Translate(Vector3.up * upDownMovement);
+        //  transform.localPosition += Vector3.forward * Time.deltaTime * speed;
+        //  transform.LookAt(transform.position + transform.forward);
+        //  
+        //  float leftRightMovement = Time.deltaTime * speed; // 좌우로 이동하는 양
+        //  float updown = Random.Range(0.1f, 0.5f);
+        //  float upDownMovement = Mathf.PingPong(Time.time * upDownSpeed, maxUpDownDistance) - (maxUpDownDistance * updown); // 위아래로 이동하는 양
+        //  
+        //  // 좌우로 이동
+        //  transform.localPosition += Vector3.forward * leftRightMovement;
+        //  transform.localPosition += Vector3.up * upDownMovement;
     }
 
     /// <summary>

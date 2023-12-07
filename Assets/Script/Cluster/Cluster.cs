@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Cluster : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class Cluster : MonoBehaviour
 
     void ClusterMove()
     {
-        float roty = Random.value;
+        float roty = Random.Range(-30,30);
         transform.Translate(Vector3.forward * Time.deltaTime);
         transform.Rotate(Vector3.up * Time.deltaTime * clusterRoateSpeed * roty);
     }
@@ -34,6 +35,8 @@ public class Cluster : MonoBehaviour
     void Generator()
     {
         fishes = new GameObject[gen];
+
+        GameObject cluster = new GameObject("Cluster");
 
         for (int i = 0; i < gen; i++)
         {
@@ -45,7 +48,7 @@ public class Cluster : MonoBehaviour
 
             GameObject fish = (GameObject)Instantiate(prefab, position, Quaternion.identity);
 
-            fish.transform.parent = this.transform;
+            fish.transform.parent = cluster.transform;
             fishes[i] = fish;
         }
     }

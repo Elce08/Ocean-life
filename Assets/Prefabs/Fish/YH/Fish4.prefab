@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2986338442556428489}
   m_Layer: 0
   m_Name: Fish4
-  m_TagString: Untagged
+  m_TagString: Fish4
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
