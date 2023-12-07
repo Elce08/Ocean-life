@@ -4,20 +4,25 @@ using UnityEngine;
 
 public class AssociationFish : MonoBehaviour
 {
-    public Vector3 basicPos;
+    private Vector3 basicPos;
 
     public float sightRange = 2.0f;
 
-    public enum State
+    private bool inWater = true;
+    public bool warning = false;
+
+    public float fishSprintSpeed;
+
+    private enum State
     {
         Association,
         Escape,
         GetBack,
     }
 
-    public State fishState = State.Association;
+    private State fishState = State.Association;
 
-    public State FishState
+    private State FishState
     {
         get => fishState;
         set
@@ -52,7 +57,8 @@ public class AssociationFish : MonoBehaviour
     private void Update()
     {
         act();
-        EnemyCheck();
+        if(warning)EnemyCheck();
+        Update_OutWater();
     }
 
     // Association---------
@@ -122,7 +128,7 @@ public class AssociationFish : MonoBehaviour
         {
             dir = (transform.position - target.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 0.2f);
-            transform.position += Time.deltaTime * (3.0f) * dir.normalized;
+            transform.localPosition += Time.deltaTime * fishSprintSpeed * dir.normalized;
         }
         else
         {
@@ -137,5 +143,24 @@ public class AssociationFish : MonoBehaviour
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, basicPos, Time.deltaTime);
         transform.localRotation = Quaternion.RotateTowards(transform.localRotation, transform.parent.rotation, 10.0f * Time.deltaTime);
         if (transform.localPosition == basicPos && transform.localRotation == transform.parent.rotation) FishState = State.Association;
+    }
+
+    // Gravity--------
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Water")) inWater = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Water")) inWater = true;
+    }
+
+    Vector3 gravity = new(0.0f, 10.0f, 0.0f);
+
+    private void Update_OutWater()
+    {
+        if(!inWater) transform.position -= Time.deltaTime * gravity;
     }
 }

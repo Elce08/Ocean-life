@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class Fish2 : MonoBehaviour
 {
-    CharacterController controller;
+    private bool inWater = true;
 
     enum State
     {
@@ -43,15 +43,14 @@ public class Fish2 : MonoBehaviour
 
     System.Action fishUpdate;
 
-    public float speed = 4.0f;
-    public float sprintSpeed = 6.0f;
+    public float speed = 3.0f;
+    public float sprintSpeed = 4.5f;
 
     public float rotationSpeed = 10.0f;
 
     private void Awake()
     {
         enemys = new();
-        controller = GetComponent<CharacterController>();
         fishUpdate = Update_Move;
         hp = Hp;
     }
@@ -59,12 +58,13 @@ public class Fish2 : MonoBehaviour
     private void Start()
     {
         StartCoroutine(SetMoveDir());
-        EnemyCheck();
     }
 
     private void Update()
     {
+        EnemyCheck();
         fishUpdate();
+        Update_OutWater();
     }
 
     // Random Move----------
@@ -123,8 +123,8 @@ public class Fish2 : MonoBehaviour
 
     private void StraightLook()
     {
-        if (transform.rotation.eulerAngles.x > 0.05f && transform.rotation.eulerAngles.x < 180.0f) controller.transform.Rotate(-transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
-        else if (transform.rotation.eulerAngles.x > 180.0f && transform.rotation.eulerAngles.x < 359.95f) controller.transform.Rotate(transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
+        if (transform.rotation.eulerAngles.x > 0.05f && transform.rotation.eulerAngles.x < 180.0f) transform.Rotate(-transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
+        else if (transform.rotation.eulerAngles.x > 180.0f && transform.rotation.eulerAngles.x < 359.95f) transform.Rotate(transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
         else
         {
             move = currentDir switch
@@ -139,24 +139,24 @@ public class Fish2 : MonoBehaviour
     private void Move_Up()
     {
         if (transform.rotation.eulerAngles.x < 270.5f && transform.rotation.eulerAngles.x >0.1f) move = StraightLook;
-        else controller.transform.Rotate(-transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
+        else transform.Rotate(-transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
     }
 
     private void Move_Down()
     {
         if (transform.rotation.eulerAngles.x > 89.5f && transform.rotation.eulerAngles.x < 180.0f) move = StraightLook;
-        else controller.transform.Rotate(transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
+        else transform.Rotate(transform.right * Random.Range(0.1f, 0.5f), UnityEngine.Space.World);
     }
 
     private void Move_Left()
     {
-        if (transform.rotation.eulerAngles.x > 359.5f || transform.rotation.eulerAngles.x < 0.05f) controller.transform.Rotate(transform.up * Random.Range(0.0f, 1.0f), UnityEngine.Space.World);
+        if (transform.rotation.eulerAngles.x > 359.5f || transform.rotation.eulerAngles.x < 0.05f) transform.Rotate(transform.up * Random.Range(0.0f, 1.0f), UnityEngine.Space.World);
         else move = StraightLook;
     }
 
     private void Move_Right()
     {
-        if (transform.rotation.eulerAngles.x > 359.5f || transform.rotation.eulerAngles.x < 0.05f) controller.transform.Rotate(-transform.up * Random.Range(0.0f, 1.0f), UnityEngine.Space.World);
+        if (transform.rotation.eulerAngles.x > 359.5f || transform.rotation.eulerAngles.x < 0.05f) transform.Rotate(-transform.up * Random.Range(0.0f, 1.0f), UnityEngine.Space.World);
         else move = StraightLook;
     }
 
@@ -186,10 +186,10 @@ public class Fish2 : MonoBehaviour
                 switch (nextRestMove)
                 {
                     case 0:
-                        controller.transform.Rotate(transform.up, Space.World);
+                        transform.Rotate(transform.up, Space.World);
                         break;
                     case 1:
-                        controller.transform.Rotate(-transform.up, Space.World);
+                        transform.Rotate(-transform.up, Space.World);
                         break;
                     default:
                         transform.position += Time.deltaTime * 20.0f * transform.forward;
@@ -290,5 +290,22 @@ public class Fish2 : MonoBehaviour
                 FishState = State.Move;
             }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Water")) inWater = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Water")) inWater = true;
+    }
+
+    Vector3 gravity = new(0.0f, 10.0f, 0.0f);
+
+    private void Update_OutWater()
+    {
+        if (!inWater) transform.position -= Time.deltaTime * gravity;
     }
 }

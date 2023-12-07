@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     Vector2 move;
     Vector2 look;
 
+    private GameObject dot;
     public GameObject handleing;
     public GameObject inventorys;
     public ItemManager inven;
@@ -108,6 +109,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        dot = FindObjectOfType<Canvas>().transform.GetChild(0).gameObject;
         Transform child = transform.GetChild(0);
         handle = child.transform.GetComponent<Handling>();
         inventorys = GameObject.FindGameObjectWithTag("Inven");
@@ -292,6 +294,7 @@ public class Player : MonoBehaviour
     {
         if (!inventory)
         {
+            dot.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
             if (work != null)work.SetActive(false);
             if(storage != null)storage.gameObject.SetActive(false);
@@ -302,6 +305,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            dot.SetActive(false) ;
             Cursor.lockState = CursorLockMode.None;
             inventorys.SetActive(true);
             inven.gameObject.SetActive(true);
@@ -348,6 +352,7 @@ public class Player : MonoBehaviour
                 handleing = handle.rayHit;
                 if(handleing.CompareTag("ObjectWork"))
                 {
+                    dot.SetActive(false);
                     Cursor.lockState = CursorLockMode.None;
                     work = handle.rayHit;
                     inventorys.SetActive(true);
@@ -358,6 +363,7 @@ public class Player : MonoBehaviour
                 }
                 else if(handleing.CompareTag("ObjectStorage"))
                 {
+                    dot.SetActive(false);
                     Cursor.lockState = CursorLockMode.None;
                     storage = handle.rayHit.GetComponent<UIManager>().targetInven;
                     inventorys.SetActive(true);
