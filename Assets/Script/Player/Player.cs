@@ -117,6 +117,8 @@ public class Player : MonoBehaviour
         equip = inventorys.transform.GetChild(1).gameObject;
         objManager = FindObjectOfType<ObjectManager>();
         Craft = FindObjectOfType<Crafting>();
+        BlackImage = GameObject.Find("BlackOut").GetComponent<Image>();
+        BlackImage.color = Color.clear;
         if(mainCamera == null)
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -431,5 +433,34 @@ public class Player : MonoBehaviour
         if (lfAngle < -360f) lfAngle += 360f;
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
+    }
+
+    // Die----------
+
+    Image BlackImage;
+
+    public void Die()
+    {
+        StartCoroutine(DieCoroutine());
+    }
+
+    float alpha;
+    Color blackOut;
+
+    IEnumerator DieCoroutine()
+    {
+        BlackImage.color = new(0.0f, 0.0f, 0.0f, 0.0f);
+        alpha = 0.0f;
+        while (true)
+        {
+            if (alpha > 1.0f) break;
+            else
+            {
+                alpha += 0.001f *  Time.deltaTime;
+                blackOut = new(0.0f,0.0f,0.0f,alpha);
+                BlackImage.color = blackOut;
+            }
+        }
+        yield return null;
     }
 }
