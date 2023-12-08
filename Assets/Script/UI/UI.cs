@@ -112,9 +112,4 @@ public class UI : MonoBehaviour
         if (player.transform.position.y > 0) depth.text = "0m";
         else depth.text = $"{(int)-player.transform.position.y}m";
     }
-
-    IEnumerator DrownCoroutine()
-    {
-        yield return null;
-    }
 }

@@ -446,6 +446,7 @@ public class Player : MonoBehaviour
 
     float alpha;
     Color blackOut;
+    WaitForSeconds wait = new(0.1f);
 
     IEnumerator DieCoroutine()
     {
@@ -456,9 +457,10 @@ public class Player : MonoBehaviour
             if (alpha > 1.0f) break;
             else
             {
-                alpha += 0.001f *  Time.deltaTime;
+                alpha += 0.05f;
                 blackOut = new(0.0f,0.0f,0.0f,alpha);
                 BlackImage.color = blackOut;
+                yield return wait;
             }
         }
         yield return null;
