@@ -20,7 +20,7 @@ public class Handling : MonoBehaviour
 
     private void Update()
     {
-        raycast();
+        Raycast();
     }
 
     private void OnDrawGizmos()
@@ -29,7 +29,7 @@ public class Handling : MonoBehaviour
         Gizmos.DrawRay(rayTransform, transform.forward * rayDistance);
     }
 
-    private void raycast()
+    private void Raycast()
     {
         rayTransform = new Vector3(transform.position.x, transform.position.y + 0.35f, transform.position.z);
         ray = new Ray(rayTransform, transform.forward * rayDistance);
@@ -84,7 +84,7 @@ public class Handling : MonoBehaviour
             }
             if (!findTag)
             {
-                player.work.SetActive(false);
+                player.Craft.gameObject.SetActive(false);
                 player.workWindow = false;
             }
         }

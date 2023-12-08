@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,6 +8,8 @@ using UnityEngine.UI;
 public class Slots : MonoBehaviour, IPointerClickHandler
 {
     public Item item;
+
+    private TextMeshProUGUI Name;
 
     public int itemIndex = -1;
 
@@ -25,7 +28,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler
                 switch(value)
                 {
                     case true:
-                        image.color = SetColor();
+                        image.color = Color.white;
+                        Name.text = $"{item}";
                         break;
                     case false:
                         image.color = Color.clear;
@@ -39,34 +43,9 @@ public class Slots : MonoBehaviour, IPointerClickHandler
 
     Image image;
 
-    private Color SetColor()
-    {
-        Color color = Color.white;
-
-        switch (item)
-        {
-            case Item.seaglider:
-                color = Color.red; 
-                break;
-            case Item.airtank:
-                color = Color.blue; 
-                break;
-            case Item.head:
-                color = Color.green;
-                break;
-            case Item.body:
-                color = Color.yellow;
-                break;
-            case Item.water:
-                color = Color.white; 
-                break;
-        }
-
-        return color;
-    }
-
     private void Awake()
     {
+        Name = GetComponentInChildren<TextMeshProUGUI>();
         image = GetComponent<Image>();
         inven = GetComponentInParent<ItemManager>();
         itemIndex = -1;
