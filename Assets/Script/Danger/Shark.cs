@@ -42,8 +42,7 @@ public class Shark : MonoBehaviour
     /// 상어 이동제어
     /// </summary>
     public float moveSpeed = 0.0f;
-    public float sideSpeed = 0.0f;
-    public float amplitude = 0.5f;
+    public float rotationSpeed = 90.0f;
 
     /// <summary>
     /// 배고픔 수치
@@ -52,12 +51,11 @@ public class Shark : MonoBehaviour
     float timeSpan;
     float checkTime;
 
-    SphereCollider bite;
     Transform targetObject;
+    GameObject target;
 
     private void Awake()
     {
-        bite = GetComponent<SphereCollider>();
         timeSpan = 0.0f;
         checkTime = 1.0f;
         act = Update_Hungry;
@@ -80,6 +78,7 @@ public class Shark : MonoBehaviour
             }
             timeSpan = 0.0f;
             Debug.Log(hungry);
+            Debug.Log(SharkState);
             Debug.Log(moveSpeed);
         }
     }
@@ -90,14 +89,30 @@ public class Shark : MonoBehaviour
         SharkMove();
         Collider[] colliders = Physics.OverlapSphere(transform.position, 15.0f);
 
+        float closestDistance = Mathf.Infinity; // 가장 가까운 거리
+        GameObject closestCollider = null; // 가장 가까운 콜라이더
+
+
         foreach (Collider col in colliders)
         {
             if (col.CompareTag("Fish1") || col.CompareTag("Fish2") || col.CompareTag("Fish3") || col.CompareTag("Fish4"))
             {
-                targetObject = col.gameObject.transform;
-                SharkState = State.Chase;
-                Debug.Log($"콜라이더 찾음{SharkState}");
+                // 자기 자신과의 거리 계산
+                float distance = Vector3.Distance(transform.position, col.transform.position);
+
+                if (distance < closestDistance) // 가장 가까운 거리의 콜라이더
+                {
+                    closestDistance = distance;
+                    closestCollider = col.gameObject;
+                }
             }
+        }
+        // 가장 가까운 콜라이더가 있다면 그 콜라이더를 target으로 설정
+        if (closestCollider != null)
+        {
+            target = closestCollider;
+            targetObject = target.transform;
+            SharkState = State.Chase;
         }
     }
 
@@ -110,58 +125,43 @@ public class Shark : MonoBehaviour
     private void Update_Full()
     {
         moveSpeed = 1.0f;
+        SharkMove();
         checkHungry();
     }
 
     private void SharkMove()
     {
-        // float hInput = Mathf.Sin(Time.time * sideSpeed) * amplitude;
-
-        // Vector3 moveDirection = new Vector3(hInput, 0.0f, 1.0f).normalized;
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        Rotation();
     }
 
     private void ChaseMove()
     {
         if (targetObject != null)
         {
-            Vector3 targetDirection = (targetObject.position - transform.position).normalized;
+            // targetObject와의 벡터 계산
+            Vector3 targetDirection = targetObject.position - transform.position;
 
-            transform.Translate(targetDirection * moveSpeed * Time.deltaTime);
-        }
-    }
+            // targetDirection의 각도 계산
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.collider == bite)
-        {
-            if (collision.gameObject.tag == "Fish1" || collision.gameObject.tag == "Fish2"
-               || collision.gameObject.tag == "Fish3" || collision.gameObject.tag == "Fish4")
+            // forward 방향으로 이동
+            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+
+
+            float distanceToTarget = Vector3.Distance(transform.position, targetObject.position);
+
+            if (distanceToTarget < 1.0f) // 0.1보다 가까워지면(사실상 닿으면 Eat실행)
             {
-                moveSpeed = 0.1f;
-                targetObject = null;
-                collision.gameObject.SetActive(false);
-                if (collision.gameObject.tag == "Fish1")
-                {
-                    hungry += 30.0f;
-                }
-                else if (collision.gameObject.tag == "Fish2")
-                {
-                    hungry += 40.0f;
-                }
-                else if (collision.gameObject.tag == "Fish3")
-                {
-                    hungry += 50.0f;
-                }
-                else if (collision.gameObject.tag == "Fish4")
-                {
-                    hungry += 50.0f;
-                }
-                checkHungry();
+                Eat(targetObject.gameObject);
             }
         }
     }
 
+    /// <summary>
+    /// 배고픔 수치 체크
+    /// </summary>
     private void checkHungry()
     {
         if (hungry <= 0.0f)
@@ -173,5 +173,46 @@ public class Shark : MonoBehaviour
             SharkState = State.Full;
         }
     }
-}
 
+    private void Rotation()
+    {
+        Vector3 movementDirection = transform.forward; // 이동 방향 벡터를 얻음
+        if (movementDirection != Vector3.zero)  // 보는 방향으로 회전
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1.0f * Time.deltaTime);
+        }
+    }
+
+    /// <summary>
+    /// 물고기를 먹는 함수
+    /// </summary>
+    /// <param name="target"></param>
+    private void Eat(GameObject target)
+    {
+        if (target.tag == "Fish1" || target.tag == "Fish2"
+   || target.tag == "Fish3" || target.tag == "Fish4")
+        {
+            moveSpeed = 1.0f;
+            targetObject = null;
+            Destroy(target);
+            if (target.tag == "Fish1")
+            {
+                hungry += 30.0f;
+            }
+            else if (target.tag == "Fish2")
+            {
+                hungry += 40.0f;
+            }
+            else if (target.tag == "Fish3")
+            {
+                hungry += 50.0f;
+            }
+            else if (target.tag == "Fish4")
+            {
+                hungry += 50.0f;
+            }
+            checkHungry();
+        }
+    }
+}
