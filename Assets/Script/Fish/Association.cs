@@ -43,11 +43,19 @@ public class Association : MonoBehaviour
             switch (associationState)
             {
                 case State.Basic:
-                    if (fishs != null) foreach (var fish in SpawnFish) fish.warning = false;
+                    if (fishs != null) foreach (var fish in SpawnFish)
+                        {
+                            fish.warning = false;
+                            fish.fishCollider.enabled = false;
+                        }
                     act = Update_Associate;
                     break;
                 case State.Escape:
-                    if(fishs != null) foreach (var fish in SpawnFish) fish.warning = true;
+                    if(fishs != null) foreach (var fish in SpawnFish)
+                        {
+                            fish.warning = true;
+                            fish.fishCollider.enabled = true;
+                        }
                     act = Update_Escape;
                     break;
             }

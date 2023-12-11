@@ -12,6 +12,7 @@ public class AssociationFish : MonoBehaviour
     public bool warning = false;
 
     public float fishSprintSpeed;
+    public SphereCollider fishCollider;
 
     private enum State
     {

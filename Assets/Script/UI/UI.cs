@@ -8,6 +8,7 @@ public class UI : MonoBehaviour
 {
     Player player;
     TextMeshProUGUI depth;
+    Mouse mouse;
 
     Image hungerImage;
     Image hydrationImage;
@@ -94,22 +95,88 @@ public class UI : MonoBehaviour
                 if(breathe > maxBreathe) breathe = maxBreathe;
                 else if (breathe < 0)
                 {
+                    StartCoroutine(Drown());
                     breathe = 0;
                 }
+                breatheImage.fillAmount = (float)breathe / maxBreathe;
+                breatheText.text = $"{breathe}";
             }
         }
     }
 
     private void Awake()
     {
+        mouse = FindObjectOfType<Mouse>();
         breathe = maxBreathe;
         player = FindObjectOfType<Player>();
         depth = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        hungerImage = transform.GetChild(2).GetComponent<Image>();
+        hydrationImage = transform.GetChild(3).GetComponent<Image>();
+        breatheImage = transform.GetChild(4).GetComponent<Image>();
+        hpImage = transform.GetChild(5).GetComponent<Image>();
+        hungerText = hungerImage.GetComponentInChildren<TextMeshProUGUI>();
+        hydrationText = hydrationImage.GetComponentInChildren<TextMeshProUGUI>();
+        breatheText = breatheImage.GetComponentInChildren<TextMeshProUGUI>();
+        hpText = hpImage.GetComponentInChildren<TextMeshProUGUI>();
+    }
+
+    private void Start()
+    {
+        StartCoroutine(HpHunger());
+        StartCoroutine(BreathOut());
+        StartCoroutine(BreathIn());
     }
 
     private void Update()
     {
         if (player.transform.position.y > 0) depth.text = "0m";
         else depth.text = $"{(int)-player.transform.position.y}m";
+    }
+
+    public int hungerSick = 3;
+    public int hydrationSick = 2;
+    readonly WaitForSeconds sick = new(5.0f);
+
+    private IEnumerator HpHunger()
+    {
+        while (true)
+        {
+            yield return sick;
+            if (Hunger >= 90 && Hydration >= 90) Hp += 5;
+            Hunger -= hungerSick;
+            Hydration -= hydrationSick;
+        }
+    }
+
+    readonly WaitForSeconds breathOut = new(1.0f);
+    readonly WaitForSeconds breathIn = new(0.025f);
+
+    private IEnumerator BreathOut()
+    {
+        if (!mouse.canBreathe)
+        {
+            while(true)
+            {
+                yield return breathOut;
+                Breathe -= 1;
+            }
+        }
+    }
+    private IEnumerator BreathIn()
+    {
+        if (!mouse.canBreathe)
+        {
+            while (true)
+            {
+                yield return breathIn;
+                Breathe += 1;
+            }
+        }
+    }
+
+    private IEnumerator Drown()
+    {
+        yield return new WaitForSeconds(2.0f);
+        player.Die();
     }
 }

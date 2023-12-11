@@ -18,6 +18,7 @@ TagManager:
   - Fish2
   - Fish3
   - Fish4
+  - Mouse
   layers:
   - Default
   - TransparentFX
@@ -46,7 +47,7 @@ TagManager:
   - Void
   - Fish
   - Enemy
-  - 
+  - Mouse
   - 
   - 
   - 
