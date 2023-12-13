@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AssociationFish : MonoBehaviour
 {
@@ -8,20 +9,20 @@ public class AssociationFish : MonoBehaviour
 
     public float sightRange = 2.0f;
 
-    private bool inWater = true;
+    public bool inWater = true;
     public bool warning = false;
 
     public float fishSprintSpeed;
-    public SphereCollider fishCollider;
+    public CapsuleCollider fishCollider;
 
-    private enum State
+    public enum State
     {
         Association,
         Escape,
         GetBack,
     }
 
-    private State fishState = State.Association;
+    public State fishState = State.Association;
 
     private State FishState
     {
@@ -52,13 +53,14 @@ public class AssociationFish : MonoBehaviour
         basicPos = transform.localPosition;
         speed = Random.Range(0.1f, 0.3f);
         moveSpeed = speed;
+        fishCollider = GetComponent<CapsuleCollider>();
         act = Update_Association;
     }
 
     private void Update()
     {
+        if (warning) EnemyCheck();
         act();
-        if(warning)EnemyCheck();
         Update_OutWater();
     }
 

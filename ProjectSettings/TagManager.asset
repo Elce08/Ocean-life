@@ -19,6 +19,7 @@ TagManager:
   - Fish3
   - Fish4
   - Mouse
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -8,7 +8,6 @@ public class UI : MonoBehaviour
 {
     Player player;
     TextMeshProUGUI depth;
-    Mouse mouse;
 
     Image hungerImage;
     Image hydrationImage;
@@ -106,7 +105,6 @@ public class UI : MonoBehaviour
 
     private void Awake()
     {
-        mouse = FindObjectOfType<Mouse>();
         breathe = maxBreathe;
         player = FindObjectOfType<Player>();
         depth = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
@@ -153,24 +151,18 @@ public class UI : MonoBehaviour
 
     private IEnumerator BreathOut()
     {
-        if (!mouse.canBreathe)
+        while (true)
         {
-            while(true)
-            {
-                yield return breathOut;
-                Breathe -= 1;
-            }
+            yield return breathOut;
+            if (player.floor == Player.Space.Water) Breathe -= 1;
         }
     }
     private IEnumerator BreathIn()
     {
-        if (!mouse.canBreathe)
+        while (true)
         {
-            while (true)
-            {
-                yield return breathIn;
-                Breathe += 1;
-            }
+            yield return breathIn;
+            if (player.floor == Player.Space.Ground) Breathe += 1;
         }
     }
 
