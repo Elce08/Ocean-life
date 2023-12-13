@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9034410400591925928}
   - component: {fileID: -3419058454450141084}
+  - component: {fileID: 256455056}
   m_Layer: 0
   m_Name: Fish2
   m_TagString: Untagged
@@ -46,8 +47,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightRange: 2
-  warning: 0
+  inWater: 1
+  warning: 1
   fishSprintSpeed: 0
+  fishCollider: {fileID: 0}
+  fishState: 0
+--- !u!136 &256455056
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745972438211150953}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.19
+  m_Height: 1
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8450870083111139046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -110,12 +128,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7148729825120623731, guid: d56fd8b759e30d34f8fb1281886b6f82,
+        type: 3}
+      propertyPath: m_Height
+      value: 2.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148729825120623731, guid: d56fd8b759e30d34f8fb1281886b6f82,
+        type: 3}
+      propertyPath: m_Radius
+      value: 2.16
+      objectReference: {fileID: 0}
     - target: {fileID: 7593183625482963960, guid: d56fd8b759e30d34f8fb1281886b6f82,
         type: 3}
       propertyPath: m_Name
       value: Fish2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8309529925065922542, guid: d56fd8b759e30d34f8fb1281886b6f82, type: 3}
+    - {fileID: 7148729825120623731, guid: d56fd8b759e30d34f8fb1281886b6f82, type: 3}
+    - {fileID: 4201715740143610048, guid: d56fd8b759e30d34f8fb1281886b6f82, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d56fd8b759e30d34f8fb1281886b6f82, type: 3}
 --- !u!4 &8976359844339144618 stripped
 Transform:

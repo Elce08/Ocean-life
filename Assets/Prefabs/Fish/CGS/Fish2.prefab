@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 708729977578381644}
   - component: {fileID: 8309529925065922542}
+  - component: {fileID: 7148729825120623731}
   m_Layer: 0
   m_Name: Fish2
   m_TagString: Fish2
@@ -43,10 +44,24 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.1917202
-  m_Height: 0.81214166
+  m_Radius: 0.16
+  m_Height: 0.85
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.03, z: -0.02}
+--- !u!136 &7148729825120623731
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7593183625482963960}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.16
+  m_Height: 0.85
+  m_Direction: 2
+  m_Center: {x: 0, y: -0.03, z: -0.02}
 --- !u!1001 &7407234112321370997
 PrefabInstance:
   m_ObjectHideFlags: 0

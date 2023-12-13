@@ -8,8 +8,6 @@ public class Association : MonoBehaviour
 {
     public GameObject fish;
 
-    private SphereCollider associationCollider;
-
     private float speed;
     public float moveSpeed = 3.0f;
     public float sphereRadius = 5.0f;
@@ -66,7 +64,6 @@ public class Association : MonoBehaviour
 
     private void Awake()
     {
-        associationCollider = GetComponent<SphereCollider>();
         speed = moveSpeed;
         enemys = new();
         act = Update_Associate;
@@ -75,7 +72,6 @@ public class Association : MonoBehaviour
 
     private void Start()
     {
-        associationCollider.radius = sphereRadius;
         fishs = new GameObject[headNum];
         SpawnFish = new AssociationFish[headNum];
         StartCoroutine(SetMoveDir());
@@ -84,8 +80,8 @@ public class Association : MonoBehaviour
 
     private void Update()
     {
-        EnemyCheck();
         act();
+        EnemyCheck();
     }
 
     private void Spawn()
@@ -173,16 +169,7 @@ public class Association : MonoBehaviour
         {
             foreach (Collider target in enemyTargets)
             {
-                float fromtoRotation;
-                if (AssociationState != State.Escape)
-                {
-                    fromtoRotation = Quaternion.FromToRotation(transform.right, target.transform.position - transform.position).eulerAngles.z;
-                    if (fromtoRotation < 120.0f || fromtoRotation > 240.0f) enemys.Add(target);
-                }
-                else
-                {
-                    enemys.Add(target);
-                }
+                enemys.Add(target);
             }
         }
         if (enemys.Count > 0)
@@ -196,12 +183,12 @@ public class Association : MonoBehaviour
                 }
             }
             AssociationState = State.Escape;
-            Update_Escape();
         }
         else
         {
             if (AssociationState == State.Escape)
             {
+                speed = moveSpeed;
                 AssociationState = State.Basic;
             }
         }
