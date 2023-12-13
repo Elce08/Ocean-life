@@ -42,17 +42,23 @@ public class TestInventory : TestBase
 
     protected override void Test4(InputAction.CallbackContext _)
     {
-        // inven.Add(Item.water);
+        objManager.able = false;
+        player.setWork = true;
+        player.setStorage = false;
     }
 
     protected override void Test5(InputAction.CallbackContext _)
     {
         objManager.able = false;
+        player.setWork = false;
         player.setStorage = true;
     } 
 
     protected override void TestRClick(InputAction.CallbackContext _)
     {
+        player.setWork = false;
+        player.setStorage = false;
+        objManager.ShowIndicator();
     }
 
 }

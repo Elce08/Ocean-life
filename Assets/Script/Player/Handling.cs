@@ -11,11 +11,13 @@ public class Handling : MonoBehaviour
     Vector3 rayTransform;
     Player player;
     Collider[] colls;
+    Crafting craft;
     bool findTag = false;
 
     private void Awake()
     {
         player = FindObjectOfType<Player>();
+        craft = FindObjectOfType<Crafting>();
     }
 
     private void Update()
@@ -62,7 +64,6 @@ public class Handling : MonoBehaviour
             if (!findTag)
             {
                 Cursor.lockState = CursorLockMode.Locked;
-                player.storage.gameObject.SetActive(false);
                 player.storage.gameObject.SetActive(false);
                 player.inventorys.SetActive(false);
                 player.storageWindow = false;

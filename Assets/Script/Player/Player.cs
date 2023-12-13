@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     public bool sink;
     public bool interaction;
     public bool setStorage;
+    public bool setWork;
     
 
     public enum Space
@@ -119,7 +120,8 @@ public class Player : MonoBehaviour
         Craft = FindObjectOfType<Crafting>();
         BlackImage = GameObject.Find("BlackOut").GetComponent<Image>();
         BlackImage.color = Color.clear;
-        if(mainCamera == null)
+        craft = FindObjectOfType<Crafting>();
+        if (mainCamera == null)
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
@@ -293,6 +295,7 @@ public class Player : MonoBehaviour
     private bool inventory = false;
     public bool storageWindow = false;
     public bool workWindow = false;
+    Crafting craft;
 
     private void Inventory()
     {
@@ -322,7 +325,6 @@ public class Player : MonoBehaviour
     }
 
     // input==========
-
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
@@ -362,12 +364,9 @@ public class Player : MonoBehaviour
                 {
                     dot.SetActive(false);
                     Cursor.lockState = CursorLockMode.None;
-                    inventorys.SetActive(true);
-                    inven.gameObject.SetActive(true);
-                    Craft.gameObject.SetActive(true);
-                    workWindow = true;
-                    storageWindow = true;
-                    inventory = true;
+                    craft.gameObject.SetActive(true);
+                    craft.InvenCheck();
+                    Cursor.lockState = CursorLockMode.None;
                 }
                 else if(handleing.CompareTag("ObjectStorage"))
                 {

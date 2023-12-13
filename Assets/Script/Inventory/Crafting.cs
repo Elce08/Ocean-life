@@ -23,7 +23,7 @@ public class Crafting : MonoBehaviour
         lastCheck = transform.GetChild(2).GetComponentInChildren<Button>();
         lastCheck.onClick.AddListener(LastCheck);
         lastCheck.gameObject.SetActive(false);
-        inven = FindObjectOfType<Canvas>().transform.GetChild(1).GetChild(0).GetComponent<ItemManager>();
+        inven = FindObjectOfType<Canvas>().transform.GetChild(2).GetChild(0).GetComponent<ItemManager>();
         craftButtons = transform.GetChild(0).GetChild(0).GetComponentsInChildren<Button>();
         Name = transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>();
         Cost = transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>();

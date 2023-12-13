@@ -11,7 +11,8 @@ public class ObjectManager : MonoBehaviour
 {
     public GameObject ableGameObjPrefab; // 설치 가능한 위치를 나타내는 파란색 오브젝트 프리팹
     public GameObject disableGameObjPrefab; // 설치 불가능한 위치를 나타내는 빨간색 오브젝트 프리팹
-    public GameObject gameObjPrefab; // 미리 디자인된 게임 오브젝트 프리팹
+    public GameObject storage; // 미리 디자인된 게임 오브젝트 프리팹
+    public GameObject workStation;  // 미리 디자인된 제작대 프리팹
     PlayerInputAtions playerAction;
 
     public GameObject currentIndicator;     // 표시되는 오브젝트
@@ -36,7 +37,7 @@ public class ObjectManager : MonoBehaviour
 
     private void Update()
     {
-        if (player.setStorage)
+        if (player.setStorage || player.setWork)
         {
             AddGameObject();
         }
@@ -75,7 +76,7 @@ public class ObjectManager : MonoBehaviour
         }
     }
 
-    void ShowIndicator()
+    public void ShowIndicator()
     {
         if (able)
         {
@@ -92,7 +93,11 @@ public class ObjectManager : MonoBehaviour
         }
         // 새로운 표시 오브젝트 생성
         currentIndicator = Instantiate(nowObject, setPosition, Quaternion.identity);
-        currentIndicator.SetActive(true); // 새로운 오브젝트를 활성화합니다.
+        currentIndicator.SetActive(true); // 새로운 오브젝트를 활성화
+        if (!player.setStorage && !player.setWork)
+        {
+            Destroy(currentIndicator.gameObject);
+        }
     }
 
     bool CanPlaceObjectAtPoint()
@@ -116,14 +121,19 @@ public class ObjectManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 마우스 클릭시 실행되는 함수
+    /// </summary>
+    /// <param name="obj"></param>
     private void LeftDown(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (player.setStorage && able)
+        if (player.setStorage && able)  // 창고 생성이 활성화 중이라면
         {
-            GameObject newGameObject = Instantiate(gameObjPrefab, setPosition, Quaternion.identity);
+            Debug.Log("창고 생성");
+            GameObject newGameObject = Instantiate(storage, setPosition, Quaternion.identity);
             newGameObject.SetActive(true);  // 오브젝트 생성
 
-            GameObject newUI = Instantiate(uiPrefab, canvas.transform.GetChild(1));
+            GameObject newUI = Instantiate(uiPrefab, canvas.transform.GetChild(2));
             newUI.SetActive(true);
 
             ItemManager newUIManager = newUI.GetComponent<ItemManager>();
@@ -138,6 +148,30 @@ public class ObjectManager : MonoBehaviour
             uiManager.SetTargetSlot(newUIManager);  // UI 연결
             newUIManager.gameObject.SetActive(false);   // UI 닫기
             player.setStorage = false;
+            Destroy(currentIndicator);  // 생성되어 있는 임시 게임오브젝트 삭제
+        }
+
+        else if (player.setWork && able)     // 제작대 생성이 활성화중이라면
+        {
+            Debug.Log("제작대 생성");
+            GameObject newGameObject = Instantiate(workStation, setPosition, Quaternion.identity);
+            newGameObject.SetActive(true);  // 오브젝트 생성
+
+            //      GameObject newUI = Instantiate(uiPrefab, canvas.transform.GetChild(1));
+            //      newUI.SetActive(true);
+            //      
+            //      ItemManager newUIManager = newUI.GetComponent<ItemManager>();
+            //      storages.Add(newUIManager); // UI생성
+            //      
+            //      foreach (ItemManager inven in storages)
+            //      {
+            //          inven.gameObject.name = $"Storage{storages.IndexOf(inven)}";
+            //      
+            //      }
+            //      UIManager uiManager = newGameObject.AddComponent<UIManager>();
+            //      uiManager.SetTargetSlot(newUIManager);  // UI 연결
+            //      newUIManager.gameObject.SetActive(false);   // UI 닫기
+            player.setWork = false;
             Destroy(currentIndicator);  // 생성되어 있는 임시 게임오브젝트 삭제
         }
     }
