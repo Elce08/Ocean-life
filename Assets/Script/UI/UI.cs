@@ -82,6 +82,7 @@ public class UI : MonoBehaviour
     }
 
     public int maxBreathe = 60;
+
     int breathe;
     public int Breathe
     {
@@ -149,12 +150,18 @@ public class UI : MonoBehaviour
     readonly WaitForSeconds breathOut = new(1.0f);
     readonly WaitForSeconds breathIn = new(0.025f);
 
+    public float safeBreathDepth = 100.0f;
+
     private IEnumerator BreathOut()
     {
         while (true)
         {
             yield return breathOut;
-            if (player.floor == Player.Space.Water) Breathe -= 1;
+            if (player.floor == Player.Space.Water)
+            {
+                if (transform.position.y < -safeBreathDepth) Breathe -= 2;
+                else Breathe--;
+            }
         }
     }
     private IEnumerator BreathIn()
@@ -162,7 +169,7 @@ public class UI : MonoBehaviour
         while (true)
         {
             yield return breathIn;
-            if (player.floor == Player.Space.Ground) Breathe += 1;
+            if (player.floor == Player.Space.Ground) Breathe ++;
         }
     }
 
