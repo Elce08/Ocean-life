@@ -193,9 +193,10 @@ public class Shark : MonoBehaviour
         if (target.tag == "Fish1" || target.tag == "Fish2"
    || target.tag == "Fish3" || target.tag == "Fish4")
         {
+            
             moveSpeed = 1.0f;
             targetObject = null;
-            Destroy(target);
+
             if (target.tag == "Fish1")
             {
                 hungry += 30.0f;
