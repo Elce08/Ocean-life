@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class Slots : MonoBehaviour, IPointerClickHandler
 {
+    private Player player;
+
     public Item item;
 
     private TextMeshProUGUI Name;
@@ -33,11 +35,11 @@ public class Slots : MonoBehaviour, IPointerClickHandler
                         break;
                     case false:
                         image.color = Color.clear;
+                        Name.text = "None";
                         itemIndex = -1;
                         break;
                 }
             }
-
         }
     }
 
@@ -45,7 +47,9 @@ public class Slots : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
+        player = FindObjectOfType<Player>();
         Name = GetComponentInChildren<TextMeshProUGUI>();
+        Name.text = "None";
         image = GetComponent<Image>();
         inven = GetComponentInParent<ItemManager>();
         itemIndex = -1;
@@ -57,11 +61,21 @@ public class Slots : MonoBehaviour, IPointerClickHandler
         {
             if (itemIndex > -1)
             {
-                if (inven.another != null)
+                if (player.InvenState == Player.Inven.Storage)
                 {
                     inven.ChangeInven(itemIndex);
                 }
                 else inven.DropItem(itemIndex);
+            }
+        }
+        if(eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (itemIndex > -1)
+            {
+                if(player.InvenState == Player.Inven.Inventory)
+                {
+
+                }
             }
         }
     }

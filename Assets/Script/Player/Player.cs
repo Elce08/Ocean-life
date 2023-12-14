@@ -17,9 +17,9 @@ public class Player : MonoBehaviour
     public ItemManager inven;
     public ItemManager storage;
     public Crafting Craft;
+    public LimitedEdition equip;
     ObjectManager objManager;
 
-    GameObject equip;
     Handling handle;
 
     public bool jump;
@@ -115,12 +115,11 @@ public class Player : MonoBehaviour
         handle = child.transform.GetComponent<Handling>();
         inventorys = GameObject.FindGameObjectWithTag("Inven");
         inven = inventorys.GetComponentInChildren<ItemManager>();
-        equip = inventorys.transform.GetChild(1).gameObject;
+        equip = inventorys.transform.GetChild(1).GetComponent<LimitedEdition>();
         objManager = FindObjectOfType<ObjectManager>();
         Craft = FindObjectOfType<Crafting>();
         BlackImage = GameObject.Find("BlackOut").GetComponent<Image>();
         BlackImage.color = Color.clear;
-        craft = FindObjectOfType<Crafting>();
         if (mainCamera == null)
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -130,7 +129,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        equip.SetActive(false);
+        equip.gameObject.SetActive(false);
         inven.gameObject.SetActive(false);
         inventorys.SetActive(false);
         Craft.gameObject.SetActive(false) ;
@@ -213,7 +212,7 @@ public class Player : MonoBehaviour
 
     private void GroundCameraRotation()
     {
-        if (!inventory)
+        if (InvenState == Inven.Close)
         {
             _cinemachineTargetPitchX += look.y * rotationSpeed;
             _cinemachineTargetPitchY += look.x * rotationSpeed;
@@ -292,36 +291,87 @@ public class Player : MonoBehaviour
 
     // inven ==========
 
-    private bool inventory = false;
+    public enum Inven
+    {
+        Close,
+        Inventory,
+        Storage,
+        Craft,
+    }
+
+    public Inven invenState = Inven.Close;
+    public Inven InvenState
+    {
+        get => invenState;
+        set
+        {
+            if(value != invenState)
+            {
+                invenState = value;
+                switch (value)
+                {
+                    case Inven.Close:
+                        Close_State();
+                        break;
+                    case Inven.Inventory:
+                        Inventory_State();
+                        break;
+                    case Inven.Storage:
+                        Storage_State();
+                        break;
+                    case Inven.Craft:
+                        Craft_State();
+                        break;
+                }
+            }
+        }
+    }
+
     public bool storageWindow = false;
     public bool workWindow = false;
-    Crafting craft;
 
-    private void Inventory()
+    private void Close_State()
     {
-        if (!inventory)
-        {
-            dot.SetActive(true);
-            Cursor.lockState = CursorLockMode.Locked;
-            if (Craft != null) 
-            {
-                Craft.lastCheck.gameObject.SetActive(false);
-                Craft.gameObject.SetActive(false);
-            }
-            if(storage != null)storage.gameObject.SetActive(false);
-            equip.SetActive(false);
-            inven.another = null;
-            inven.gameObject.SetActive(false);
-            inventorys.SetActive(false);
-        }
-        else
-        {
-            dot.SetActive(false) ;
-            Cursor.lockState = CursorLockMode.None;
-            inventorys.SetActive(true);
-            inven.gameObject.SetActive(true);
-            equip.SetActive(true) ;
-        }
+        dot.SetActive(true);
+        Cursor.lockState = CursorLockMode.Locked;
+        if (storage != null) storage.gameObject.SetActive(false);
+        equip.gameObject.SetActive(false);
+        inventorys.SetActive(false);
+        inven.gameObject.SetActive(false);
+    }
+
+    private void Inventory_State()
+    {
+        Close_State ();
+        dot.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        inventorys.SetActive(true);
+        inven.gameObject.SetActive(true);
+        inven.another = equip;
+        equip.another = inven;
+        equip.gameObject.SetActive(true);
+    }
+
+    private void Storage_State()
+    {
+        Close_State();
+        dot.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        storage = handle.rayHit.GetComponent<UIManager>().targetInven;
+        inventorys.SetActive(true);
+        inven.gameObject.SetActive(true);
+        storage.gameObject.SetActive(true);
+        inven.another = storage;
+        storage.another = inven;
+    }
+
+    private void Craft_State()
+    {
+        Close_State();
+        dot.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        Craft.gameObject.SetActive(true);
+        Craft.InvenCheck();
     }
 
     // input==========
@@ -357,29 +407,18 @@ public class Player : MonoBehaviour
         interaction = context.performed;
         if(interaction)
         {
-            if (handle.rayHit != null)
+            if (handle.rayHit != null && InvenState == Inven.Close)
             {
                 handleing = handle.rayHit;
                 if(handleing.CompareTag("ObjectWork"))
                 {
-                    dot.SetActive(false);
-                    Cursor.lockState = CursorLockMode.None;
-                    craft.gameObject.SetActive(true);
-                    craft.InvenCheck();
-                    Cursor.lockState = CursorLockMode.None;
+                    workWindow = true;
+                    InvenState = Inven.Craft;
                 }
                 else if(handleing.CompareTag("ObjectStorage"))
                 {
-                    dot.SetActive(false);
-                    Cursor.lockState = CursorLockMode.None;
-                    storage = handle.rayHit.GetComponent<UIManager>().targetInven;
-                    inventorys.SetActive(true);
-                    inven.gameObject.SetActive(true);
-                    storage.gameObject.SetActive(true);
-                    inven.another = storage;
-                    storage.another = inven;
                     storageWindow = true;
-                    inventory = true;
+                    InvenState = Inven.Storage;
                 }
             }
         }
@@ -389,9 +428,8 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
-            if (!inventory) inventory = true;
-            else inventory = false;
-            Inventory();
+            if (InvenState != Inven.Inventory) InvenState = Inven.Inventory;
+            else InvenState = Inven.Close;
         }
     }
 
@@ -399,8 +437,7 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
-            inventory = false;
-            Inventory();
+            InvenState = Inven.Close;
             storageWindow = false;
             workWindow = false;
             setStorage = false;
