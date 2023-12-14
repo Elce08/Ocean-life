@@ -78,12 +78,12 @@ public class ItemManager : MonoBehaviour
         return result;
     }
 
-    private Slots[] slots;
+    public Slots[] slots;
 
     public List<(Item,List<Slots>)> itemsSlots = new();
     public List<Item> items = new();
 
-    private void Awake()
+    protected virtual void Awake()
     {
         group = GetComponent<GridLayoutGroup>();
         slots = GetComponentsInChildren<Slots>();
@@ -99,7 +99,7 @@ public class ItemManager : MonoBehaviour
     /// </summary>
     /// <param name="item">Add target item</param>
     /// <returns>if add success or not</returns>
-    public bool Add(Item item)
+    public virtual bool Add(Item item)
     {
         items.Add(item);
         lastItem = item;
@@ -153,7 +153,7 @@ public class ItemManager : MonoBehaviour
     /// Refresh inventory and sort items
     /// </summary>
     /// <returns>If success or not</returns>
-    private bool RefreshSlots()
+    protected bool RefreshSlots()
     {
         bool result = true;
         items.Sort();
