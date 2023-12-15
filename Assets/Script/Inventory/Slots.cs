@@ -70,11 +70,11 @@ public class Slots : MonoBehaviour, IPointerClickHandler
         }
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            if (itemIndex > -1)
+            if (itemIndex > -1 && item != Item.None)
             {
                 if(player.InvenState == Player.Inven.Inventory)
                 {
-
+                    inven.ChangeInven(itemIndex);
                 }
             }
         }

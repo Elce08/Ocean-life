@@ -37,7 +37,9 @@ public class TestInventory : TestBase
 
     protected override void Test3(InputAction.CallbackContext _)
     {
-        player.Die();
+        inven.Add(Item.head);
+        inven.Add(Item.body);
+        inven.Add(Item.airtank);
     }
 
     protected override void Test4(InputAction.CallbackContext _)

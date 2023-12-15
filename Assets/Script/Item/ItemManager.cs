@@ -39,6 +39,7 @@ public class ItemManager : MonoBehaviour
 
     public int width;
     public int height;
+    public bool equip = false;
 
     public Sprite[] itemSprites;
 
@@ -130,12 +131,14 @@ public class ItemManager : MonoBehaviour
     /// Give Item to another Inven
     /// </summary>
     /// <param name="index">Give target item's index</param>
-    public void ChangeInven(int index)
+    public virtual void ChangeInven(int index)
     {
         if (another != null)
         {
-            another.Add(items[index]);
-            Remove(index);
+            if (another.Add(items[index]))
+            {
+                Remove(index);
+            }
         }
     }
 
@@ -147,6 +150,11 @@ public class ItemManager : MonoBehaviour
     {
         // add drop code
         Remove(index);
+    }
+
+    public void DropItem(Item item)
+    {
+        Remove(item);
     }
 
     /// <summary>
@@ -183,15 +191,14 @@ public class ItemManager : MonoBehaviour
             }
             if(start >= (width * height))
             {
-                items.Remove(lastItem);
+                DropItem(lastItem) ;
                 result = false;
                 break;
             }
             if((start + (x-1) + (y-1) * width) > (width * height))
             {
-                items.Remove(lastItem);
+                DropItem(lastItem);
                 result= false;
-                RefreshSlots();
                 break;
             }
 

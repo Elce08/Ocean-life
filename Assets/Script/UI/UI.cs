@@ -18,6 +18,7 @@ public class UI : MonoBehaviour
     TextMeshProUGUI breatheText;
     TextMeshProUGUI hpText;
 
+    public float damageMultiple = 1.0f;
     float hp = 100.0f;
     public float Hp
     {
@@ -26,7 +27,7 @@ public class UI : MonoBehaviour
         {
             if (hp != value)
             {
-                hp = value;
+                hp = value * damageMultiple;
                 if (hp > 100) hp = 100.0f;
                 else if(hp <= 0)
                 {
