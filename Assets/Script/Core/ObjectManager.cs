@@ -103,7 +103,6 @@ public class ObjectManager : MonoBehaviour
     bool CanPlaceObjectAtPoint()
     {
         inCollider = Physics.OverlapBox(setPosition, new Vector3(0.5f, 0.5f, 0.5f));
-        Debug.Log($"{inCollider.Length}");
         if (inCollider.Length > 2)
         {
             able = false;
@@ -129,7 +128,6 @@ public class ObjectManager : MonoBehaviour
     {
         if (player.setStorage && able)  // 창고 생성이 활성화 중이라면
         {
-            Debug.Log("창고 생성");
             GameObject newGameObject = Instantiate(storage, setPosition, Quaternion.identity);
             newGameObject.SetActive(true);  // 오브젝트 생성
 
@@ -153,7 +151,6 @@ public class ObjectManager : MonoBehaviour
 
         else if (player.setWork && able)     // 제작대 생성이 활성화중이라면
         {
-            Debug.Log("제작대 생성");
             GameObject newGameObject = Instantiate(workStation, setPosition, Quaternion.identity);
             newGameObject.SetActive(true);  // 오브젝트 생성
 
