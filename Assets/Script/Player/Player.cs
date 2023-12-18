@@ -134,7 +134,8 @@ public class Player : MonoBehaviour
         inventorys.SetActive(false);
         Craft.gameObject.SetActive(false) ;
 
-        controller = GetComponentInChildren<CharacterController>();
+        controller = GetComponent<CharacterController>();
+        //controller = GetComponentInChildren<CharacterController>();
 
         _jumpTimeoutDelta = jumpTimeout;
         _fallTimeoutDelta = FallTimeout;
