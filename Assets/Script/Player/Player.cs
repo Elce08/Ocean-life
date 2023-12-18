@@ -337,6 +337,7 @@ public class Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         if (storage != null) storage.gameObject.SetActive(false);
         equip.gameObject.SetActive(false);
+        Craft.gameObject.SetActive(false);
         inventorys.SetActive(false);
         inven.gameObject.SetActive(false);
     }
