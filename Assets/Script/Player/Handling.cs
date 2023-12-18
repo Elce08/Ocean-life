@@ -63,9 +63,7 @@ public class Handling : MonoBehaviour
             }
             if (!findTag)
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                player.storage.gameObject.SetActive(false);
-                player.inventorys.SetActive(false);
+                player.InvenState = Player.Inven.Close;
                 player.storageWindow = false;
             }
         }
@@ -85,7 +83,7 @@ public class Handling : MonoBehaviour
             }
             if (!findTag)
             {
-                player.Craft.gameObject.SetActive(false);
+                player.InvenState = Player.Inven.Close;
                 player.workWindow = false;
             }
         }
