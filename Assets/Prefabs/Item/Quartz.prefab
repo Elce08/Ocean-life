@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4862293555718945135}
   - component: {fileID: 3728207535971236603}
   - component: {fileID: 6279635848471716610}
+  - component: {fileID: 1411655893602107022}
   m_Layer: 0
   m_Name: Quartz
   m_TagString: Untagged
@@ -97,3 +98,17 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1411655893602107022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5613824172642899038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd4b8408b0f2de4bb1f2b14e2b6de89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sort: 0
+  inven: {fileID: 0}
