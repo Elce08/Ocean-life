@@ -110,5 +110,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd4b8408b0f2de4bb1f2b14e2b6de89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sort: 0
+  sort: 101
   inven: {fileID: 0}
