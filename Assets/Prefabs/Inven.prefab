@@ -12733,10 +12733,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   another: {fileID: 0}
+  itemPrefebs:
+  - {fileID: -3261728640052645468, guid: e9b1471f3d7a0e444a67ab71738b12f3, type: 3}
+  - {fileID: -3261728640052645468, guid: fab2746c7909f0c40a344046bd779534, type: 3}
+  - {fileID: 7670147872853733389, guid: da4667ce0d6159549aa96153605f4476, type: 3}
+  - {fileID: 505370786250851315, guid: 12c26ce59f866e44d8a1602a10cdaa25, type: 3}
+  - {fileID: -3261728640052645468, guid: fc26b74b500a38e419b4ae42bc63f0a9, type: 3}
+  - {fileID: -3261728640052645468, guid: 6c922d812a85f7841bff3c2cec69d2cd, type: 3}
+  - {fileID: -3261728640052645468, guid: 6a22f57e3c6a3034d86a5547e6f5be77, type: 3}
+  - {fileID: -3261728640052645468, guid: e9379c2f84f584240bc718a9e3a6207b, type: 3}
+  - {fileID: 1411655893602107022, guid: 0628c12864df0f149b4ad98dcdb77b06, type: 3}
+  - {fileID: -3261728640052645468, guid: 9ef74da03c04de24eabf9aa82932ef6d, type: 3}
+  - {fileID: -3261728640052645468, guid: 859f441458b5c6642ba7ba00ada44337, type: 3}
+  - {fileID: -3261728640052645468, guid: 8942406d642a11f40ab84aefd80488b1, type: 3}
   rectTransform: {fileID: 0}
   width: 0
   height: 0
+  equip: 0
   itemSprites: []
+  slots: []
   items: 
 --- !u!1 &4357996684272680127
 GameObject:

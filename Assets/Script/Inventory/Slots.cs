@@ -65,7 +65,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler
                 {
                     inven.ChangeInven(itemIndex);
                 }
-                else inven.DropItem(itemIndex);
+                else if(player.invenState == Player.Inven.Inventory) inven.DropItem(itemIndex);
             }
         }
         if(eventData.button == PointerEventData.InputButton.Left)

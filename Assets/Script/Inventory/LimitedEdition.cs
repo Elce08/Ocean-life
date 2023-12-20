@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class LimitedEdition : ItemManager
 {
-    UI player;
+    UI playerUI;
 
     protected override void Awake()
     {
-        player = FindObjectOfType<UI>();
+        playerUI = FindObjectOfType<UI>();
         slots = GetComponentsInChildren<Slots>();
         equip = true;
         items = new List<Item>
@@ -25,14 +25,14 @@ public class LimitedEdition : ItemManager
         {
             case Item.head:
                 GetItem(item, 0);
-                player.safeBreathDepth = 200.0f;
+                playerUI.safeBreathDepth = 200.0f;
                 return true;
             case Item.body:
-                player.damageMultiple = 0.8f;
+                playerUI.damageMultiple = 0.8f;
                 GetItem(item, 1);
                 return true;
             case Item.airtank:
-                player.maxBreathe = 120;
+                playerUI.maxBreathe = 120;
                 GetItem(item, 2);
                 return true;
             default:
@@ -53,9 +53,9 @@ public class LimitedEdition : ItemManager
                     slot.itemIndex = -1;
                     slot.Engaged = false;
                 }
-                if (items[0] == Item.None) player.safeBreathDepth = 100.0f;
-                if (items[1] == Item.None) player.damageMultiple = 1.0f;
-                if (items[2] == Item.None) player.maxBreathe = 60;
+                if (items[0] == Item.None) playerUI.safeBreathDepth = 100.0f;
+                if (items[1] == Item.None) playerUI.damageMultiple = 1.0f;
+                if (items[2] == Item.None) playerUI.maxBreathe = 60;
             }
         }
     }

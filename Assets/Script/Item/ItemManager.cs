@@ -33,6 +33,8 @@ public enum Item
 public class ItemManager : MonoBehaviour
 {
     public ItemManager another = null;
+    public Items[] itemPrefebs;
+    Player player;
 
     GridLayoutGroup group;
     public RectTransform rectTransform;
@@ -86,6 +88,7 @@ public class ItemManager : MonoBehaviour
 
     protected virtual void Awake()
     {
+        player = FindObjectOfType<Player>();
         group = GetComponent<GridLayoutGroup>();
         slots = GetComponentsInChildren<Slots>();
         rectTransform = GetComponent<RectTransform>();
@@ -148,7 +151,14 @@ public class ItemManager : MonoBehaviour
     /// <param name="index">Drop target item's index</param>
     public void DropItem(int index)
     {
-        // add drop code
+        foreach(Items dropItem in itemPrefebs)
+        {
+            if(dropItem.sort == items[index])
+            {
+                Items tems = Instantiate(dropItem, player.transform.position, Quaternion.identity).GetComponent<Items>();
+                tems.inven = this;
+            }
+        }
         Remove(index);
     }
 

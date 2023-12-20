@@ -1021,6 +1021,7 @@ GameObject:
   - component: {fileID: 1291293569}
   - component: {fileID: 1291293570}
   - component: {fileID: 1291293571}
+  - component: {fileID: 1291293572}
   m_Layer: 4
   m_Name: Water
   m_TagString: Water
@@ -1064,6 +1065,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1291293565}
   m_Mesh: {fileID: 0}
+--- !u!114 &1291293572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291293565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad1a47edf1aa9e846833b8736cc1154b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inWater: 0
 --- !u!223 &1457395792 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 2841913361419119911, guid: 60f8e10448627d24ab9e2840cd17d3f4,
@@ -2996,6 +3010,83 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[0]
+      value: 
+      objectReference: {fileID: -3261728640052645468, guid: e9b1471f3d7a0e444a67ab71738b12f3,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[1]
+      value: 
+      objectReference: {fileID: -3261728640052645468, guid: fab2746c7909f0c40a344046bd779534,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[2]
+      value: 
+      objectReference: {fileID: 7670147872853733389, guid: da4667ce0d6159549aa96153605f4476,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[3]
+      value: 
+      objectReference: {fileID: 505370786250851315, guid: 12c26ce59f866e44d8a1602a10cdaa25,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[4]
+      value: 
+      objectReference: {fileID: -3261728640052645468, guid: fc26b74b500a38e419b4ae42bc63f0a9,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[5]
+      value: 
+      objectReference: {fileID: -3261728640052645468, guid: 6c922d812a85f7841bff3c2cec69d2cd,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[6]
+      value: 
+      objectReference: {fileID: -3261728640052645468, guid: 6a22f57e3c6a3034d86a5547e6f5be77,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[7]
+      value: 
+      objectReference: {fileID: -3261728640052645468, guid: e9379c2f84f584240bc718a9e3a6207b,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[8]
+      value: 
+      objectReference: {fileID: 1411655893602107022, guid: 0628c12864df0f149b4ad98dcdb77b06,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[9]
+      value: 
+      objectReference: {fileID: -3261728640052645468, guid: 9ef74da03c04de24eabf9aa82932ef6d,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[10]
+      value: 
+      objectReference: {fileID: -3261728640052645468, guid: 859f441458b5c6642ba7ba00ada44337,
+        type: 3}
+    - target: {fileID: 2841913362479017834, guid: 60f8e10448627d24ab9e2840cd17d3f4,
+        type: 3}
+      propertyPath: itemPrefebs.Array.data[11]
+      value: 
+      objectReference: {fileID: -3261728640052645468, guid: 8942406d642a11f40ab84aefd80488b1,
+        type: 3}
     - target: {fileID: 2841913362621513086, guid: 60f8e10448627d24ab9e2840cd17d3f4,
         type: 3}
       propertyPath: m_AnchorMax.y
