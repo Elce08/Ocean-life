@@ -5,31 +5,39 @@ using UnityEngine;
 public class SpawnItem : MonoBehaviour
 {
     public GameObject[] Item;
+    ItemManager playerInven;
 
     public Vector2[] titaniumSpawnPos;
     public Vector2[] copperSpawnPos;
     public Vector2[] coalSpawnPos;
     public Vector2[] quartzSpawnPos;
-    public int groundRayer = 6;
     Ray ray;
+
+    private void Awake()
+    {
+        playerInven = FindObjectOfType<ItemManager>();
+    }
 
     private void Start()
     {
-        Spawn(Item[0], titaniumSpawnPos);
-        Spawn(Item[1], copperSpawnPos);
-        Spawn(Item[2], coalSpawnPos);
-        Spawn(Item[3], quartzSpawnPos);
+        if(titaniumSpawnPos != null) Spawn(Item[0], titaniumSpawnPos);
+        if(copperSpawnPos != null)Spawn(Item[1], copperSpawnPos);
+        if(coalSpawnPos != null)Spawn(Item[2], coalSpawnPos);
+        if(quartzSpawnPos != null)Spawn(Item[3], quartzSpawnPos);
     }
     
     private void Spawn(GameObject item, Vector2[] spawnPos)
     {
+        int groundRayer = 1 << LayerMask.NameToLayer("Ground");
         foreach (Vector2 pos in spawnPos)
         {
             Vector3 Pos = new(pos.x, transform.position.y, pos.y);
             ray = new Ray(Pos, -transform.up);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100.0f, groundRayer))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundRayer))
             {
-                GameObject.Instantiate(item, hit.point, Quaternion.identity);
+                Debug.Log(hit.point);
+                Items items = GameObject.Instantiate(item, hit.point, Quaternion.identity).GetComponent<Items>();
+                items.inven = playerInven;
             }
         }
     }
