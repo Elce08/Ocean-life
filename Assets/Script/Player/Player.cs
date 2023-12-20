@@ -330,6 +330,7 @@ public class Player : MonoBehaviour
 
     public bool storageWindow = false;
     public bool workWindow = false;
+    Items item;
 
     private void Close_State()
     {
@@ -421,6 +422,10 @@ public class Player : MonoBehaviour
                 {
                     storageWindow = true;
                     InvenState = Inven.Storage;
+                }
+                else if(handleing.CompareTag("ItemObject"))
+                {
+                    //item = handleing
                 }
             }
         }
