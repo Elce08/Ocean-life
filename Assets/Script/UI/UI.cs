@@ -17,6 +17,7 @@ public class UI : MonoBehaviour
     TextMeshProUGUI hydrationText;
     TextMeshProUGUI breatheText;
     TextMeshProUGUI hpText;
+    Water water;
 
     public float damageMultiple = 1.0f;
     float hp = 100.0f;
@@ -118,6 +119,7 @@ public class UI : MonoBehaviour
         hydrationText = hydrationImage.GetComponentInChildren<TextMeshProUGUI>();
         breatheText = breatheImage.GetComponentInChildren<TextMeshProUGUI>();
         hpText = hpImage.GetComponentInChildren<TextMeshProUGUI>();
+        water = FindObjectOfType<Water>();
     }
 
     private void Start()
@@ -158,7 +160,7 @@ public class UI : MonoBehaviour
         while (true)
         {
             yield return breathOut;
-            if (player.floor == Player.Space.Water)
+            if (water.inWater)
             {
                 if (transform.position.y < -safeBreathDepth) Breathe -= 2;
                 else Breathe--;
@@ -170,7 +172,7 @@ public class UI : MonoBehaviour
         while (true)
         {
             yield return breathIn;
-            if (player.floor == Player.Space.Ground) Breathe ++;
+            if (!water.inWater) Breathe ++;
         }
     }
 
