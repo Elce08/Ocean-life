@@ -5,13 +5,14 @@ using UnityEngine;
 public class Water : MonoBehaviour
 {
 
-    Color originColor;
-    Color underWater;
+    float originColor = 0.05f;
+    float underWater = 0.10f;
+    public bool inWater;
 
 
     void Awake()
     {
-        originColor = RenderSettings.fogColor;
+        originColor = RenderSettings.fogDensity;
     }
 
     private void OnTriggerStay(Collider other)
@@ -19,12 +20,18 @@ public class Water : MonoBehaviour
         if (other.transform.tag == "Player" && this.GetComponent<Collider>().bounds.Contains(other.bounds.min)
             && this.GetComponent<Collider>().bounds.Contains(other.bounds.max))
         {
-            Debug.Log("플레이어가 물 안에 머무는중");
-            RenderSettings.fogColor = underWater;
+            RenderSettings.fogDensity = underWater;
+            inWater = true;
+            
+        }
+        else
+        {
+            RenderSettings.fogDensity = originColor;
+            inWater = false;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+/*    private void OnTriggerExit(Collider other)
     {
         if (other.transform.tag == "Player")
         {
@@ -32,13 +39,14 @@ public class Water : MonoBehaviour
             RenderSettings.fogColor = originColor;
         }
     }
-
+    
     private void SmoothColorChange()
     {
-        //if (RenderSettings.fogColor != underWater)
-        //{
-            RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, underWater, 0.1f);
-        //}
+        if (RenderSettings.fogColor != underWater)
+        {
+          RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, underWater, 0.1f);
+        }
+    
+    }*/
 
-    }
 }
