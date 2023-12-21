@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 4580126116086750466}
   - component: {fileID: 351775361640038610}
   - component: {fileID: -3261728640052645468}
-  m_Layer: 0
+  - component: {fileID: 7583383821661955647}
+  m_Layer: 7
   m_Name: Head
   m_TagString: ItemObject
   m_Icon: {fileID: 0}
@@ -93,7 +94,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 621838612149069372}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -112,3 +113,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sort: 20
   inven: {fileID: 0}
+--- !u!114 &7583383821661955647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621838612149069372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.9056604, g: 0.8890851, b: 0.49127805, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

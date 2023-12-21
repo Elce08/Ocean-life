@@ -331,7 +331,6 @@ public class Player : MonoBehaviour
     public bool storageWindow = false;
     public bool workWindow = false;
     Items item;
-
     private void Close_State()
     {
         dot.SetActive(true);
@@ -425,7 +424,8 @@ public class Player : MonoBehaviour
                 }
                 else if(handleing.CompareTag("ItemObject"))
                 {
-                    //item = handleing
+                    item = handleing.GetComponent<Items>();
+                    item.Interaction();
                 }
             }
         }

@@ -14,6 +14,10 @@ public class Handling : MonoBehaviour
     Crafting craft;
     bool findTag = false;
 
+    Outline shader;
+    Outline oldShader;
+    GameObject oldObject = null;
+
     private void Awake()
     {
         player = FindObjectOfType<Player>();
@@ -41,10 +45,26 @@ public class Handling : MonoBehaviour
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Raycast"))
             {
                 rayHit = hit.collider.gameObject;
+                shader = rayHit.GetComponent<Outline>();
+                shader.OutlineMode = Outline.Mode.OutlineAll;
+                if(oldObject != rayHit)
+                {
+                    if(oldObject != null)
+                    {
+                        oldShader = oldObject.GetComponent<Outline>();
+                        oldShader.OutlineMode = Outline.Mode.Noting;
+                    }
+                }
+                oldObject = rayHit.gameObject;
             }
         }
         else
         {
+            if (rayHit != null && shader != null)
+            {
+                shader.OutlineMode = Outline.Mode.Noting; // 선택되지 않았을 때
+                shader = null;
+            }
             rayHit = null;
         }
         if (player.storageWindow)

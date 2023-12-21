@@ -20,6 +20,7 @@ TagManager:
   - Fish4
   - Mouse
   - Enemy
+  - ItemObject
   layers:
   - Default
   - TransparentFX
