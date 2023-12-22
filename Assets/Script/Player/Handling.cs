@@ -6,7 +6,7 @@ public class Handling : MonoBehaviour
 {
     public Ray ray;
     RaycastHit hit;
-    public float rayDistance = 2.5f;
+    float rayDistance = 2.5f;
     public GameObject rayHit;
     Vector3 rayTransform;
     Player player;
@@ -40,7 +40,7 @@ public class Handling : MonoBehaviour
         rayTransform = new Vector3(transform.position.x, transform.position.y + 0.35f, transform.position.z);
         ray = new Ray(rayTransform, transform.forward * rayDistance);
         colls = Physics.OverlapSphere(transform.position, rayDistance + 0.5f);
-        if (Physics.Raycast(ray, out hit, rayDistance))
+        if (Physics.Raycast(ray, out hit, rayDistance, (-1) - (1 << 3)))
         {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Raycast"))
             {
@@ -60,13 +60,14 @@ public class Handling : MonoBehaviour
         }
         else
         {
-            if (rayHit != null && shader != null)
+            if ((shader != null) && (rayHit != null))  //rayHit != null && 
             {
                 shader.OutlineMode = Outline.Mode.Noting; // 선택되지 않았을 때
                 shader = null;
             }
             rayHit = null;
         }
+
         if (player.storageWindow)
         {
             foreach (Collider col in colls)

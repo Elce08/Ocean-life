@@ -427,6 +427,10 @@ public class Player : MonoBehaviour
                     item = handleing.GetComponent<Items>();
                     item.Interaction();
                 }
+                else if(handleing.CompareTag("Fish1") || handleing.CompareTag("Fish2") || handleing.CompareTag("Fish3"))
+                {
+
+                }
             }
         }
     }

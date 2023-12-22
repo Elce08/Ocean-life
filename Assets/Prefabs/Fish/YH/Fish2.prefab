@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 9034410400591925928}
   - component: {fileID: -3419058454450141084}
   - component: {fileID: 256455056}
-  m_Layer: 0
+  - component: {fileID: -7349351522118685748}
+  m_Layer: 7
   m_Name: Fish2
   m_TagString: Fish2
   m_Icon: {fileID: 0}
@@ -66,6 +67,24 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-7349351522118685748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745972438211150953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.9056604, g: 0.8890851, b: 0.49127805, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &6899438091409140483
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -132,6 +151,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FishV2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770584863604633872, guid: 67de17aaa6711224f80123d9b1ef8cb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}

@@ -21,6 +21,7 @@ TagManager:
   - Mouse
   - Enemy
   - ItemObject
+  - FollowCamera
   layers:
   - Default
   - TransparentFX
@@ -31,7 +32,7 @@ TagManager:
   - Ground
   - Raycast
   - pre
-  - 
+  - House
   - 
   - 
   - 

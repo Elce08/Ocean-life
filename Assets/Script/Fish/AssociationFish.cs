@@ -47,6 +47,7 @@ public class AssociationFish : MonoBehaviour
 
     System.Action act;
 
+
     private void Awake()
     {
         enemys = new();

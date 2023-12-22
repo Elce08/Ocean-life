@@ -8,6 +8,6 @@ public class FishInter
 {
     public void Die()
     {
-
+        
     }
 }

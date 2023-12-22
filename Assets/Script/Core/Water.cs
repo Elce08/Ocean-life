@@ -15,38 +15,22 @@ public class Water : MonoBehaviour
         originColor = RenderSettings.fogDensity;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player" && this.GetComponent<Collider>().bounds.Contains(other.bounds.min)
-            && this.GetComponent<Collider>().bounds.Contains(other.bounds.max))
+        if (other.transform.tag == "FollowCamera")
         {
             RenderSettings.fogDensity = underWater;
             inWater = true;
-            
+
         }
-        else
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.tag == "FollowCamera")
         {
             RenderSettings.fogDensity = originColor;
             inWater = false;
         }
     }
-
-/*    private void OnTriggerExit(Collider other)
-    {
-        if (other.transform.tag == "Player")
-        {
-            Debug.Log("플레이어가 물 밖으로 나감");
-            RenderSettings.fogColor = originColor;
-        }
-    }
-    
-    private void SmoothColorChange()
-    {
-        if (RenderSettings.fogColor != underWater)
-        {
-          RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, underWater, 0.1f);
-        }
-    
-    }*/
-
 }

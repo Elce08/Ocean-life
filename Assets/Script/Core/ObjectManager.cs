@@ -21,17 +21,20 @@ public class ObjectManager : MonoBehaviour
     Ray ray;
 
     public GameObject uiPrefab; // 미리 디자인된 UI 프리팹
-    public Canvas canvas; // UI를 표시할 Canvas
+    Canvas canvas; // UI를 표시할 Canvas
     public List<ItemManager> storages;
     //  public LayerMask obstacleLayer;
-    public Handling handle;
-    public Player player;
+    Handling handle;
+    Player player;
     public bool able;
     Vector3 setPosition;
     Collider[] inCollider;
 
     private void Awake()
     {
+        handle = FindObjectOfType<Handling>();
+        player = FindObjectOfType<Player>();
+        canvas = FindObjectOfType<Canvas>();
         playerAction = new();
     }
 
@@ -57,21 +60,24 @@ public class ObjectManager : MonoBehaviour
     public void AddGameObject()
     {
         ray = new Ray(handle.transform.position, handle.transform.forward * 2.5f);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, (-1) - (1<<8)))
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            setPosition = hit.point + (Vector3.up * 0.499f);
+            ShowIndicator();
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("House"))
             {
-                setPosition = hit.point + (Vector3.up * 0.499f);
                 if (CanPlaceObjectAtPoint())
                 {
                     able = true;
-                    ShowIndicator();
                 }
                 else
                 {
                     able = false;
-                    ShowIndicator();
                 }
+            }
+            else
+            {
+                able = false;
             }
         }
     }
@@ -93,7 +99,7 @@ public class ObjectManager : MonoBehaviour
         }
         // 새로운 표시 오브젝트 생성
         currentIndicator = Instantiate(nowObject, setPosition, Quaternion.identity);
-        currentIndicator.SetActive(true); // 새로운 오브젝트를 활성화
+        currentIndicator.SetActive(true); // 새로운 오브젝트를 활성화  
         if (!player.setStorage && !player.setWork)
         {
             Destroy(currentIndicator.gameObject);
@@ -103,18 +109,21 @@ public class ObjectManager : MonoBehaviour
     bool CanPlaceObjectAtPoint()
     {
         inCollider = Physics.OverlapBox(setPosition, new Vector3(0.5f, 0.5f, 0.5f));
-        if (inCollider.Length > 2)
+        if (inCollider.Length > 3)
         {
+            Debug.Log("콜라이더 3개이상");
             able = false;
             return false;
         }
         else if(hit.distance > 5.0f)
         {
+            Debug.Log("거리 5이상");
             able = false;
             return false;
         }
         else
         {
+            Debug.Log("가능");
             able = true;
             return true;
         }
@@ -153,21 +162,6 @@ public class ObjectManager : MonoBehaviour
         {
             GameObject newGameObject = Instantiate(workStation, setPosition, Quaternion.identity);
             newGameObject.SetActive(true);  // 오브젝트 생성
-
-            //      GameObject newUI = Instantiate(uiPrefab, canvas.transform.GetChild(1));
-            //      newUI.SetActive(true);
-            //      
-            //      ItemManager newUIManager = newUI.GetComponent<ItemManager>();
-            //      storages.Add(newUIManager); // UI생성
-            //      
-            //      foreach (ItemManager inven in storages)
-            //      {
-            //          inven.gameObject.name = $"Storage{storages.IndexOf(inven)}";
-            //      
-            //      }
-            //      UIManager uiManager = newGameObject.AddComponent<UIManager>();
-            //      uiManager.SetTargetSlot(newUIManager);  // UI 연결
-            //      newUIManager.gameObject.SetActive(false);   // UI 닫기
             player.setWork = false;
             Destroy(currentIndicator);  // 생성되어 있는 임시 게임오브젝트 삭제
         }
