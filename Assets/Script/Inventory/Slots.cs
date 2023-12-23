@@ -19,6 +19,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler
 
     ItemManager inven;
 
+    private UI playerUI;
+
     public bool Engaged
     {
         get => engaged;
@@ -47,6 +49,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
+        playerUI = FindObjectOfType <UI>();
         player = FindObjectOfType<Player>();
         Name = GetComponentInChildren<TextMeshProUGUI>();
         Name.text = "None";
@@ -74,9 +77,51 @@ public class Slots : MonoBehaviour, IPointerClickHandler
             {
                 if(player.InvenState == Player.Inven.Inventory)
                 {
-                    inven.ChangeInven(itemIndex);
+                    if ((int)inven.items[itemIndex] > 9 && (int)inven.items[itemIndex] < 100) inven.ChangeInven(itemIndex);
+                    else if ((int)inven.items[itemIndex] > 400) UseItem();
                 }
             }
         }
+    }
+
+    private void UseItem()
+    {
+        switch (inven.items[itemIndex])
+        {
+            case Item.water:
+                Eat(30, 0);
+                break;
+            case Item.fish1:
+                Eat(10, 10);
+                break;
+            case Item.fish2:
+                Eat(3, 12);
+                break;
+            case Item.fish3:
+                Eat(4, 11);
+                break;
+            case Item.fish4:
+                Eat(2, 15);
+                break;
+            case Item.cookedFish1:
+                Eat(5, 20);
+                break;
+            case Item.cookedFish2:
+                Eat(1, 24);
+                break;
+            case Item.cookedFish3:
+                Eat(2, 22);
+                break;
+            case Item.cookedFish4:
+                Eat(1, 30);
+                break;
+        }
+        inven.Remove(itemIndex);
+    }
+
+    private void Eat(int Hydration, int Hunger)
+    {
+        playerUI.Hydration += Hydration;
+        playerUI.Hunger += Hunger;
     }
 }

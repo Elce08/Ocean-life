@@ -8,6 +8,7 @@ public class TestInventory : TestBase
 {
     public ItemManager inven;
     public ObjectManager objManager;
+    public Item testItem = Item.None;
     Crafting craft;
     Player player;
     Handling handle;
@@ -37,9 +38,7 @@ public class TestInventory : TestBase
 
     protected override void Test3(InputAction.CallbackContext _)
     {
-        inven.Add(Item.head);
-        inven.Add(Item.body);
-        inven.Add(Item.airtank);
+        inven.Add(testItem);
     }
 
     protected override void Test4(InputAction.CallbackContext _)
