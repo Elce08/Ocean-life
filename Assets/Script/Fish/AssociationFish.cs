@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class AssociationFish : MonoBehaviour
+public class AssociationFish : MonoBehaviour, IFishInter
 {
     private Vector3 basicPos;
 
@@ -166,5 +166,10 @@ public class AssociationFish : MonoBehaviour
     private void Update_OutWater()
     {
         if(!inWater) transform.position -= Time.deltaTime * gravity;
+    }
+
+    public void Die()
+    {
+        Destroy(this.gameObject);
     }
 }

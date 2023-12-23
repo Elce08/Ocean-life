@@ -53,6 +53,7 @@ public class Shark : MonoBehaviour
 
     Transform targetObject;
     GameObject target;
+    AssociationFish eatFish;
 
     private void Awake()
     {
@@ -193,9 +194,13 @@ public class Shark : MonoBehaviour
         if (target.tag == "Fish1" || target.tag == "Fish2"
    || target.tag == "Fish3" || target.tag == "Fish4")
         {
-            
+            eatFish = target.GetComponent<AssociationFish>();
             moveSpeed = 1.0f;
             targetObject = null;
+            if(eatFish != null)
+            {
+                eatFish.Die();
+            }
 
             if (target.tag == "Fish1")
             {

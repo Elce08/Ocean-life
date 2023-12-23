@@ -40,7 +40,7 @@ public class Handling : MonoBehaviour
         rayTransform = new Vector3(transform.position.x, transform.position.y + 0.35f, transform.position.z);
         ray = new Ray(rayTransform, transform.forward * rayDistance);
         colls = Physics.OverlapSphere(transform.position, rayDistance + 0.5f);
-        if (Physics.Raycast(ray, out hit, rayDistance, (-1) - (1 << 3)))
+        if (Physics.Raycast(ray, out hit, rayDistance, (-1) - ((1 << 3) | (1 << 4))))
         {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Raycast"))
             {

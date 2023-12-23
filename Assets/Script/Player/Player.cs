@@ -377,6 +377,8 @@ public class Player : MonoBehaviour
     }
 
     // input==========
+
+    AssociationFish getFish;
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
@@ -425,11 +427,30 @@ public class Player : MonoBehaviour
                 else if(handleing.CompareTag("ItemObject"))
                 {
                     item = handleing.GetComponent<Items>();
-                    item.Interaction();
+                    if(item != null)
+                    {
+                        item.Interaction();
+                    }
                 }
                 else if(handleing.CompareTag("Fish1") || handleing.CompareTag("Fish2") || handleing.CompareTag("Fish3"))
                 {
-
+                    getFish = handleing.GetComponent<AssociationFish>();
+                    if(handleing.CompareTag("Fish1"))
+                    {
+                        inven.Add(Item.fish1);
+                    }
+                    else if (handleing.CompareTag("Fish2"))
+                    {
+                        inven.Add(Item.fish2);
+                    }
+                    else if (handleing.CompareTag("Fish3"))
+                    {
+                        inven.Add(Item.fish3);
+                    }
+                    if (getFish != null)
+                    {
+                        getFish.Die();
+                    }
                 }
             }
         }

@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9034410400591925928}
-  - component: {fileID: -3419058454450141084}
   - component: {fileID: 256455056}
   - component: {fileID: -7349351522118685748}
+  - component: {fileID: 4198205559933644671}
   m_Layer: 7
-  m_Name: Fish2
-  m_TagString: Fish2
+  m_Name: CookedFish2
+  m_TagString: ItemObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,24 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-3419058454450141084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5745972438211150953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206a99664b0eb8044a32334ef03b0b4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sightRange: 2
-  inWater: 1
-  warning: 1
-  fishSprintSpeed: 0
-  fishCollider: {fileID: 0}
-  fishState: 0
 --- !u!136 &256455056
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -85,6 +67,20 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &4198205559933644671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745972438211150953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd4b8408b0f2de4bb1f2b14e2b6de89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sort: 407
+  inven: {fileID: 0}
 --- !u!1001 &6899438091409140483
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -157,6 +153,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8130780406338408645, guid: 67de17aaa6711224f80123d9b1ef8cb7,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3d85800322ec838459cb12344ff72a6f, type: 2}
     m_RemovedComponents:
     - {fileID: 6666653571930346421, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}

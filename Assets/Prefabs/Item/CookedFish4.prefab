@@ -9,9 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2986338442556428489}
-  m_Layer: 0
-  m_Name: Fish4
-  m_TagString: Fish4
+  - component: {fileID: -4772790961892950260}
+  - component: {fileID: -697099122663495840}
+  - component: {fileID: 3413961007858849616}
+  m_Layer: 7
+  m_Name: CookedFish4
+  m_TagString: ItemObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +35,52 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &-4772790961892950260
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6755596642354259073}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.17544478
+  m_Height: 0.92298377
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-697099122663495840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6755596642354259073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.9056604, g: 0.8890851, b: 0.49127805, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &3413961007858849616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6755596642354259073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd4b8408b0f2de4bb1f2b14e2b6de89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sort: 409
+  inven: {fileID: 0}
 --- !u!1001 &9110522772986533163
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39,6 +88,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2986338442556428489}
     m_Modifications:
+    - target: {fileID: 136039220442444357, guid: a05072560c3476b4cb8dddf22f697392,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3d85800322ec838459cb12344ff72a6f, type: 2}
     - target: {fileID: 1272374852726147370, guid: a05072560c3476b4cb8dddf22f697392,
         type: 3}
       propertyPath: m_RootOrder
@@ -98,6 +152,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FishV4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937588542411740048, guid: a05072560c3476b4cb8dddf22f697392,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2743376795215931164, guid: a05072560c3476b4cb8dddf22f697392, type: 3}
