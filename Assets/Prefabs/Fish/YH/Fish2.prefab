@@ -92,6 +92,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9034410400591925928}
     m_Modifications:
+    - target: {fileID: 6666653571930346421, guid: 67de17aaa6711224f80123d9b1ef8cb7,
+        type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666653571930346421, guid: 67de17aaa6711224f80123d9b1ef8cb7,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6961854119965240234, guid: 67de17aaa6711224f80123d9b1ef8cb7,
         type: 3}
       propertyPath: m_RootOrder
@@ -157,8 +167,7 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6666653571930346421, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67de17aaa6711224f80123d9b1ef8cb7, type: 3}
 --- !u!4 &4549413031693746345 stripped
 Transform:
