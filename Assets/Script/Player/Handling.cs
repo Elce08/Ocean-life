@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Handling : MonoBehaviour
 {
@@ -17,11 +19,20 @@ public class Handling : MonoBehaviour
     Outline shader;
     Outline oldShader;
     GameObject oldObject = null;
+    Canvas canvas;
+    TextMeshProUGUI text;
+    Transform child;
+    bool viewText = false;
 
     private void Awake()
     {
         player = FindObjectOfType<Player>();
         craft = FindObjectOfType<Crafting>();
+        canvas = FindObjectOfType<Canvas>();
+        child = canvas.transform.GetChild(5);
+        Transform gChild = child.transform.GetChild(1);
+        text = gChild.transform.GetComponent<TextMeshProUGUI>();
+        child.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -47,6 +58,12 @@ public class Handling : MonoBehaviour
                 rayHit = hit.collider.gameObject;
                 shader = rayHit.GetComponent<Outline>();
                 shader.OutlineMode = Outline.Mode.OutlineAll;
+                if (!viewText)
+                {
+                    child.gameObject.SetActive(true);
+                    text.text = rayHit.gameObject.name;
+                    viewText = true;
+                }
                 if(oldObject != rayHit)
                 {
                     if(oldObject != null)
@@ -56,6 +73,7 @@ public class Handling : MonoBehaviour
                     }
                 }
                 oldObject = rayHit.gameObject;
+                
             }
         }
         else
@@ -64,6 +82,11 @@ public class Handling : MonoBehaviour
             {
                 shader.OutlineMode = Outline.Mode.Noting; // 선택되지 않았을 때
                 shader = null;
+            }
+            if(viewText)
+            {
+                child.gameObject.SetActive(false);
+                viewText = false;
             }
             rayHit = null;
         }
