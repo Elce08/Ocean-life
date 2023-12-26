@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class AssociationFish : MonoBehaviour, IFishInter
 {
-    private Vector3 basicPos;
+    public Vector3 basicPos;
 
     public float sightRange = 2.0f;
 
@@ -51,18 +51,18 @@ public class AssociationFish : MonoBehaviour, IFishInter
     private void Awake()
     {
         enemys = new();
-        basicPos = transform.localPosition;
         speed = Random.Range(0.1f, 0.3f);
         moveSpeed = speed;
         fishCollider = GetComponent<CapsuleCollider>();
         act = Update_Association;
+        water = Update_NormalWater;
     }
 
     private void Update()
     {
         if (warning) EnemyCheck();
         act();
-        Update_OutWater();
+        water();
     }
 
     // Association---------
@@ -72,7 +72,7 @@ public class AssociationFish : MonoBehaviour, IFishInter
 
     private void Update_Association()
     {
-        transform.position += moveSpeed * Time.deltaTime * transform.forward;
+        transform.localPosition = transform.localPosition + moveSpeed * Time.deltaTime * new Vector3(0,0,1.0f);
         if (transform.localPosition.z > basicPos.z + 1.0f) moveSpeed = -speed;
         else if (transform.localPosition.z < basicPos.z - 1.0f) moveSpeed = speed;
     }
@@ -153,20 +153,68 @@ public class AssociationFish : MonoBehaviour, IFishInter
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Water")) inWater = false;
+        if (other.CompareTag("Water")) WaterState = Water.Out;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Water")) inWater = true;
+        if (other.CompareTag("Water")) WaterState = Water.In;
     }
 
     Vector3 gravity = new(0.0f, 10.0f, 0.0f);
 
+    public enum Water
+    {
+        Normal,
+        In,
+        Out,
+    }
+
+    public Water waterState = Water.Normal;
+    private Water WaterState
+    {
+        get => waterState;
+        set
+        {
+            if(value != waterState)
+            {
+                waterState = value;
+                switch (waterState)
+                {
+                    case Water.Normal:
+                        water = Update_NormalWater;
+                        break;
+                    case Water.In:
+                        water = Update_InWater;
+                        break;
+                    case Water.Out:
+                        water = Update_OutWater;
+                        break;
+
+                }
+            }
+        }
+    }
+
+    System.Action water;
+
+    private void Update_NormalWater()
+    {
+    }
+
+    private void Update_InWater()
+    {
+        if (transform.localPosition.y < basicPos.y - 0.01f) transform.localPosition += Time.deltaTime * gravity;
+        else if(transform.localPosition.y > basicPos.y + 0.01f) transform.localPosition -= Time.deltaTime * gravity;
+        else WaterState = Water.Normal;
+    }
+
     private void Update_OutWater()
     {
-        if(!inWater) transform.position -= Time.deltaTime * gravity;
+        transform.position -= Time.deltaTime * gravity;
     }
+
+    //----------
 
     public void Die()
     {
