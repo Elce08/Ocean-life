@@ -108,7 +108,9 @@ public class Association : MonoBehaviour
             Vector3 spawnPosition = new(x, y, z);
             fishs[i] = Instantiate(fish, spawnPosition, Quaternion.identity, transform);
             fishs[i].transform.parent = transform;
+            fishs[i].transform.localPosition = spawnPosition;
             SpawnFish[i] = fishs[i].GetComponent<AssociationFish>();
+            SpawnFish[i].basicPos = spawnPosition;
             SpawnFish[i].fishSprintSpeed = fishSprintSpeed;
         }
     }
