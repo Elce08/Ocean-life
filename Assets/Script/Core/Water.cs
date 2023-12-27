@@ -7,7 +7,7 @@ public class Water : MonoBehaviour
 
     float originColor = 0.05f;
     float underWater = 0.10f;
-    public bool inWater;
+    static public bool inWater;
 
 
     void Awake()
