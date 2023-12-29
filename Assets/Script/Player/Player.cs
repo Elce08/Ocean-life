@@ -515,9 +515,11 @@ public class Player : MonoBehaviour
     float alpha;
     Color blackOut;
     readonly WaitForSeconds wait = new(0.01f);
+    public bool die = false;
 
     IEnumerator DieCoroutine()
     {
+        die = true;
         BlackImage.color = new(0.0f, 0.0f, 0.0f, 0.0f);
         alpha = 0.0f;
         while (true)
