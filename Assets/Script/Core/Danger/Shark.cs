@@ -54,12 +54,19 @@ public class Shark : MonoBehaviour
     Transform targetObject;
     GameObject target;
     AssociationFish eatFish;
+    GameObject closestCollider = null; // 가장 가까운 콜라이더
+    UI ui;
+    Water water;
+    BoxCollider waterCollider;
 
     private void Awake()
     {
         timeSpan = 0.0f;
         checkTime = 1.0f;
         act = Update_Hungry;
+        ui = FindObjectOfType<UI>();
+        water = FindObjectOfType<Water>();
+        waterCollider = water.GetComponent<BoxCollider>();
     }
     private void Update()
     {
@@ -78,9 +85,6 @@ public class Shark : MonoBehaviour
                 hungry = 0.0f;
             }
             timeSpan = 0.0f;
-            Debug.Log(hungry);
-            Debug.Log(SharkState);
-            Debug.Log(moveSpeed);
         }
     }
 
@@ -91,12 +95,20 @@ public class Shark : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, 15.0f);
 
         float closestDistance = Mathf.Infinity; // 가장 가까운 거리
-        GameObject closestCollider = null; // 가장 가까운 콜라이더
-
 
         foreach (Collider col in colliders)
         {
-            if (col.CompareTag("Fish1") || col.CompareTag("Fish2") || col.CompareTag("Fish3") || col.CompareTag("Fish4"))
+            if (col.CompareTag("Player"))
+            {
+                if (Water.inWater)
+                {
+                    closestCollider = null;
+                    target = col.gameObject;
+                    targetObject = target.transform;
+                    SharkState = State.Chase;
+                }
+            }
+            else if (col.CompareTag("Fish1") || col.CompareTag("Fish2") || col.CompareTag("Fish3") || col.CompareTag("Fish4"))
             {
                 // 자기 자신과의 거리 계산
                 float distance = Vector3.Distance(transform.position, col.transform.position);
@@ -140,22 +152,68 @@ public class Shark : MonoBehaviour
     {
         if (targetObject != null)
         {
-            // targetObject와의 벡터 계산
-            Vector3 targetDirection = targetObject.position - transform.position;
-
-            // targetDirection의 각도 계산
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-            // forward 방향으로 이동
-            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-
-
-            float distanceToTarget = Vector3.Distance(transform.position, targetObject.position);
-
-            if (distanceToTarget < 1.0f) // 0.1보다 가까워지면(사실상 닿으면 Eat실행)
+            if (closestCollider != null)
             {
-                Eat(targetObject.gameObject);
+                // target이 물고기라면
+                // targetObject와의 벡터 계산
+                Vector3 targetDirection = targetObject.position - transform.position;
+
+                // targetDirection의 각도 계산
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+                Bounds bounds = waterCollider.bounds;
+
+                Vector3 newPosition = transform.position + transform.forward * moveSpeed * Time.deltaTime;
+
+                // 새 위치가 콜라이더의 경계 안에 있는지 확인하고 조정
+                newPosition.x = Mathf.Clamp(newPosition.x, bounds.min.x, bounds.max.x);
+                newPosition.z = Mathf.Clamp(newPosition.z, bounds.min.z, bounds.max.z);
+
+                // forward 방향으로 이동
+                transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+
+
+                float distanceToTarget = Vector3.Distance(transform.position, targetObject.position);
+                if (distanceToTarget < 1.0f) // 0.1보다 가까워지면(사실상 닿으면 Eat실행)
+                {
+                    Eat(targetObject.gameObject);
+                }
+            }
+            else
+            {
+                if(Water.inWater)
+                {
+                    // target이 Player라면
+                    // targetObject와의 벡터 계산
+                    Vector3 targetDirection = targetObject.position - transform.position;
+
+                    // targetDirection의 각도 계산
+                    Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+                    Bounds bounds = waterCollider.bounds;
+
+                    Vector3 newPosition = transform.position + transform.forward * moveSpeed * Time.deltaTime;
+
+                    // 새 위치가 콜라이더의 경계 안에 있는지 확인하고 조정
+                    newPosition.x = Mathf.Clamp(newPosition.x, bounds.min.x, bounds.max.x);
+                    newPosition.z = Mathf.Clamp(newPosition.z, bounds.min.z, bounds.max.z);
+
+                    // forward 방향으로 이동
+                    transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+
+
+                    float distanceToTarget = Vector3.Distance(transform.position, targetObject.position);
+                    if (distanceToTarget < 1.0f) // 0.1보다 가까워지면(사실상 닿으면 Eat실행)
+                    {
+                        AttackPlayer(targetObject.gameObject);
+                    }
+                }
+                else
+                {
+                    checkHungry();
+                }
             }
         }
     }
@@ -220,5 +278,28 @@ public class Shark : MonoBehaviour
             }
             checkHungry();
         }
+    }
+
+    private float attackCooldown = 3.0f;
+    private float lastAttackTime = -Mathf.Infinity;
+    private void AttackPlayer(GameObject target)
+    {
+        if(target.tag == "Player" && Time.time >= lastAttackTime + attackCooldown)
+        {
+            ui.Hp -= 10;
+            moveSpeed = 1.0f;
+            StartCoroutine(ResetSpeedAfterDelay(3.0f));
+            checkHungry();
+            lastAttackTime = Time.time;
+        }
+    }
+
+    private IEnumerator ResetSpeedAfterDelay(float delay)
+    {
+        // 지정된 시간만큼 기다립니다.
+        yield return new WaitForSeconds(delay);
+
+        // 속도를 초기 속도로 복구합니다.
+        moveSpeed = 3.0f;
     }
 }
