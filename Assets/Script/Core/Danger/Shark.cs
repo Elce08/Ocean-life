@@ -58,6 +58,8 @@ public class Shark : MonoBehaviour
     UI ui;
     Water water;
     BoxCollider waterCollider;
+    float nowY;
+    float nowZ;
 
     private void Awake()
     {
@@ -209,6 +211,8 @@ public class Shark : MonoBehaviour
                     {
                         AttackPlayer(targetObject.gameObject);
                     }
+                    nowY = this.transform.rotation.y;
+                    nowZ = transform.rotation.z;
                 }
                 else
                 {
@@ -223,6 +227,7 @@ public class Shark : MonoBehaviour
     /// </summary>
     private void checkHungry()
     {
+        transform.rotation = Quaternion.Euler(0.0f, nowY, nowZ);
         if (hungry <= 0.0f)
         {
             SharkState = State.Hungry;
