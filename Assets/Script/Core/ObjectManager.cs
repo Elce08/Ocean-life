@@ -111,19 +111,19 @@ public class ObjectManager : MonoBehaviour
         inCollider = Physics.OverlapBox(setPosition, new Vector3(0.5f, 0.5f, 0.5f));
         if (inCollider.Length > 3)
         {
-            Debug.Log("콜라이더 3개이상");
+            // Debug.Log("콜라이더 3개이상");
             able = false;
             return false;
         }
         else if(hit.distance > 5.0f)
         {
-            Debug.Log("거리 5이상");
+            // Debug.Log("거리 5이상");
             able = false;
             return false;
         }
         else
         {
-            Debug.Log("가능");
+            // Debug.Log("가능");
             able = true;
             return true;
         }

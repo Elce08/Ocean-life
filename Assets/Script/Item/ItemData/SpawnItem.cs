@@ -35,9 +35,9 @@ public class SpawnItem : MonoBehaviour
             ray = new Ray(Pos, -transform.up);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundRayer))
             {
-                Debug.Log(hit.point);
-                Items items = GameObject.Instantiate(item, hit.point, Quaternion.identity).GetComponent<Items>();
+                Items items = GameObject.Instantiate(item, hit.point, Quaternion.identity, transform).GetComponent<Items>();
                 items.inven = playerInven;
+                items.name = item.name;
             }
         }
     }
