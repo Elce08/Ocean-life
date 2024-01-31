@@ -32,7 +32,7 @@ public class UI : MonoBehaviour
                 else if(hp <= 0)
                 {
                     hp = 0.0f;
-                    player.Die();
+                    if(!player.die)player.Die();
                 }
                 hpImage.fillAmount = hp * 0.01f;
                 hpText.text = $"{(int)hp}";
@@ -96,7 +96,8 @@ public class UI : MonoBehaviour
                 if(breathe > maxBreathe) breathe = maxBreathe;
                 else if (breathe < 0)
                 {
-                    StartCoroutine(Drown());
+                    if (!player.die) StartCoroutine(Drown());
+                    player.die = true;
                     breathe = 0;
                 }
                 breatheImage.fillAmount = (float)breathe / maxBreathe;

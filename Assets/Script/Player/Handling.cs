@@ -58,11 +58,17 @@ public class Handling : MonoBehaviour
                 rayHit = hit.collider.gameObject;
                 shader = rayHit.GetComponent<Outline>();
                 shader.OutlineMode = Outline.Mode.OutlineAll;
-                if (!viewText)
+                if (player.InvenState != Player.Inven.Close) shader.OutlineMode = Outline.Mode.Noting;
+                if (!viewText && player.InvenState == Player.Inven.Close)
                 {
                     child.gameObject.SetActive(true);
                     text.text = rayHit.gameObject.name;
                     viewText = true;
+                }
+                else if(player.InvenState != Player.Inven.Close)
+                {
+                    child.gameObject.SetActive(false);
+                    viewText = false;
                 }
                 if(oldObject != rayHit)
                 {
