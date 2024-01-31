@@ -145,7 +145,7 @@ public class AssociationFish : MonoBehaviour, IFishInter
     private void Update_GetBack()
     {
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, basicPos, Time.deltaTime);
-        transform.localRotation = Quaternion.RotateTowards(transform.localRotation, transform.parent.rotation, 10.0f * Time.deltaTime);
+        transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.Euler(Vector3.zero) , 10.0f * Time.deltaTime);//transform.parent.rotation, 10.0f * Time.deltaTime);
         if (transform.localPosition == basicPos && transform.localRotation == transform.parent.rotation) FishState = State.Association;
     }
 
