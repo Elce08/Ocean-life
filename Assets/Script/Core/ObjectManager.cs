@@ -30,12 +30,15 @@ public class ObjectManager : MonoBehaviour
     Vector3 setPosition;
     Collider[] inCollider;
 
+    ItemManager playerInven;
+
     private void Awake()
     {
         handle = FindObjectOfType<Handling>();
         player = FindObjectOfType<Player>();
         canvas = FindObjectOfType<Canvas>();
         playerAction = new();
+        playerInven = FindObjectOfType<Canvas>().GetComponentInChildren<ItemManager>();
     }
 
     private void Update()
@@ -108,24 +111,32 @@ public class ObjectManager : MonoBehaviour
 
     bool CanPlaceObjectAtPoint()
     {
-        inCollider = Physics.OverlapBox(setPosition, new Vector3(0.5f, 0.5f, 0.5f));
-        if (inCollider.Length > 3)
+        if(PayCheck())
         {
-            // Debug.Log("콜라이더 3개이상");
-            able = false;
-            return false;
-        }
-        else if(hit.distance > 5.0f)
-        {
-            // Debug.Log("거리 5이상");
-            able = false;
-            return false;
+            inCollider = Physics.OverlapBox(setPosition, new Vector3(0.5f, 0.5f, 0.5f));
+            if (inCollider.Length > 3)
+            {
+                // Debug.Log("콜라이더 3개이상");
+                able = false;
+                return false;
+            }
+            else if (hit.distance > 5.0f)
+            {
+                // Debug.Log("거리 5이상");
+                able = false;
+                return false;
+            }
+            else
+            {
+                // Debug.Log("가능");
+                able = true;
+                return true;
+            }
         }
         else
         {
-            // Debug.Log("가능");
-            able = true;
-            return true;
+            able = false;
+            return false;
         }
     }
 
@@ -137,6 +148,7 @@ public class ObjectManager : MonoBehaviour
     {
         if (player.setStorage && able)  // 창고 생성이 활성화 중이라면
         {
+            Pay();
             GameObject newGameObject = Instantiate(storage, setPosition, Quaternion.identity);
             newGameObject.SetActive(true);  // 오브젝트 생성
 
@@ -160,10 +172,28 @@ public class ObjectManager : MonoBehaviour
 
         else if (player.setWork && able)     // 제작대 생성이 활성화중이라면
         {
+            Pay();
             GameObject newGameObject = Instantiate(workStation, setPosition, Quaternion.identity);
             newGameObject.SetActive(true);  // 오브젝트 생성
             player.setWork = false;
             Destroy(currentIndicator);  // 생성되어 있는 임시 게임오브젝트 삭제
         }
+    }
+
+    private void Pay()
+    {
+        playerInven.Remove(Item.titanium);
+        playerInven.Remove(Item.titanium);
+        playerInven.Remove(Item.titanium);
+        playerInven.Remove(Item.titanium);
+    }
+
+    private bool PayCheck()
+    {
+        int titaniumNeeded = 4;                                                                 // 소모값
+        int titaniumCount = 0;                                                                  // 소모값 카운트
+        foreach (Item item in playerInven.items) if (item == Item.titanium) titaniumCount++;    // 플레이어 인벤의 티타늄 카운트
+        if (titaniumCount < titaniumNeeded) return false;
+        else return true;
     }
 }
