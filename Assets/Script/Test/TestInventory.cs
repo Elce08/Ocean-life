@@ -27,6 +27,7 @@ public class TestInventory : TestBase
         inven.Add(Item.copper);
         inven.Add(Item.coal);
         inven.Add(Item.quartz);
+        inven.Add(Item.fish2);
     }
 
     protected override void Test2(InputAction.CallbackContext _)
