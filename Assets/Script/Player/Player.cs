@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -18,8 +15,8 @@ public class Player : MonoBehaviour
     public ItemManager storage;
     public Crafting Craft;
     public LimitedEdition equip;
+    Pause pauseButton;
     ObjectManager objManager;
-    GameManager gamemanager;
 
     Handling handle;
 
@@ -119,6 +116,7 @@ public class Player : MonoBehaviour
         equip = inventorys.transform.GetChild(1).GetComponent<LimitedEdition>();
         objManager = FindObjectOfType<ObjectManager>();
         Craft = FindObjectOfType<Crafting>();
+        pauseButton = FindObjectOfType<Pause>();
         BlackImage = GameObject.Find("BlackOut").GetComponent<Image>();
         BlackImage.color = Color.clear;
         if (mainCamera == null)
@@ -126,15 +124,15 @@ public class Player : MonoBehaviour
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
         spaceCheck = GroundAct;
-        gamemanager = FindObjectOfType<GameManager>();
     }
 
     private void Start()
     {
         equip.gameObject.SetActive(false);
         inven.gameObject.SetActive(false);
-        inventorys.SetActive(false);
-        Craft.gameObject.SetActive(false) ;
+        inventorys.gameObject.SetActive(false);
+        Craft.gameObject.SetActive(false);
+        pauseButton.gameObject.SetActive(false);
 
         controller = GetComponent<CharacterController>();
         //controller = GetComponentInChildren<CharacterController>();
@@ -333,11 +331,12 @@ public class Player : MonoBehaviour
     public bool storageWindow = false;
     public bool workWindow = false;
     Items item;
-    private void Close_State()
+    public void Close_State()
     {
         dot.SetActive(true);
         Cursor.lockState = CursorLockMode.Locked;
         if (storage != null) storage.gameObject.SetActive(false);
+        pauseButton.gameObject.SetActive(false);
         equip.gameObject.SetActive(false);
         Craft.gameObject.SetActive(false);
         inventorys.SetActive(false);
@@ -379,6 +378,25 @@ public class Player : MonoBehaviour
     }
 
     // input==========
+
+    public enum GameState
+    {
+        Resume,
+        Pause
+    }
+
+    public GameState currentGameState = GameState.Resume;
+    public GameState CurrentGameState
+    {
+        get => currentGameState;
+        set
+        {
+            if(value != currentGameState)
+            {
+                currentGameState = value;
+            }
+        }
+    }
 
     AssociationFish getFish;
     
@@ -472,11 +490,33 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
-            InvenState = Inven.Close;
-            storageWindow = false;
-            workWindow = false;
-            setStorage = false;
-            Destroy(objManager.currentIndicator);
+            if (InvenState != Inven.Close)
+            {
+                InvenState = Inven.Close;
+                storageWindow = false;
+                workWindow = false;
+                setStorage = false;
+                Destroy(objManager.currentIndicator);
+            }
+            else
+            {
+                switch (CurrentGameState)
+                {
+                    case GameState.Resume:
+                        Close_State();
+                        currentGameState = GameState.Pause;
+                        dot.SetActive(false);
+                        Cursor.lockState = CursorLockMode.None;
+                        pauseButton.gameObject.SetActive(true);
+                        Time.timeScale = 0;
+                        break;
+                    case GameState.Pause:
+                        Close_State();
+                        currentGameState = GameState.Resume;
+                        Time.timeScale = 1;
+                        break;
+                }
+            }
         }
     }
     // MouseLock==========
