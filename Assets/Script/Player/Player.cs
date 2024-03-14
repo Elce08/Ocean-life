@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public Crafting Craft;
     public LimitedEdition equip;
     ObjectManager objManager;
+    GameManager gamemanager;
 
     Handling handle;
 
@@ -28,7 +29,6 @@ public class Player : MonoBehaviour
     public bool interaction;
     public bool setStorage;
     public bool setWork;
-    
 
     public enum Space
     {
@@ -106,6 +106,7 @@ public class Player : MonoBehaviour
     float _jumpTimeoutDelta;
     float _fallTimeoutDelta;
 
+    
     public float threshold = 0.01f;
 
     private void Awake()
@@ -125,6 +126,7 @@ public class Player : MonoBehaviour
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
         spaceCheck = GroundAct;
+        gamemanager = FindObjectOfType<GameManager>();
     }
 
     private void Start()
@@ -379,6 +381,7 @@ public class Player : MonoBehaviour
     // input==========
 
     AssociationFish getFish;
+    
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
@@ -476,7 +479,6 @@ public class Player : MonoBehaviour
             Destroy(objManager.currentIndicator);
         }
     }
-
     // MouseLock==========
 
     private void OnApplicationFocus(bool hasfocus)
