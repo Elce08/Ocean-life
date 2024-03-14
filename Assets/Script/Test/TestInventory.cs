@@ -31,9 +31,9 @@ public class TestInventory : TestBase
 
     protected override void Test2(InputAction.CallbackContext _)
     {
-        craft.gameObject.SetActive(true);
-        craft.InvenCheck();
-        Cursor.lockState = CursorLockMode.None;
+        //craft.gameObject.SetActive(true);
+        //craft.InvenCheck();
+        //Cursor.lockState = CursorLockMode.None;
     }
 
     protected override void Test3(InputAction.CallbackContext _)

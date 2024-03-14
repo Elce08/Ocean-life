@@ -536,6 +536,7 @@ GameObject:
   m_Component:
   - component: {fileID: 456498880}
   - component: {fileID: 456498881}
+  - component: {fileID: 456498882}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -582,6 +583,19 @@ MonoBehaviour:
     type: 3}
   storages: []
   able: 0
+--- !u!114 &456498882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456498878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13a464a2d12595941a1ca9a1d594ee28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pause: {fileID: 0}
 --- !u!1001 &773265195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1365,6 +1379,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 390541173, guid: 60f8e10448627d24ab9e2840cd17d3f4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 456498882}
+    - target: {fileID: 390541173, guid: 60f8e10448627d24ab9e2840cd17d3f4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 390541173, guid: 60f8e10448627d24ab9e2840cd17d3f4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1430858696, guid: 60f8e10448627d24ab9e2840cd17d3f4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1430858696, guid: 60f8e10448627d24ab9e2840cd17d3f4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 456498882}
+    - target: {fileID: 1430858696, guid: 60f8e10448627d24ab9e2840cd17d3f4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_useGUILayout
+      objectReference: {fileID: 0}
+    - target: {fileID: 1430858696, guid: 60f8e10448627d24ab9e2840cd17d3f4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.MonoBehaviour, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 102720776603995351, guid: 60f8e10448627d24ab9e2840cd17d3f4,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -2579,11 +2621,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 2841913361419119930, guid: 60f8e10448627d24ab9e2840cd17d3f4,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2841913361980845138, guid: 60f8e10448627d24ab9e2840cd17d3f4,
         type: 3}
