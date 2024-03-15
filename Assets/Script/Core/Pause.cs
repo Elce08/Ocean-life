@@ -19,6 +19,9 @@ public class Pause : MonoBehaviour
         quit.onClick.AddListener(Quit);
     }
 
+    /// <summary>
+    /// 게임 재개
+    /// </summary>
     private void Resume()
     {
         player.Close_State();
@@ -26,6 +29,9 @@ public class Pause : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    /// <summary>
+    /// 게임 종료
+    /// </summary>
     private void Quit()
     {
         Application.Quit();

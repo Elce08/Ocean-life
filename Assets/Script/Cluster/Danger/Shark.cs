@@ -131,12 +131,18 @@ public class Shark : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 배고픈 상태에서 먹이를 발견했을대 추적상태
+    /// </summary>
     private void Update_Chase()
     {
         moveSpeed = 5.0f;
         ChaseMove();
     }
 
+    /// <summary>
+    /// 배고프지 않은 상대
+    /// </summary>
     private void Update_Full()
     {
         moveSpeed = 1.0f;
@@ -144,12 +150,18 @@ public class Shark : MonoBehaviour
         checkHungry();
     }
 
+    /// <summary>
+    /// 상어의 이동 함수(간단하게 구현)
+    /// </summary>
     private void SharkMove()
     {
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         Rotation();
     }
 
+    /// <summary>
+    /// 배고픈 상태에서 먹이를 발견했을때 추적하는 상태
+    /// </summary>
     private void ChaseMove()
     {
         if (targetObject != null)
@@ -164,6 +176,7 @@ public class Shark : MonoBehaviour
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
+                // 물속에서만 이동
                 Bounds bounds = waterCollider.bounds;
 
                 Vector3 newPosition = transform.position + transform.forward * moveSpeed * Time.deltaTime;
@@ -228,6 +241,7 @@ public class Shark : MonoBehaviour
     private void checkHungry()
     {
         transform.rotation = Quaternion.Euler(0.0f, nowY, nowZ);
+        //State 변경
         if (hungry <= 0.0f)
         {
             SharkState = State.Hungry;
@@ -257,14 +271,16 @@ public class Shark : MonoBehaviour
         if (target.tag == "Fish1" || target.tag == "Fish2"
    || target.tag == "Fish3" || target.tag == "Fish4")
         {
-            eatFish = target.GetComponent<AssociationFish>();
-            moveSpeed = 1.0f;
-            targetObject = null;
+            // target의 태그가 물고기일때 실행
+            eatFish = target.GetComponent<AssociationFish>();   // 물고기 확인
+            moveSpeed = 1.0f;   // 속도 감소
+            targetObject = null;    // 추적대상 초기화
             if(eatFish != null)
             {
-                eatFish.Die();
+                eatFish.Die();  // 물고기 삭제
             }
 
+            // 배고픔 수치 회복
             if (target.tag == "Fish1")
             {
                 hungry += 30.0f;
@@ -281,24 +297,34 @@ public class Shark : MonoBehaviour
             {
                 hungry += 50.0f;
             }
-            checkHungry();
+            checkHungry();  // 배고픔 확인
         }
     }
 
-    private float attackCooldown = 3.0f;
+    private float attackCooldown = 3.0f;    // 상어의 플레이어 공격 쿨타임
     private float lastAttackTime = -Mathf.Infinity;
+
+    /// <summary>
+    /// 플레이어를 공격하는 함수
+    /// </summary>
+    /// <param name="target"></param>
     private void AttackPlayer(GameObject target)
     {
         if(target.tag == "Player" && Time.time >= lastAttackTime + attackCooldown)
         {
-            ui.Hp -= 10;
-            moveSpeed = 1.0f;
-            StartCoroutine(ResetSpeedAfterDelay(3.0f));
-            checkHungry();
-            lastAttackTime = Time.time;
+            ui.Hp -= 10;    // 플레이어 hp 감소
+            moveSpeed = 1.0f;   // 잠시 이동속도 감소
+            StartCoroutine(ResetSpeedAfterDelay(3.0f)); // 쿨타임동안 대기
+            checkHungry();  // 배고픔 확인
+            lastAttackTime = Time.time; // 시간 초기화
         }
     }
 
+    /// <summary>
+    /// 공격하고 잠시 쿨타임 대기
+    /// </summary>
+    /// <param name="delay"></param>
+    /// <returns></returns>
     private IEnumerator ResetSpeedAfterDelay(float delay)
     {
         // 지정된 시간만큼 기다립니다.

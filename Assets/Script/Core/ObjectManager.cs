@@ -60,11 +60,15 @@ public class ObjectManager : MonoBehaviour
         playerAction.Storage.Disable();
     }
 
+    /// <summary>
+    /// 레이를 이용해 오브젝트가 생성될 위치를 정하는 함수
+    /// </summary>
     public void AddGameObject()
     {
         ray = new Ray(handle.transform.position, handle.transform.forward * 2.5f);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, (-1) - (1<<8)))
         {
+            // 레이 충돌
             setPosition = hit.point + (Vector3.up * 0.499f);
             ShowIndicator();
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("House"))
@@ -85,37 +89,51 @@ public class ObjectManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 설치될 지역에 임시 오브젝트를 표시하는 함수
+    /// </summary>
     public void ShowIndicator()
     {
         if (able)
         {
+            // able이 true면 설치 가능
             nowObject = ableGameObjPrefab;
         }
         else
         {
+            // able이 false면 설치 불가능
             nowObject = disableGameObjPrefab;
         }
 
         if (currentIndicator != null)
         {
+            // 기존 임시 오브젝트 삭제
             Destroy(currentIndicator);
         }
         // 새로운 표시 오브젝트 생성
         currentIndicator = Instantiate(nowObject, setPosition, Quaternion.identity);
-        currentIndicator.SetActive(true); // 새로운 오브젝트를 활성화  
+        currentIndicator.SetActive(true); // 새로운 오브젝트를 활성화
+
         if (!player.setStorage && !player.setWork)
         {
-            Destroy(currentIndicator.gameObject);
+            // Storage와 WorkStation 설치 모드가 활성화 중이지 않다면
+            Destroy(currentIndicator.gameObject); // 삭제
         }
     }
 
+    /// <summary>
+    /// 설치 가능한지 확인하는 bool
+    /// </summary>
+    /// <returns></returns>
     bool CanPlaceObjectAtPoint()
     {
         if(PayCheck())
         {
+            // 설치시 필요한 재료가 있는지 확인
             inCollider = Physics.OverlapBox(setPosition, new Vector3(0.5f, 0.5f, 0.5f));
             if (inCollider.Length > 3)
             {
+                // 임시 오브젝트, 바닥, 그외 다른것들
                 // Debug.Log("콜라이더 3개이상");
                 able = false;
                 return false;
@@ -180,6 +198,9 @@ public class ObjectManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 재료를 소모하는 함수
+    /// </summary>
     private void Pay()
     {
         playerInven.Remove(Item.titanium);
@@ -188,6 +209,10 @@ public class ObjectManager : MonoBehaviour
         playerInven.Remove(Item.titanium);
     }
 
+    /// <summary>
+    /// 필요한 재료가 있는지 확인하는 bool
+    /// </summary>
+    /// <returns></returns>
     private bool PayCheck()
     {
         int titaniumNeeded = 4;                                                                 // 소모값

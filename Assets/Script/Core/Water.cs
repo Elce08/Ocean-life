@@ -15,6 +15,10 @@ public class Water : MonoBehaviour
         originColor = RenderSettings.fogDensity;
     }
 
+    /// <summary>
+    /// 플레이어가 물속에 들어왔을때
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "FollowCamera")
@@ -25,6 +29,10 @@ public class Water : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 플레이어가 물밖으로 나갔을때
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerExit(Collider other)
     {
         if (other.transform.tag == "FollowCamera")
