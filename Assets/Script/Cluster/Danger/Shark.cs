@@ -100,14 +100,14 @@ public class Shark : MonoBehaviour
 
         foreach (Collider col in colliders)
         {
-            if (col.CompareTag("Player"))
+            if (col.CompareTag("Player"))   // 플레이어 우선 추격
             {
                 if (Water.inWater)
                 {
                     closestCollider = null;
-                    target = col.gameObject;
+                    target = col.gameObject;    // 타겟 플레이어로
                     targetObject = target.transform;
-                    SharkState = State.Chase;
+                    SharkState = State.Chase;   // 추격상태로 전환
                 }
             }
             else if (col.CompareTag("Fish1") || col.CompareTag("Fish2") || col.CompareTag("Fish3") || col.CompareTag("Fish4"))
@@ -125,9 +125,9 @@ public class Shark : MonoBehaviour
         // 가장 가까운 콜라이더가 있다면 그 콜라이더를 target으로 설정
         if (closestCollider != null)
         {
-            target = closestCollider;
+            target = closestCollider;   // 가장 가가운 오브젝트를 목표로 설정
             targetObject = target.transform;
-            SharkState = State.Chase;
+            SharkState = State.Chase;   // 추격상태로 전환
         }
     }
 

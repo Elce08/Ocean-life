@@ -21,11 +21,10 @@ public class Water : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "FollowCamera")
+        if (other.transform.tag == "FollowCamera")  // 지정한 콜라이더면
         {
-            RenderSettings.fogDensity = underWater;
+            RenderSettings.fogDensity = underWater; // Densitiy값 조정
             inWater = true;
-
         }
     }
 
@@ -35,9 +34,9 @@ public class Water : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.tag == "FollowCamera")
+        if (other.transform.tag == "FollowCamera")  // 지정한 콜라이더가 나가면
         {
-            RenderSettings.fogDensity = originColor;
+            RenderSettings.fogDensity = originColor;    // Densitiy값 원상복구
             inWater = false;
         }
     }

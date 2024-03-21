@@ -70,7 +70,7 @@ public class ObjectManager : MonoBehaviour
         {
             // 레이 충돌
             setPosition = hit.point + (Vector3.up * 0.499f);
-            ShowIndicator();
+            ShowIndicator();    // 임시 오브젝트 표시
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("House"))
             {
                 if (CanPlaceObjectAtPoint())
@@ -164,9 +164,9 @@ public class ObjectManager : MonoBehaviour
     /// <param name="obj"></param>
     private void LeftDown(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (player.setStorage && able)  // 창고 생성이 활성화 중이라면
+        if (player.setStorage && able)  // 창고 생성이 활성화 중이고 설치 가능한 상태라면
         {
-            Pay();
+            Pay();  // 재료 소모
             GameObject newGameObject = Instantiate(storage, setPosition, Quaternion.identity);
             newGameObject.SetActive(true);  // 오브젝트 생성
 
@@ -190,7 +190,7 @@ public class ObjectManager : MonoBehaviour
 
         else if (player.setWork && able)     // 제작대 생성이 활성화중이라면
         {
-            Pay();
+            Pay();  // 재료 소모
             GameObject newGameObject = Instantiate(workStation, setPosition, Quaternion.identity);
             newGameObject.SetActive(true);  // 오브젝트 생성
             player.setWork = false;
